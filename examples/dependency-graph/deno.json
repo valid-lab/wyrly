@@ -1,0 +1,10 @@
+{
+  "name": "@wyrly-examples/dependency-graph",
+  "version": "0.0.0",
+  "exports": {
+    ".": "./main.ts"
+  },
+  "tasks": {
+    "start": "deno run -A main.ts"
+  }
+}

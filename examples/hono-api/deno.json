@@ -1,0 +1,13 @@
+{
+  "name": "@wyrly-examples/hono-api",
+  "version": "0.0.0",
+  "exports": {
+    ".": "./main.ts"
+  },
+  "imports": {
+    "hono": "npm:hono@4"
+  },
+  "tasks": {
+    "start": "deno run -A main.ts"
+  }
+}

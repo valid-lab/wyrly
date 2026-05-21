@@ -1,0 +1,17 @@
+# Dependencies / tooling
+node_modules/
+
+# Local env (secrets)
+.env
+.env.*
+!.env.example
+
+# Build output (future)
+dist/
+coverage/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Deno: キャッシュはコミットしない（deno.lock はコミット推奨）

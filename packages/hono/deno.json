@@ -1,0 +1,10 @@
+{
+  "name": "@wyrly/hono",
+  "version": "0.0.0",
+  "exports": {
+    ".": "./mod.ts"
+  },
+  "imports": {
+    "hono": "npm:hono@4"
+  }
+}

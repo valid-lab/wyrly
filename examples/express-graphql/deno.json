@@ -1,0 +1,14 @@
+{
+  "name": "@wyrly-examples/express-graphql",
+  "version": "0.0.0",
+  "exports": {
+    ".": "./main.ts"
+  },
+  "imports": {
+    "express": "npm:express@5",
+    "@types/express": "npm:@types/express@5"
+  },
+  "tasks": {
+    "start": "deno run -A main.ts"
+  }
+}

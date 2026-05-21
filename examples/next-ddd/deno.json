@@ -1,0 +1,13 @@
+{
+  "name": "@wyrly-examples/next-ddd",
+  "version": "0.0.0",
+  "exports": {
+    ".": "./main.ts"
+  },
+  "imports": {
+    "react": "npm:react@19"
+  },
+  "tasks": {
+    "start": "deno run -A main.ts"
+  }
+}

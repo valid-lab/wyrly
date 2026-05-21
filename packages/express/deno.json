@@ -1,0 +1,17 @@
+{
+  "name": "@wyrly/express",
+  "version": "0.0.0",
+  "exports": {
+    ".": "./mod.ts"
+  },
+  "imports": {
+    "express": "npm:express@5",
+    "@types/express": "npm:@types/express@5"
+  },
+  "test": {
+    "permissions": {
+      "net": true,
+      "env": true
+    }
+  }
+}

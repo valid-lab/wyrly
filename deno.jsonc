@@ -1,0 +1,44 @@
+{
+  // Wyrly DI — Deno workspace root (members under ./packages/*)
+  "workspace": ["./packages/*", "./examples/*"],
+  "compilerOptions": {
+    "strict": true,
+    "verbatimModuleSyntax": true,
+    "exactOptionalPropertyTypes": true,
+    "noUncheckedIndexedAccess": true,
+    // TC39 standard decorators (not legacy experimentalDecorators)
+    "experimentalDecorators": false,
+    "lib": ["deno.window", "esnext"]
+  },
+  "tasks": {
+    "check": "deno check packages/ examples/",
+    "fmt": "deno fmt",
+    "fmt:check": "deno fmt --check",
+    "lint": "deno lint",
+    "test": "deno test -P packages/core && deno test -P packages/express && deno test packages/hono && deno test -P packages/fresh && deno test packages/graphql && deno test -P packages/next",
+    "validate:example": "deno run -A examples/dependency-graph/main.ts",
+    "example:basic-ddd": "deno task -f @wyrly-examples/basic-ddd start",
+    "example:explicit-deps": "deno task -f @wyrly-examples/explicit-deps start",
+    "example:provider-patterns": "deno task -f @wyrly-examples/provider-patterns start",
+    "example:dependency-graph": "deno task -f @wyrly-examples/dependency-graph start",
+    "example:hono-api": "deno task -f @wyrly-examples/hono-api start",
+    "example:express-api": "deno task -f @wyrly-examples/express-api start",
+    "example:graphql-request": "deno task -f @wyrly-examples/graphql-request start",
+    "example:express-graphql": "deno task -f @wyrly-examples/express-graphql start",
+    "example:fresh-routes": "deno task -f @wyrly-examples/fresh-routes start",
+    "example:next-ddd": "deno task -f @wyrly-examples/next-ddd start",
+    "examples:core": "deno task example:basic-ddd && deno task example:explicit-deps && deno task example:provider-patterns && deno task example:dependency-graph",
+    "examples:adapters": "deno task example:hono-api && deno task example:graphql-request && deno task example:fresh-routes && deno task example:next-ddd && deno task example:express-api && deno task example:express-graphql",
+    "examples": "deno task examples:core && deno task examples:adapters"
+  },
+  "lint": {
+    "rules": {
+      "tags": ["recommended"]
+    }
+  },
+  "fmt": {
+    "lineWidth": 100,
+    "semiColons": true,
+    "include": ["packages/", "examples/", "deno.jsonc"]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "@wyrly-examples/fresh-routes",
+  "version": "0.0.0",
+  "exports": {
+    ".": "./main.ts"
+  },
+  "imports": {
+    "fresh": "jsr:@fresh/core"
+  },
+  "tasks": {
+    "start": "deno run -A main.ts"
+  }
+}
