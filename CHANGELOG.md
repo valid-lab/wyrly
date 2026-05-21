@@ -13,12 +13,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/) from **1.
 
 - JSR publishing pipeline (`deno publish`, `deno task publish:dry-run`, [PUBLISHING.md](./PUBLISHING.md))
 - npm publishing via [dnt](https://github.com/denoland/dnt) (`deno task build:npm`, `deno task publish:npm` → five `@wyrly/*` packages on registry.npmjs.org; `@wyrly/fresh` remains JSR-only)
-- [guides/SERVER_COMPONENTS.md](./guides/SERVER_COMPONENTS.md) for Next.js App Router Server Components
-- GraphQL DataLoader pattern documentation in [examples/graphql-request](./examples/graphql-request/)
 
 ### Changed
 
+- GitHub Actions publish uses **JSR OIDC** and **npm Trusted Publishing**; see one-time registry checklist in [PUBLISHING.md](./PUBLISHING.md)
+- `deno task publish:npm` adds `--provenance` for npm attestations; CI uses Node 22.x
 - README installation covers JSR, npm, and workspace development
+- [guides/SERVER_COMPONENTS.md](./guides/SERVER_COMPONENTS.md) for Next.js App Router Server Components
+- GraphQL DataLoader pattern documentation in [examples/graphql-request](./examples/graphql-request/)
 
 ## [1.0.0] - 2026-05-21
 

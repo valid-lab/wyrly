@@ -9,6 +9,9 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     defaults:
       run:
         working-directory: .
@@ -31,28 +34,23 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "20.x"
+          node-version: "22.x"
           registry-url: https://registry.npmjs.org
 
       - name: Build npm packages (dnt)
         run: deno task build:npm
 
       - name: Publish to JSR
-        env:
-          JSR_TOKEN: ${{ secrets.JSR_TOKEN }}
         run: |
-          deno publish --allow-slow-types --token="$JSR_TOKEN" --config packages/core/deno.json
-          deno publish --allow-slow-types --token="$JSR_TOKEN" --config packages/express/deno.json
-          deno publish --allow-slow-types --token="$JSR_TOKEN" --config packages/hono/deno.json
-          deno publish --allow-slow-types --token="$JSR_TOKEN" --config packages/fresh/deno.json
-          deno publish --allow-slow-types --token="$JSR_TOKEN" --config packages/graphql/deno.json
-          deno publish --allow-slow-types --token="$JSR_TOKEN" --config packages/next/deno.json
+          deno publish --allow-slow-types --config packages/core/deno.json
+          deno publish --allow-slow-types --config packages/express/deno.json
+          deno publish --allow-slow-types --config packages/hono/deno.json
+          deno publish --allow-slow-types --config packages/fresh/deno.json
+          deno publish --allow-slow-types --config packages/graphql/deno.json
+          deno publish --allow-slow-types --config packages/next/deno.json
 
       - name: npm publish dry-run
         run: deno task publish:npm:dry-run
 
       - name: Publish to npm
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: deno task publish:npm
-

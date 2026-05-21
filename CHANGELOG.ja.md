@@ -12,12 +12,14 @@ English: [CHANGELOG.md](./CHANGELOG.md)
 
 - JSR 公開パイプライン（`deno publish`、`deno task publish:dry-run`）
 - npm 本番公開（[dnt](https://github.com/denoland/dnt)、`deno task build:npm` / `publish:npm` → npm は 5 パッケージ、`@wyrly/fresh` は JSR のみ）
-- Next.js Server Components ガイド（[guides/SERVER_COMPONENTS.ja.md](./guides/SERVER_COMPONENTS.ja.md)）
-- [examples/graphql-request](./examples/graphql-request/) の DataLoader パターン文書
 
 ### 変更
 
+- GitHub Actions の公開を **JSR OIDC** と **npm Trusted Publishing** に移行。手順は [PUBLISHING.ja.md](./PUBLISHING.ja.md) のワンタイム設定
+- `publish:npm` に `--provenance` を付与。CI は Node 22.x
 - README のインストール手順を JSR / npm / workspace の 3 経路に更新
+- Next.js Server Components ガイド（[guides/SERVER_COMPONENTS.ja.md](./guides/SERVER_COMPONENTS.ja.md)）
+- [examples/graphql-request](./examples/graphql-request/) の DataLoader パターン文書
 
 ## [1.0.0] - 2026-05-21
 
