@@ -18,8 +18,8 @@ deno task example:basic-ddd
 
 ## Next steps
 
-| Topic | Example |
-| ----- | ------- |
-| Provider variants | [provider-patterns](../provider-patterns/) |
-| Graph / validation | [dependency-graph](../dependency-graph/) |
-| HTTP adapter | [hono-api](../hono-api/) |
+| Topic              | Example                                    |
+| ------------------ | ------------------------------------------ |
+| Provider variants  | [provider-patterns](../provider-patterns/) |
+| Graph / validation | [dependency-graph](../dependency-graph/)   |
+| HTTP adapter       | [hono-api](../hono-api/)                   |

@@ -24,7 +24,8 @@ deno task validate:example
 
 ## Wyrly Pro CLI (optional)
 
-The commercial **`wyrly`** CLI (`doctor`, `graph`, `validate --format json`, `generate`) lives in the private **Wyrly Pro** repository. Point it at this example:
+The commercial **`wyrly`** CLI (`doctor`, `graph`, `validate --format json`, `generate`) lives in
+the private **Wyrly Pro** repository. Point it at this example:
 
 ```sh
 # from Wyrly Pro repo (../pro)
@@ -34,7 +35,7 @@ deno task wyrly validate -- --entry ../oss/examples/dependency-graph/main.ts
 
 ## See also
 
-| Topic | Example |
-| ----- | ------- |
-| HTTP + inspect | Adapter examples export `container` |
-| Providers | [provider-patterns](../provider-patterns/) |
+| Topic          | Example                                    |
+| -------------- | ------------------------------------------ |
+| HTTP + inspect | Adapter examples export `container`        |
+| Providers      | [provider-patterns](../provider-patterns/) |

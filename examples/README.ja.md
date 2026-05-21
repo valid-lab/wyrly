@@ -12,12 +12,12 @@ Wyrly DI の実行可能サンプルです。各フォルダは **1 シナリオ
 
 ## Core
 
-| フォルダ | 内容 | 実行 |
-| -------- | ---- | ---- |
-| [basic-ddd](./basic-ddd/) | token, `@Injectable`, scoped, `dispose` | `deno task example:basic-ddd` |
-| [explicit-deps](./explicit-deps/) | デコレターなし `register({ deps })` | `deno task example:explicit-deps` |
+| フォルダ                                  | 内容                                    | 実行                                  |
+| ----------------------------------------- | --------------------------------------- | ------------------------------------- |
+| [basic-ddd](./basic-ddd/)                 | token, `@Injectable`, scoped, `dispose` | `deno task example:basic-ddd`         |
+| [explicit-deps](./explicit-deps/)         | デコレターなし `register({ deps })`     | `deno task example:explicit-deps`     |
 | [provider-patterns](./provider-patterns/) | `useValue`, `useFactory`, `useExisting` | `deno task example:provider-patterns` |
-| [dependency-graph](./dependency-graph/) | `inspect()`, `validate()` | `deno task example:dependency-graph` |
+| [dependency-graph](./dependency-graph/)   | `inspect()`, `validate()`               | `deno task example:dependency-graph`  |
 
 ```sh
 deno task examples:core
@@ -25,14 +25,14 @@ deno task examples:core
 
 ## Adapters（DDD 多ファイル）
 
-| フォルダ | パッケージ | 実行 |
-| -------- | ---------- | ---- |
-| [hono-api](./hono-api/) | `@wyrly/hono` | `deno task example:hono-api` |
-| [express-api](./express-api/) | `@wyrly/express` | `deno task example:express-api` |
-| [graphql-request](./graphql-request/) | `@wyrly/graphql` | `deno task example:graphql-request` |
+| フォルダ                              | パッケージ        | 実行                                |
+| ------------------------------------- | ----------------- | ----------------------------------- |
+| [hono-api](./hono-api/)               | `@wyrly/hono`     | `deno task example:hono-api`        |
+| [express-api](./express-api/)         | `@wyrly/express`  | `deno task example:express-api`     |
+| [graphql-request](./graphql-request/) | `@wyrly/graphql`  | `deno task example:graphql-request` |
 | [express-graphql](./express-graphql/) | express + graphql | `deno task example:express-graphql` |
-| [fresh-routes](./fresh-routes/) | `@wyrly/fresh` | `deno task example:fresh-routes` |
-| [next-ddd](./next-ddd/) | `@wyrly/next` | `deno task example:next-ddd` |
+| [fresh-routes](./fresh-routes/)       | `@wyrly/fresh`    | `deno task example:fresh-routes`    |
+| [next-ddd](./next-ddd/)               | `@wyrly/next`     | `deno task example:next-ddd`        |
 
 ```sh
 deno task examples:adapters

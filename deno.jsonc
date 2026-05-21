@@ -29,7 +29,8 @@
     "example:next-ddd": "deno task -f @wyrly-examples/next-ddd start",
     "examples:core": "deno task example:basic-ddd && deno task example:explicit-deps && deno task example:provider-patterns && deno task example:dependency-graph",
     "examples:adapters": "deno task example:hono-api && deno task example:graphql-request && deno task example:fresh-routes && deno task example:next-ddd && deno task example:express-api && deno task example:express-graphql",
-    "examples": "deno task examples:core && deno task examples:adapters"
+    "examples": "deno task examples:core && deno task examples:adapters",
+    "ci": "deno task fmt:check && deno task lint && deno task check && deno task test && deno task examples"
   },
   "lint": {
     "rules": {

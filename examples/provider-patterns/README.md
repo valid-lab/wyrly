@@ -18,7 +18,7 @@ deno task example:provider-patterns
 
 ## See also
 
-| Topic | Example |
-| ----- | ------- |
+| Topic             | Example                                |
+| ----------------- | -------------------------------------- |
 | Scoped DataLoader | [graphql-request](../graphql-request/) |
-| Core intro | [basic-ddd](../basic-ddd/) |
+| Core intro        | [basic-ddd](../basic-ddd/)             |

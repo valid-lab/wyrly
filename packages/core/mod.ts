@@ -16,16 +16,16 @@ export type { GraphToJsonOptions } from "./graph_format.ts";
 export type { ValidateOptions, ValidationIssue, ValidationResult } from "./validate.ts";
 export { validateNormalizedProviders } from "./validate.ts";
 export {
-  type ErrorMessageKind,
-  type Locale,
-  type ValidationMessageCode,
   DEFAULT_LOCALE,
   errorMessage,
+  type ErrorMessageKind,
   lifetimeViolationHint,
+  type Locale,
   normalizeLocaleTag,
   providerNotFoundHint,
   resolveLocale,
   validationMessage,
+  type ValidationMessageCode,
 } from "./i18n.ts";
 export {
   CircularDependencyError,

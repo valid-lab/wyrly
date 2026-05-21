@@ -13,6 +13,7 @@
     "jsr:@std/net@^1.0.6": "1.0.6",
     "jsr:@std/path@^1.1.1": "1.1.4",
     "jsr:@std/path@^1.1.2": "1.1.4",
+    "jsr:@std/testing@1": "1.0.18",
     "npm:@opentelemetry/api@^1.9.0": "1.9.1",
     "npm:@preact/signals@^2.5.1": "2.9.0_preact@10.29.1",
     "npm:@types/express@5": "5.0.6",
@@ -81,6 +82,9 @@
       "dependencies": [
         "jsr:@std/internal"
       ]
+    },
+    "@std/testing@1.0.18": {
+      "integrity": "d3152f57b11666bf6358d0e127c7e3488e91178b0c2d8fbf0793e1c53cd13cb1"
     }
   },
   "npm": {
@@ -901,6 +905,11 @@
       "examples/next-ddd": {
         "dependencies": [
           "npm:react@19"
+        ]
+      },
+      "packages/core": {
+        "dependencies": [
+          "jsr:@std/testing@1"
         ]
       },
       "packages/express": {

@@ -1,10 +1,4 @@
-import {
-  createContainer,
-  graphToDot,
-  graphToMermaid,
-  Injectable,
-  token,
-} from "@wyrly/core";
+import { createContainer, graphToDot, graphToMermaid, Injectable, token } from "@wyrly/core";
 
 const ConfigToken = token<{ prefix: string }>("Config");
 

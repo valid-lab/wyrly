@@ -19,8 +19,8 @@ import {
   augmentGraphWithInjectableClasses,
   buildGraph,
   collectRegisteredProviders,
-  type DependencyGraph,
   dedupeEdges,
+  type DependencyGraph,
 } from "./graph.ts";
 import {
   validateNormalizedProviders,

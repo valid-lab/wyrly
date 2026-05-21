@@ -1,7 +1,7 @@
 import { App } from "fresh";
 import type { Context } from "fresh";
 import type { Container } from "@wyrly/core";
-import { di, withDI, type FreshDIState } from "@wyrly/fresh";
+import { di, type FreshDIState, withDI } from "@wyrly/fresh";
 import { GetUserUseCase } from "../application/get_user.ts";
 import { CurrentUserToken } from "../domain/user.ts";
 

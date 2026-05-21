@@ -1,10 +1,10 @@
 import type { InjectionToken } from "./token.ts";
 import { tokenLabel } from "./internal_keys.ts";
 import {
-  type ErrorMessageKind,
-  type Locale,
   errorMessage,
+  type ErrorMessageKind,
   lifetimeViolationHint,
+  type Locale,
   providerNotFoundHint,
   resolveLocale,
 } from "./i18n.ts";

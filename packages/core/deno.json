@@ -1,8 +1,11 @@
 {
   "name": "@wyrly/core",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "exports": {
     ".": "./mod.ts"
+  },
+  "imports": {
+    "@std/testing/types": "jsr:@std/testing@1/types"
   },
   "test": {
     "permissions": {

@@ -1,6 +1,7 @@
 # dependency-graph
 
-`container.inspect()` と `container.validate()` で依存グラフを確認する例です。`export const container` が composition root です。
+`container.inspect()` と `container.validate()`
+で依存グラフを確認する例です。`export const container` が composition root です。
 
 ## 学ぶこと
 
@@ -22,7 +23,8 @@ deno task validate:example
 
 ## Wyrly Pro CLI（任意）
 
-`wyrly doctor` / `wyrly graph` / CI 向け `validate --format json` などは **Wyrly Pro**（非公開リポジトリ）の CLI です。entry の例:
+`wyrly doctor` / `wyrly graph` / CI 向け `validate --format json` などは **Wyrly
+Pro**（非公開リポジトリ）の CLI です。entry の例:
 
 ```sh
 # Wyrly Pro 側（../pro）から
@@ -31,7 +33,7 @@ deno task wyrly validate -- --entry ../oss/examples/dependency-graph/main.ts
 
 ## 関連
 
-| トピック | Example |
-| -------- | ------- |
+| トピック       | Example                                        |
+| -------------- | ---------------------------------------------- |
 | HTTP + inspect | 各 adapter example の `export const container` |
-| provider | [provider-patterns](../provider-patterns/) |
+| provider       | [provider-patterns](../provider-patterns/)     |

@@ -1,9 +1,5 @@
 import { assertEquals } from "jsr:@std/assert@1";
-import {
-  normalizeLocaleTag,
-  resolveLocale,
-  validationMessage,
-} from "./i18n.ts";
+import { normalizeLocaleTag, resolveLocale, validationMessage } from "./i18n.ts";
 
 Deno.test("normalizeLocaleTag maps ja variants", () => {
   assertEquals(normalizeLocaleTag("ja"), "ja");

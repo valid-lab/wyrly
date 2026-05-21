@@ -437,8 +437,7 @@ Required:
 
 Candidate tools:
 
-- `tsd`
-- `expect-type`
+- `jsr:@std/testing/types` (`assertType`, `IsExact`) — see `packages/core/types_test.ts`
 
 ### 14.3 Adapter tests
 

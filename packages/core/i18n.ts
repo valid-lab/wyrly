@@ -84,9 +84,7 @@ export function validationMessage(
         ? `${fromId} (transient) が scoped の依存 ${depId} に依存しています。実行コンテキストに注意してください。`
         : `${fromId} (transient) depends on scoped dependency ${depId}. Mind the execution context.`;
     case "circular_dependency":
-      return locale === "ja"
-        ? `循環依存: ${cycle ?? ""}`
-        : `Circular dependency: ${cycle ?? ""}`;
+      return locale === "ja" ? `循環依存: ${cycle ?? ""}` : `Circular dependency: ${cycle ?? ""}`;
     case "unused_provider":
       return locale === "ja"
         ? `${fromId} は他の provider から依存されていません（未使用の可能性があります）。`

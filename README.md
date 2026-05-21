@@ -2,7 +2,7 @@
 
 > Explicit DI for modern TypeScript.
 
-Japanese documentation: [README.ja.md](README.ja.md) · [Examples (JA)](examples/README.ja.md)
+Japanese documentation: [README.ja.md](README.ja.md) · [API (JA)](API.ja.md) · [Changelog (JA)](CHANGELOG.ja.md) · [Examples (JA)](examples/README.ja.md)
 
 Wyrly DI is a Wyrly DI dependency injection toolkit designed for explicit, analyzable, type-safe application architecture.
 
@@ -72,6 +72,27 @@ It intentionally avoids:
 ```
 
 Wyrly Pro CLI (`wyrly doctor`, `wyrly graph`, `wyrly validate`, `wyrly generate`) is a separate commercial product (private repository), not part of this OSS repo.
+
+See [API.md](./API.md) for the frozen **v1.0** public export surface.
+
+## Installation
+
+**v1.0.0** — use this repository as a [Deno workspace](https://docs.deno.com/runtime/fundamentals/workspaces/):
+
+```sh
+git clone <your-fork-or-upstream-url>
+cd wyrly/oss   # when using the split oss repository layout
+deno task check
+deno task test
+```
+
+Import packages via workspace bare specifiers (same repo):
+
+```ts
+import { createContainer, token } from "@wyrly/core";
+```
+
+Publishing to JSR or npm is planned; until then, depend on the workspace or vendor the `packages/*` sources you need.
 
 ## Quick Example
 
@@ -499,49 +520,21 @@ Composition root over auto scan.
 Adapters over framework coupling.
 ```
 
+## API stability
+
+From **1.0.0**, public APIs are listed in [API.md](./API.md) and follow [Semantic Versioning](https://semver.org/). Release notes: [CHANGELOG.md](./CHANGELOG.md).
+
 ## Roadmap
 
-### v0.1
+### v0.1–v0.5
 
-- core package
-- typed tokens
-- provider registration
-- scoped container
-- standard decorator
-- basic resolution
-- errors
+Delivered in **1.0.0**: core, adapters, inspect/validate, examples, and CI in this repository.
 
-### v0.2
+### v1.0 (released)
 
-- lifetime validation
-- inspect API
-- Express adapter
-- Hono adapter
-
-### v0.3
-
-- GraphQL adapter
-- Fresh adapter
-- DataLoader examples
-- request scope examples
-
-### v0.4
-
-- Next.js adapter
-- Route Handler support
-- Server Action support
-
-### v0.5
-
-- CLI prototype
-- graph export
-- CI validation
-
-### v1.0
-
-- stable API
-- production docs
-- starter templates
+- Stable public API ([API.md](./API.md))
+- Production-oriented docs and [CHANGELOG.md](./CHANGELOG.md)
+- Runnable template-style examples under `examples/`
 
 ## Monetization Plan
 
@@ -595,4 +588,6 @@ When you add JSR or `npm:` dependencies, commit the generated **`deno.lock`** fo
 
 ## Status
 
-OSS packages and examples are under active development. Pro CLI is maintained in a private repository alongside this repo (`oss/` + `pro/` layout for contributors).
+**v1.0.0** — `@wyrly/core` and adapters are stable for the surface documented in [API.md](./API.md). Report issues via your project’s issue tracker.
+
+Contributors: see [AGENT.md](./AGENT.md). Japanese user docs: [README.ja.md](README.ja.md), [API.ja.md](API.ja.md), [CHANGELOG.ja.md](CHANGELOG.ja.md).

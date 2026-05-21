@@ -4,13 +4,13 @@
 
 ## 構成
 
-| レイヤー | ファイル | 役割 |
-| -------- | -------- | ---- |
-| domain | `domain/user.ts` | エンティティ・port token |
-| application | `application/get_user.ts` | `GetUserUseCase` |
-| infrastructure | `infrastructure/in_memory_user_repo.ts` | Repository 実装 |
-| presentation | `presentation/routes.ts` | `di()` + `X-User-Id` → `CurrentUserToken` |
-| composition root | `main.ts` | `export const container` |
+| レイヤー         | ファイル                                | 役割                                      |
+| ---------------- | --------------------------------------- | ----------------------------------------- |
+| domain           | `domain/user.ts`                        | エンティティ・port token                  |
+| application      | `application/get_user.ts`               | `GetUserUseCase`                          |
+| infrastructure   | `infrastructure/in_memory_user_repo.ts` | Repository 実装                           |
+| presentation     | `presentation/routes.ts`                | `di()` + `X-User-Id` → `CurrentUserToken` |
+| composition root | `main.ts`                               | `export const container`                  |
 
 ## 実行
 

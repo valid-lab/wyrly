@@ -6,12 +6,12 @@ Japanese: [README.ja.md](./README.ja.md)
 
 ## Layout
 
-| Layer | Role |
-| ----- | ---- |
-| domain | Types and port tokens |
-| application | Batch user fetch use case |
-| infrastructure | Scoped `UserLoader` factory |
-| presentation | Pseudo-resolvers + `ctx.dispose()` |
+| Layer          | Role                               |
+| -------------- | ---------------------------------- |
+| domain         | Types and port tokens              |
+| application    | Batch user fetch use case          |
+| infrastructure | Scoped `UserLoader` factory        |
+| presentation   | Pseudo-resolvers + `ctx.dispose()` |
 
 ## Run
 

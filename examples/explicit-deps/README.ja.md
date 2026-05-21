@@ -15,7 +15,7 @@ deno task example:explicit-deps
 
 ## 関連
 
-| トピック | Example |
-| -------- | ------- |
-| デコレター利用 | [basic-ddd](../basic-ddd/) |
-| factory | [provider-patterns](../provider-patterns/) |
+| トピック       | Example                                    |
+| -------------- | ------------------------------------------ |
+| デコレター利用 | [basic-ddd](../basic-ddd/)                 |
+| factory        | [provider-patterns](../provider-patterns/) |

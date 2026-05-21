@@ -16,8 +16,8 @@ deno task example:basic-ddd
 
 ## 次のステップ
 
-| トピック | Example |
-| -------- | ------- |
+| トピック                | Example                                    |
+| ----------------------- | ------------------------------------------ |
 | provider バリエーション | [provider-patterns](../provider-patterns/) |
-| 依存グラフ・検証 | [dependency-graph](../dependency-graph/) |
-| HTTP アダプター | [hono-api](../hono-api/) |
+| 依存グラフ・検証        | [dependency-graph](../dependency-graph/)   |
+| HTTP アダプター         | [hono-api](../hono-api/)                   |
