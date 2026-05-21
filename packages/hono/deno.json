@@ -5,6 +5,10 @@
     ".": "./mod.ts"
   },
   "imports": {
+    "@wyrly/core": "jsr:@wyrly/core@^1.0.0",
     "hono": "npm:hono@4"
+  },
+  "publish": {
+    "exclude": ["**/*_test.ts"]
   }
 }

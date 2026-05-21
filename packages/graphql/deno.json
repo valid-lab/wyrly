@@ -3,5 +3,11 @@
   "version": "1.0.0",
   "exports": {
     ".": "./mod.ts"
+  },
+  "imports": {
+    "@wyrly/core": "jsr:@wyrly/core@^1.0.0"
+  },
+  "publish": {
+    "exclude": ["**/*_test.ts"]
   }
 }

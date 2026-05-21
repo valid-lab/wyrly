@@ -16,6 +16,11 @@ Japanese: [README.ja.md](./README.ja.md)
 deno task example:next-ddd
 ```
 
+## Server Components guide
+
+[guides/SERVER_COMPONENTS.md](../../guides/SERVER_COMPONENTS.md) — `cache()`, `after()`,
+anti-patterns, and testing.
+
 ## See also
 
 - Core: [basic-ddd](../basic-ddd/)

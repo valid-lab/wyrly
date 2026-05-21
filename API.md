@@ -162,7 +162,7 @@ Entry: [`packages/next/mod.ts`](./packages/next/mod.ts)
 |--------|-------------|
 | `withDI` | Next.js Route Handler wrapper |
 | `withActionDI` | Server Action wrapper |
-| `createServerDI` | Server Components helper (`getDI()` per request) |
+| `createServerDI` | Server Components helper (`getDI()` per request) — see [guides/SERVER_COMPONENTS.md](./guides/SERVER_COMPONENTS.md) |
 | `NextRequestToken` | Typed token for `NextRequest` |
 
 ### Types

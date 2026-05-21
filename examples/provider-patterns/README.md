@@ -16,9 +16,17 @@ Japanese: [README.ja.md](./README.ja.md)
 deno task example:provider-patterns
 ```
 
+## Next step: request-scoped factories
+
+After `useFactory` on the root container, learn **scoped** factories tied to a request scope
+(GraphQL DataLoader pattern):
+
+→ [graphql-request](../graphql-request/) — `lifetime: "scoped"` + `createGraphQLDIContext`
+
 ## See also
 
 | Topic             | Example                                |
 | ----------------- | -------------------------------------- |
 | Scoped DataLoader | [graphql-request](../graphql-request/) |
+| Express + GraphQL | [express-graphql](../express-graphql/) |
 | Core intro        | [basic-ddd](../basic-ddd/)             |

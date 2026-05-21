@@ -5,8 +5,12 @@
     ".": "./mod.ts"
   },
   "imports": {
+    "@wyrly/core": "jsr:@wyrly/core@^1.0.0",
     "express": "npm:express@5",
     "@types/express": "npm:@types/express@5"
+  },
+  "publish": {
+    "exclude": ["**/*_test.ts"]
   },
   "test": {
     "permissions": {

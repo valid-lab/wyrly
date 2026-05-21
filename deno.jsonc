@@ -1,6 +1,11 @@
 {
   // Wyrly DI — Deno workspace root (members under ./packages/*)
   "workspace": ["./packages/*", "./examples/*"],
+  "exclude": ["**/npm/**"],
+  "imports": {
+    "@deno/dnt": "jsr:@deno/dnt@^0.42.3",
+    "@std/path": "jsr:@std/path@^1"
+  },
   "compilerOptions": {
     "strict": true,
     "verbatimModuleSyntax": true,
@@ -11,7 +16,7 @@
     "lib": ["deno.window", "esnext"]
   },
   "tasks": {
-    "check": "deno check packages/ examples/",
+    "check": "deno check packages/core packages/express packages/hono packages/fresh packages/graphql packages/next examples/",
     "fmt": "deno fmt",
     "fmt:check": "deno fmt --check",
     "lint": "deno lint",
@@ -30,7 +35,13 @@
     "examples:core": "deno task example:basic-ddd && deno task example:explicit-deps && deno task example:provider-patterns && deno task example:dependency-graph",
     "examples:adapters": "deno task example:hono-api && deno task example:graphql-request && deno task example:fresh-routes && deno task example:next-ddd && deno task example:express-api && deno task example:express-graphql",
     "examples": "deno task examples:core && deno task examples:adapters",
-    "ci": "deno task fmt:check && deno task lint && deno task check && deno task test && deno task examples"
+    "ci": "deno task fmt:check && deno task lint && deno task check && deno task test && deno task examples",
+    "publish:dry-run": "deno publish --dry-run --allow-dirty --allow-slow-types --config packages/core/deno.json && deno publish --dry-run --allow-dirty --allow-slow-types --config packages/express/deno.json && deno publish --dry-run --allow-dirty --allow-slow-types --config packages/hono/deno.json && deno publish --dry-run --allow-dirty --allow-slow-types --config packages/fresh/deno.json && deno publish --dry-run --allow-dirty --allow-slow-types --config packages/graphql/deno.json && deno publish --dry-run --allow-dirty --allow-slow-types --config packages/next/deno.json",
+    "publish:jsr": "deno publish --allow-slow-types --config packages/core/deno.json && deno publish --allow-slow-types --config packages/express/deno.json && deno publish --allow-slow-types --config packages/hono/deno.json && deno publish --allow-slow-types --config packages/fresh/deno.json && deno publish --allow-slow-types --config packages/graphql/deno.json && deno publish --allow-slow-types --config packages/next/deno.json",
+    "build:npm": "deno run -A scripts/dnt/build.ts all",
+    "build:npm:core": "deno run -A scripts/dnt/build.ts core",
+    "publish:npm:dry-run": "cd packages/core/npm && npm publish --dry-run && cd ../../express/npm && npm publish --dry-run && cd ../../hono/npm && npm publish --dry-run && cd ../../graphql/npm && npm publish --dry-run && cd ../../next/npm && npm publish --dry-run",
+    "publish:npm": "cd packages/core/npm && npm publish --access public && cd ../../express/npm && npm publish --access public && cd ../../hono/npm && npm publish --access public && cd ../../graphql/npm && npm publish --access public && cd ../../next/npm && npm publish --access public"
   },
   "lint": {
     "rules": {
@@ -40,6 +51,6 @@
   "fmt": {
     "lineWidth": 100,
     "semiColons": true,
-    "include": ["packages/", "examples/", "deno.jsonc"]
+    "include": ["packages/", "examples/", "scripts/dnt/", "deno.jsonc"]
   }
 }

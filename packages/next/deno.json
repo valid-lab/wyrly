@@ -5,7 +5,11 @@
     ".": "./mod.ts"
   },
   "imports": {
+    "@wyrly/core": "jsr:@wyrly/core@^1.0.0",
     "react": "npm:react@19"
+  },
+  "publish": {
+    "exclude": ["**/*_test.ts"]
   },
   "test": {
     "permissions": {

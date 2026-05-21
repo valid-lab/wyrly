@@ -2,11 +2,15 @@
 
 > Explicit DI for modern TypeScript.
 
-Japanese documentation: [README.ja.md](README.ja.md) · [API (JA)](API.ja.md) · [Changelog (JA)](CHANGELOG.ja.md) · [Examples (JA)](examples/README.ja.md)
+Japanese documentation: [README.ja.md](README.ja.md) · [API (JA)](API.ja.md) ·
+[Changelog (JA)](CHANGELOG.ja.md) · [Publishing (JA)](PUBLISHING.ja.md) ·
+[Examples (JA)](examples/README.ja.md)
 
-Wyrly DI is a Wyrly DI dependency injection toolkit designed for explicit, analyzable, type-safe application architecture.
+Wyrly DI is a Wyrly DI dependency injection toolkit designed for explicit, analyzable, type-safe
+application architecture.
 
-It is built for modern TypeScript applications using DDD, Clean Architecture, request scopes, typed tokens, standard decorators, and framework adapters.
+It is built for modern TypeScript applications using DDD, Clean Architecture, request scopes, typed
+tokens, standard decorators, and framework adapters.
 
 ## Concept
 
@@ -17,7 +21,8 @@ for explicit, analyzable, type-safe application architecture.
 
 ## Why
 
-Many TypeScript DI libraries were designed around legacy decorators, `reflect-metadata`, and `emitDecoratorMetadata`.
+Many TypeScript DI libraries were designed around legacy decorators, `reflect-metadata`, and
+`emitDecoratorMetadata`.
 
 Wyrly DI takes a different approach.
 
@@ -71,28 +76,59 @@ It intentionally avoids:
 @wyrly/graphql
 ```
 
-Wyrly Pro CLI (`wyrly doctor`, `wyrly graph`, `wyrly validate`, `wyrly generate`) is a separate commercial product (private repository), not part of this OSS repo.
+Wyrly Pro CLI (`wyrly doctor`, `wyrly graph`, `wyrly validate`, `wyrly generate`) is a separate
+commercial product (private repository), not part of this OSS repo.
 
 See [API.md](./API.md) for the frozen **v1.0** public export surface.
 
 ## Installation
 
-**v1.0.0** — use this repository as a [Deno workspace](https://docs.deno.com/runtime/fundamentals/workspaces/):
+**v1.0.0** — install from **JSR** or **npm**, or clone this repo for workspace development. See
+[PUBLISHING.md](./PUBLISHING.md) for release details.
 
-```sh
-git clone <your-fork-or-upstream-url>
-cd wyrly/oss   # when using the split oss repository layout
-deno task check
-deno task test
+### JSR (Deno)
+
+```jsonc
+// deno.json
+{
+  "imports": {
+    "@wyrly/core": "jsr:@wyrly/core@^1.0.0"
+  }
+}
 ```
-
-Import packages via workspace bare specifiers (same repo):
 
 ```ts
 import { createContainer, token } from "@wyrly/core";
 ```
 
-Publishing to JSR or npm is planned; until then, depend on the workspace or vendor the `packages/*` sources you need.
+Add adapters as needed (for example `jsr:@wyrly/next@^1.0.0`).
+
+### npm (Node / bundlers)
+
+```sh
+npm install @wyrly/core
+```
+
+```ts
+import { createContainer, token } from "@wyrly/core";
+```
+
+Add adapters as needed (for example `npm install @wyrly/next`). **`@wyrly/fresh` is JSR-only** (Fresh 2.x has no npm package). See [PUBLISHING.md](./PUBLISHING.md) for release steps (built with [dnt](https://github.com/denoland/dnt)).
+
+### Workspace development (this repository)
+
+```sh
+git clone <your-fork-or-upstream-url>
+cd wyrly/oss
+deno task check
+deno task test
+```
+
+Import via workspace bare specifiers:
+
+```ts
+import { createContainer, token } from "@wyrly/core";
+```
 
 ## Quick Example
 
@@ -103,8 +139,7 @@ interface UserRepository {
   findById(id: string): Promise<User | null>;
 }
 
-const UserRepositoryToken =
-  token<UserRepository>("UserRepository");
+const UserRepositoryToken = token<UserRepository>("UserRepository");
 
 @Injectable({
   deps: [UserRepositoryToken],
@@ -146,12 +181,11 @@ try {
 
 ## Typed Tokens
 
-Interfaces disappear at runtime in TypeScript.  
+Interfaces disappear at runtime in TypeScript.\
 Use typed tokens to safely inject interface-based dependencies.
 
 ```ts
-export const UserRepositoryToken =
-  token<UserRepository>("UserRepository");
+export const UserRepositoryToken = token<UserRepository>("UserRepository");
 
 const users = scope.resolve(UserRepositoryToken);
 // users: UserRepository
@@ -190,8 +224,7 @@ Not supported:
 ```ts
 class GetUserUseCase {
   constructor(
-    @Inject(UserRepositoryToken)
-    private readonly users: UserRepository,
+    @Inject(UserRepositoryToken) private readonly users: UserRepository,
   ) {}
 }
 ```
@@ -381,6 +414,9 @@ export const GET = withDI(appContainer, async (req, { di, params }) => {
 });
 ```
 
+For **Server Components** (`createServerDI`, `getDI()`, request scope via `cache()` and `after()`),
+see [guides/SERVER_COMPONENTS.md](./guides/SERVER_COMPONENTS.md).
+
 ## DDD-friendly Structure
 
 Recommended structure:
@@ -488,7 +524,8 @@ deno task validate:example
 
 Graph export helpers live in `@wyrly/core` (`graphToJson`, `graphToDot`, `graphToMermaid`).
 
-For **`wyrly` CLI** (doctor, CI JSON reports, HTML graph, scaffolding), use **Wyrly Pro** (private repo, commercial license).
+For **`wyrly` CLI** (doctor, CI JSON reports, HTML graph, scaffolding), use **Wyrly Pro** (private
+repo, commercial license).
 
 ## TypeScript Configuration
 
@@ -522,7 +559,8 @@ Adapters over framework coupling.
 
 ## API stability
 
-From **1.0.0**, public APIs are listed in [API.md](./API.md) and follow [Semantic Versioning](https://semver.org/). Release notes: [CHANGELOG.md](./CHANGELOG.md).
+From **1.0.0**, public APIs are listed in [API.md](./API.md) and follow
+[Semantic Versioning](https://semver.org/). Release notes: [CHANGELOG.md](./CHANGELOG.md).
 
 ## Roadmap
 
@@ -552,13 +590,15 @@ Paid products may include:
 
 ## License
 
-Core, adapters, and examples in this repository are licensed under the [Apache License 2.0](LICENSE).
+Core, adapters, and examples in this repository are licensed under the
+[Apache License 2.0](LICENSE).
 
 Wyrly Pro (CLI, templates) is licensed separately; source is not in this repository.
 
 ## Developing with Deno
 
-This repo is a **Deno workspace** (see [`deno.jsonc`](./deno.jsonc)). Library packages live under `packages/*` and are imported as bare specifiers like `@wyrly/core`.
+This repo is a **Deno workspace** (see [`deno.jsonc`](./deno.jsonc)). Library packages live under
+`packages/*` and are imported as bare specifiers like `@wyrly/core`.
 
 Requirements:
 
@@ -584,10 +624,14 @@ deno task example:provider-patterns
 deno task example:dependency-graph
 ```
 
-When you add JSR or `npm:` dependencies, commit the generated **`deno.lock`** for reproducible installs. If you rely heavily on npm packages, consider configuring `nodeModulesDir` in `deno.jsonc` per the [Deno docs](https://docs.deno.com/).
+When you add JSR or `npm:` dependencies, commit the generated **`deno.lock`** for reproducible
+installs. If you rely heavily on npm packages, consider configuring `nodeModulesDir` in `deno.jsonc`
+per the [Deno docs](https://docs.deno.com/).
 
 ## Status
 
-**v1.0.0** — `@wyrly/core` and adapters are stable for the surface documented in [API.md](./API.md). Report issues via your project’s issue tracker.
+**v1.0.0** — `@wyrly/core` and adapters are stable for the surface documented in [API.md](./API.md).
+Report issues via your project’s issue tracker.
 
-Contributors: see [AGENT.md](./AGENT.md). Japanese user docs: [README.ja.md](README.ja.md), [API.ja.md](API.ja.md), [CHANGELOG.ja.md](CHANGELOG.ja.md).
+Contributors: see [AGENT.md](./AGENT.md). Japanese user docs: [README.ja.md](README.ja.md),
+[API.ja.md](API.ja.md), [CHANGELOG.ja.md](CHANGELOG.ja.md).

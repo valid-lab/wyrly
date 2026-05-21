@@ -11,6 +11,7 @@ import { GraphQLRequestToken, GraphQLResponseToken } from "./tokens.ts";
  *
  * Register DataLoaders on the container as `lifetime: "scoped"` factories and
  * share them within one scope per GraphQL request (product spec §14.3).
+ * Example: `examples/graphql-request/` (`UserLoader` scoped factory).
  */
 export async function createGraphQLDIContext(
   container: Container,

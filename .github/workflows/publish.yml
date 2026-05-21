@@ -1,0 +1,58 @@
+name: Publish
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: .
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: CI checks
+        run: deno task ci
+
+      - name: Publish dry-run (JSR)
+        run: deno task publish:dry-run
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+          registry-url: https://registry.npmjs.org
+
+      - name: Build npm packages (dnt)
+        run: deno task build:npm
+
+      - name: Publish to JSR
+        env:
+          JSR_TOKEN: ${{ secrets.JSR_TOKEN }}
+        run: |
+          deno publish --allow-slow-types --token="$JSR_TOKEN" --config packages/core/deno.json
+          deno publish --allow-slow-types --token="$JSR_TOKEN" --config packages/express/deno.json
+          deno publish --allow-slow-types --token="$JSR_TOKEN" --config packages/hono/deno.json
+          deno publish --allow-slow-types --token="$JSR_TOKEN" --config packages/fresh/deno.json
+          deno publish --allow-slow-types --token="$JSR_TOKEN" --config packages/graphql/deno.json
+          deno publish --allow-slow-types --token="$JSR_TOKEN" --config packages/next/deno.json
+
+      - name: npm publish dry-run
+        run: deno task publish:npm:dry-run
+
+      - name: Publish to npm
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: deno task publish:npm
+

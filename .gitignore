@@ -8,6 +8,8 @@ node_modules/
 
 # Build output (future)
 dist/
+packages/*/npm/
+scripts/dnt/import_map.npm.json
 coverage/
 
 # OS

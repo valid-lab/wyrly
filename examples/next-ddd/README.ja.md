@@ -14,6 +14,11 @@
 deno task example:next-ddd
 ```
 
+## Server Components ガイド
+
+[guides/SERVER_COMPONENTS.ja.md](../../guides/SERVER_COMPONENTS.ja.md) — `cache()` /
+`after()`、アンチパターン、テスト。
+
 ## 関連
 
 - Core: [basic-ddd](../basic-ddd/)

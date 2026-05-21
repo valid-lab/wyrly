@@ -7,6 +7,19 @@ All notable changes to the `@wyrly/*` packages in this repository are documented
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/) from **1.0.0**.
 
+## [Unreleased]
+
+### Added
+
+- JSR publishing pipeline (`deno publish`, `deno task publish:dry-run`, [PUBLISHING.md](./PUBLISHING.md))
+- npm publishing via [dnt](https://github.com/denoland/dnt) (`deno task build:npm`, `deno task publish:npm` → five `@wyrly/*` packages on registry.npmjs.org; `@wyrly/fresh` remains JSR-only)
+- [guides/SERVER_COMPONENTS.md](./guides/SERVER_COMPONENTS.md) for Next.js App Router Server Components
+- GraphQL DataLoader pattern documentation in [examples/graphql-request](./examples/graphql-request/)
+
+### Changed
+
+- README installation covers JSR, npm, and workspace development
+
 ## [1.0.0] - 2026-05-21
 
 ### Added

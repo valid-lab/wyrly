@@ -6,6 +6,19 @@ English: [CHANGELOG.md](./CHANGELOG.md)
 
 形式は [Keep a Changelog](https://keepachangelog.com/ja/1.1.0/) を参考にし、**1.0.0** 以降は [Semantic Versioning](https://semver.org/lang/ja/) に従います。
 
+## [Unreleased]
+
+### 追加
+
+- JSR 公開パイプライン（`deno publish`、`deno task publish:dry-run`）
+- npm 本番公開（[dnt](https://github.com/denoland/dnt)、`deno task build:npm` / `publish:npm` → npm は 5 パッケージ、`@wyrly/fresh` は JSR のみ）
+- Next.js Server Components ガイド（[guides/SERVER_COMPONENTS.ja.md](./guides/SERVER_COMPONENTS.ja.md)）
+- [examples/graphql-request](./examples/graphql-request/) の DataLoader パターン文書
+
+### 変更
+
+- README のインストール手順を JSR / npm / workspace の 3 経路に更新
+
 ## [1.0.0] - 2026-05-21
 
 ### 追加

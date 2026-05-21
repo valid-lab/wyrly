@@ -36,3 +36,17 @@ jobs:
 
       - name: Examples
         run: deno task examples
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+
+      - name: Publish dry-run (JSR)
+        run: deno task publish:dry-run
+
+      - name: Build npm (dnt)
+        run: deno task build:npm
+
+      - name: npm publish dry-run
+        run: deno task publish:npm:dry-run

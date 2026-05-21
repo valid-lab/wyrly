@@ -5,7 +5,11 @@
     ".": "./mod.ts"
   },
   "imports": {
-    "fresh": "jsr:@fresh/core"
+    "@wyrly/core": "jsr:@wyrly/core@^1.0.0",
+    "fresh": "jsr:@fresh/core@^2"
+  },
+  "publish": {
+    "exclude": ["**/*_test.ts"]
   },
   "test": {
     "permissions": {

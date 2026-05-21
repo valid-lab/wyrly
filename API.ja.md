@@ -162,7 +162,7 @@ Wyrly DI **v1.0.0** の **安定公開 export** 一覧です。ここに載っ�
 |--------|------|
 | `withDI` | Next.js Route Handler ラッパー |
 | `withActionDI` | Server Action ラッパー |
-| `createServerDI` | Server Components 向け（リクエストごとに `getDI()`） |
+| `createServerDI` | Server Components 向け（リクエストごとに `getDI()`）— [guides/SERVER_COMPONENTS.ja.md](./guides/SERVER_COMPONENTS.ja.md) |
 | `NextRequestToken` | `NextRequest` 用 token |
 
 ### 型

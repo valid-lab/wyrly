@@ -7,6 +7,9 @@
   "imports": {
     "@std/testing/types": "jsr:@std/testing@1/types"
   },
+  "publish": {
+    "exclude": ["**/*_test.ts", "types_test.ts"]
+  },
   "test": {
     "permissions": {
       "env": true

@@ -12,4 +12,5 @@ deno task example:express-graphql
 
 ## 関連
 
-- GraphQL のみ: [graphql-request](../graphql-request/)
+- GraphQL のみ: [graphql-request](../graphql-request/) — scoped
+  DataLoader（[`user_loader.ts`](../graphql-request/infrastructure/user_loader.ts)）

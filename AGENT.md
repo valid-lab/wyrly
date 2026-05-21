@@ -474,6 +474,15 @@ Lifetime validation.
 | CI / tests | Assert on `code` primarily. Stabilize copy with `validate({ locale: "en" })` or `WYRLY_LOCALE=en` |
 | New issues / errors | Add en/ja templates in `i18n.ts`; avoid hard-coded mixed-language strings |
 
+### 15.2 Publishing
+
+- Release docs: [PUBLISHING.md](PUBLISHING.md) (Japanese: [PUBLISHING.ja.md](PUBLISHING.ja.md))
+- Before a release: `deno task ci`, `deno task publish:dry-run`, `deno task build:npm`, `deno task publish:npm:dry-run`, aligned `version` in all six `packages/*/deno.json`
+- JSR: `deno task publish:jsr` (core first, then adapters)
+- npm: [dnt](https://github.com/denoland/dnt) via `scripts/dnt/build.ts` → `packages/*/npm/` (five packages; `@wyrly/fresh` is JSR-only), then `deno task publish:npm` (`@wyrly/*` on registry.npmjs.org)
+- Adapter dnt configs live under `scripts/dnt/pkg.*.json` (omit `jsr:@wyrly/core` imports used only for JSR publish)
+- Adapter `deno.json` must include `"@wyrly/core": "jsr:@wyrly/core@^1.0.0"` in `imports` for published graphs
+
 ## 16. Anti-patterns
 
 ### 16.1 Constructor type auto-inference

@@ -25,14 +25,14 @@ deno task examples:core
 
 ## Adapters (multi-file DDD)
 
-| Folder                                | Package           | Run                                 |
-| ------------------------------------- | ----------------- | ----------------------------------- |
-| [hono-api](./hono-api/)               | `@wyrly/hono`     | `deno task example:hono-api`        |
-| [express-api](./express-api/)         | `@wyrly/express`  | `deno task example:express-api`     |
-| [graphql-request](./graphql-request/) | `@wyrly/graphql`  | `deno task example:graphql-request` |
-| [express-graphql](./express-graphql/) | express + graphql | `deno task example:express-graphql` |
-| [fresh-routes](./fresh-routes/)       | `@wyrly/fresh`    | `deno task example:fresh-routes`    |
-| [next-ddd](./next-ddd/)               | `@wyrly/next`     | `deno task example:next-ddd`        |
+| Folder                                | Package                                  | Run                                 |
+| ------------------------------------- | ---------------------------------------- | ----------------------------------- |
+| [hono-api](./hono-api/)               | `@wyrly/hono`                            | `deno task example:hono-api`        |
+| [express-api](./express-api/)         | `@wyrly/express`                         | `deno task example:express-api`     |
+| [graphql-request](./graphql-request/) | `@wyrly/graphql` + **scoped DataLoader** | `deno task example:graphql-request` |
+| [express-graphql](./express-graphql/) | express + graphql                        | `deno task example:express-graphql` |
+| [fresh-routes](./fresh-routes/)       | `@wyrly/fresh`                           | `deno task example:fresh-routes`    |
+| [next-ddd](./next-ddd/)               | `@wyrly/next`                            | `deno task example:next-ddd`        |
 
 ```sh
 deno task examples:adapters
