@@ -40,8 +40,9 @@
     "publish:jsr": "deno publish --allow-slow-types --config packages/core/deno.json && deno publish --allow-slow-types --config packages/express/deno.json && deno publish --allow-slow-types --config packages/hono/deno.json && deno publish --allow-slow-types --config packages/fresh/deno.json && deno publish --allow-slow-types --config packages/graphql/deno.json && deno publish --allow-slow-types --config packages/next/deno.json",
     "build:npm": "deno run -A scripts/dnt/build.ts all",
     "build:npm:core": "deno run -A scripts/dnt/build.ts core",
-    "publish:npm:dry-run": "cd packages/core/npm && npm publish --dry-run --provenance && cd ../../express/npm && npm publish --dry-run --provenance && cd ../../hono/npm && npm publish --dry-run --provenance && cd ../../graphql/npm && npm publish --dry-run --provenance && cd ../../next/npm && npm publish --dry-run --provenance",
-    "publish:npm": "cd packages/core/npm && npm publish --provenance --access public && cd ../../express/npm && npm publish --provenance --access public && cd ../../hono/npm && npm publish --provenance --access public && cd ../../graphql/npm && npm publish --provenance --access public && cd ../../next/npm && npm publish --provenance --access public"
+    "publish:npm:dry-run": "cd packages/core/npm && npm publish --dry-run && cd ../../express/npm && npm publish --dry-run && cd ../../hono/npm && npm publish --dry-run && cd ../../graphql/npm && npm publish --dry-run && cd ../../next/npm && npm publish --dry-run",
+    "publish:npm": "cd packages/core/npm && npm publish --access public && cd ../../express/npm && npm publish --access public && cd ../../hono/npm && npm publish --access public && cd ../../graphql/npm && npm publish --access public && cd ../../next/npm && npm publish --access public",
+    "publish:npm:ci": "cd packages/core/npm && npm publish --provenance --access public && cd ../../express/npm && npm publish --provenance --access public && cd ../../hono/npm && npm publish --provenance --access public && cd ../../graphql/npm && npm publish --provenance --access public && cd ../../next/npm && npm publish --provenance --access public"
   },
   "lint": {
     "rules": {

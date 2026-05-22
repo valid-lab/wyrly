@@ -128,7 +128,7 @@ Prefer **tag push → GitHub Actions** for production releases. For local publis
 
 ## GitHub Actions
 
-[`.github/workflows/publish.yml`](./.github/workflows/publish.yml): tag `v*` or `workflow_dispatch` → CI → JSR publish (OIDC) → `build:npm` → npm dry-run → npm publish (Trusted Publishing + `--provenance`).
+[`.github/workflows/publish.yml`](./.github/workflows/publish.yml): tag `v*` or `workflow_dispatch` → CI → JSR publish (OIDC) → `build:npm` → npm dry-run → `deno task publish:npm:ci` (Trusted Publishing + `--provenance`).
 
 **No repository secrets are required** when JSR repository links and npm Trusted Publishers are configured.
 
@@ -148,4 +148,5 @@ The workflow sets `permissions: id-token: write` for OIDC and uses Node **22.x**
 | npm 404 for `@fresh/core` or `@wyrly/fresh` | Expected; Fresh stack uses JSR (`jsr:@wyrly/fresh`) |
 | JSR publish fails in Actions with auth error | Link `OWNER/REPO` on each package’s JSR Settings page |
 | npm publish `403` in Actions | Check Trusted Publisher: repo, workflow `publish.yml`, and package name; ensure Node 22+ / npm 11.5.1+ in CI |
-| npm provenance / trusted publish errors | Use `npm publish --provenance` (see `deno task publish:npm`); rely on Trusted Publishing in CI, not registry passwords in the workflow |
+| `Automatic provenance generation not supported for provider: null` (local) | Use `deno task publish:npm` locally (no `--provenance`). Use `deno task publish:npm:ci` only in GitHub Actions with Trusted Publishing |
+| npm provenance / trusted publish errors (CI) | Check Trusted Publisher settings; workflow must run `publish:npm:ci` |

@@ -25,7 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/) from **1.
 ### Changed
 
 - GitHub Actions publish uses **JSR OIDC** and **npm Trusted Publishing**; see one-time registry checklist in [PUBLISHING.md](./PUBLISHING.md)
-- `deno task publish:npm` adds `--provenance` for npm attestations; CI uses Node 22.x
+- `deno task publish:npm:ci` adds `--provenance` for npm attestations in GitHub Actions; local `publish:npm` omits it; CI uses Node 22.x
 - README installation covers JSR, npm, and workspace development
 
 ### Notes

@@ -53,4 +53,4 @@ jobs:
         run: deno task publish:npm:dry-run
 
       - name: Publish to npm
-        run: deno task publish:npm
+        run: deno task publish:npm:ci

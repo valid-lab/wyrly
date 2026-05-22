@@ -24,7 +24,7 @@ English: [CHANGELOG.md](./CHANGELOG.md)
 ### 変更
 
 - GitHub Actions の公開を **JSR OIDC** と **npm Trusted Publishing** に移行。手順は [PUBLISHING.ja.md](./PUBLISHING.ja.md) のワンタイム設定
-- `publish:npm` に `--provenance` を付与。CI は Node 22.x
+- CI 用 `publish:npm:ci` に `--provenance` を付与（ローカル `publish:npm` には付けない）。CI は Node 22.x
 - README のインストール手順を JSR / npm / workspace の 3 経路に更新
 
 ### 備考

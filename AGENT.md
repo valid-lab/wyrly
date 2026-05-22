@@ -478,7 +478,7 @@ Lifetime validation.
 
 - Release docs: [PUBLISHING.md](PUBLISHING.md) (Japanese: [PUBLISHING.ja.md](PUBLISHING.ja.md))
 - Before a release: `deno task ci`, `deno task publish:dry-run`, `deno task build:npm`, `deno task publish:npm:dry-run`, aligned `version` in all six `packages/*/deno.json`
-- **GitHub Actions** (`.github/workflows/publish.yml`): JSR via **OIDC** (`id-token: write`); npm via **Trusted Publishing** (`publish:npm` with `--provenance`). One-time setup: link each JSR package to the repo; register npm Trusted Publishers for five `@wyrly/*` packages — see PUBLISHING.md
+- **GitHub Actions** (`.github/workflows/publish.yml`): JSR via **OIDC** (`id-token: write`); npm via **Trusted Publishing** (`publish:npm:ci` with `--provenance`). One-time setup: link each JSR package to the repo; register npm Trusted Publishers for five `@wyrly/*` packages — see PUBLISHING.md
 - **Local JSR:** `deno task publish:jsr` (browser auth, no token by default)
 - **Local npm:** [dnt](https://github.com/denoland/dnt) via `scripts/dnt/build.ts` → `packages/*/npm/` (five packages; `@wyrly/fresh` is JSR-only), then `deno task publish:npm` after `npm login` to `@wyrly`
 - Adapter dnt configs live under `scripts/dnt/pkg.*.json` (omit `jsr:@wyrly/core` imports used only for JSR publish)
