@@ -1,10 +1,11 @@
 import { build, emptyDir } from "@deno/dnt";
 import * as path from "@std/path";
+import { getPackageMetadata, type PackageId } from "./package-metadata.ts";
 
 const OSS_ROOT = path.dirname(path.dirname(path.dirname(path.fromFileUrl(import.meta.url))));
 
 /** Packages published to npm via dnt (`@wyrly/fresh` is JSR-only — Fresh has no npm distribution). */
-export type NpmPackageId = "core" | "express" | "hono" | "graphql" | "next";
+export type NpmPackageId = Exclude<PackageId, "fresh">;
 
 export const NPM_PACKAGE_ORDER: NpmPackageId[] = [
   "core",
@@ -18,54 +19,52 @@ export interface PackageBuildConfig {
   id: NpmPackageId;
   npmName: string;
   description: string;
+  keywords: string[];
+  homepage: string;
+  bugs: string;
   dntConfigFile?: string;
   peerDependencies?: Record<string, string>;
   extraMappings?: Record<string, string | { name: string; version: string; subPath?: string }>;
 }
 
+function buildConfig(id: NpmPackageId): PackageBuildConfig {
+  const meta = getPackageMetadata(id);
+  return {
+    id,
+    npmName: meta.npmName,
+    description: meta.description,
+    keywords: [...meta.keywords],
+    homepage: meta.homepage,
+    bugs: meta.bugs,
+    ...(id === "express"
+      ? { dntConfigFile: "pkg.express.json", peerDependencies: { express: "^5.0.0" } }
+      : {}),
+    ...(id === "hono"
+      ? { dntConfigFile: "pkg.hono.json", peerDependencies: { hono: "^4.0.0" } }
+      : {}),
+    ...(id === "graphql" ? { dntConfigFile: "pkg.graphql.json" } : {}),
+    ...(id === "next"
+      ? {
+        dntConfigFile: "pkg.next.json",
+        peerDependencies: { next: "^15.0.0", react: "^19.0.0" },
+        extraMappings: {
+          "npm:next@15/server.js": {
+            name: "next",
+            version: "^15.0.0",
+            subPath: "server.js",
+          },
+        },
+      }
+      : {}),
+  };
+}
+
 export const PACKAGE_CONFIGS: Record<NpmPackageId, PackageBuildConfig> = {
-  core: {
-    id: "core",
-    npmName: "@wyrly/core",
-    description: "Explicit DI for modern TypeScript (core)",
-  },
-  express: {
-    id: "express",
-    npmName: "@wyrly/express",
-    description: "Wyrly DI adapter for Express",
-    dntConfigFile: "pkg.express.json",
-    peerDependencies: { express: "^5.0.0" },
-  },
-  hono: {
-    id: "hono",
-    npmName: "@wyrly/hono",
-    description: "Wyrly DI adapter for Hono",
-    dntConfigFile: "pkg.hono.json",
-    peerDependencies: { hono: "^4.0.0" },
-  },
-  graphql: {
-    id: "graphql",
-    npmName: "@wyrly/graphql",
-    description: "Wyrly DI adapter for GraphQL",
-    dntConfigFile: "pkg.graphql.json",
-  },
-  next: {
-    id: "next",
-    npmName: "@wyrly/next",
-    description: "Wyrly DI adapter for Next.js App Router",
-    dntConfigFile: "pkg.next.json",
-    peerDependencies: {
-      next: "^15.0.0",
-      react: "^19.0.0",
-    },
-    extraMappings: {
-      "npm:next@15/server.js": {
-        name: "next",
-        version: "^15.0.0",
-        subPath: "server.js",
-      },
-    },
-  },
+  core: buildConfig("core"),
+  express: buildConfig("express"),
+  hono: buildConfig("hono"),
+  graphql: buildConfig("graphql"),
+  next: buildConfig("next"),
 };
 
 export async function readPackageVersion(id: NpmPackageId): Promise<string> {
@@ -83,6 +82,15 @@ export async function buildNpmPackage(config: PackageBuildConfig): Promise<void>
   const dir = packageDir(config.id);
   const outDir = path.join(dir, "npm");
   const coreDir = packageDir("core");
+  const readmeSrc = path.join(dir, "README.md");
+
+  try {
+    await Deno.stat(readmeSrc);
+  } catch {
+    throw new Error(
+      `Missing packages/${config.id}/README.md — add it before running dnt (see PUBLISHING.md).`,
+    );
+  }
 
   await emptyDir(outDir);
 
@@ -136,8 +144,11 @@ export async function buildNpmPackage(config: PackageBuildConfig): Promise<void>
         name: config.npmName,
         version,
         description: config.description,
+        keywords: config.keywords,
         license: "Apache-2.0",
         sideEffects: false,
+        homepage: config.homepage,
+        bugs: { url: config.bugs },
         repository: {
           type: "git",
           url: "git+https://github.com/valid-lab/wyrly.git",
@@ -156,15 +167,22 @@ export async function buildNpmPackage(config: PackageBuildConfig): Promise<void>
       postBuild() {
         const license = path.join(OSS_ROOT, "LICENSE");
         Deno.copyFileSync(license, path.join(outDir, "LICENSE"));
+        Deno.copyFileSync(readmeSrc, path.join(outDir, "README.md"));
 
         const pkgJsonPath = path.join(outDir, "package.json");
         const pkg = JSON.parse(Deno.readTextFileSync(pkgJsonPath)) as {
           dependencies?: Record<string, string>;
+          keywords?: string[];
+          homepage?: string;
+          bugs?: { url: string };
         };
         if (pkg.dependencies?.["@wyrly/core"]?.startsWith("file:")) {
           pkg.dependencies["@wyrly/core"] = `^${version}`;
-          Deno.writeTextFileSync(pkgJsonPath, JSON.stringify(pkg, null, 2) + "\n");
         }
+        pkg.keywords = config.keywords;
+        pkg.homepage = config.homepage;
+        pkg.bugs = { url: config.bugs };
+        Deno.writeTextFileSync(pkgJsonPath, JSON.stringify(pkg, null, 2) + "\n");
       },
     });
   } finally {

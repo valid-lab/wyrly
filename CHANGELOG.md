@@ -9,6 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/) from **1.
 
 ## [Unreleased]
 
+## [1.0.5] - 2026-05-23
+
+### Added
+
+- Per-package `README.md` / `README.ja.md` for all six `@wyrly/*` packages (npm shows English README)
+- npm `package.json` metadata: `keywords`, `homepage`, `bugs` via [`scripts/dnt/package-metadata.ts`](scripts/dnt/package-metadata.ts); `deno task check:npm-readme`
+- Runtime compat smoke tests: `compat/node`, `compat/bun`, `compat/workers` (see `deno task test:compat`)
+
+### Changed
+
+- `@wyrly/core` README: Deno (JSR) install and runtime table first; npm keywords include `deno`, `jsr`
+- npm build: no `@deno/shim-deno` dependency; `i18n` uses portable env lookup for Workers/Bun
+
 ## [1.0.4] - 2026-05-22
 
 ### Changed
@@ -70,6 +83,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/) from **1.
 
 - No first-class `resolveAsync` (async factory results are not fully modeled as async DI)
 
+[1.0.5]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.5
 [1.0.4]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.4
 [1.0.3]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.3
 [1.0.2]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.2

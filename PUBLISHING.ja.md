@@ -96,7 +96,10 @@ npm install @wyrly/core
 
 ## npm ビルド（dnt）
 
+**README / keywords:** リリース前に `packages/<name>/README.md`（npm 表示・英語）と `README.ja.md`（日本語）を編集。`keywords` / `homepage` / `bugs` は [`scripts/dnt/package-metadata.ts`](scripts/dnt/package-metadata.ts)。`deno task build:npm` が `README.md` を `packages/*/npm/` にコピーし、`package.json` にメタデータをマージします。
+
 ```sh
+deno task check:npm-readme  # 6 パッケージ分の README 存在確認
 deno task build:npm
 deno task build:npm:core   # core のみ
 ```

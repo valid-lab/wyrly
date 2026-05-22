@@ -8,6 +8,19 @@ English: [CHANGELOG.md](./CHANGELOG.md)
 
 ## [Unreleased]
 
+## [1.0.5] - 2026-05-23
+
+### 追加
+
+- 6 パッケージすべてに `README.md` / `README.ja.md`（npm には英語 README）
+- npm の `keywords` / `homepage` / `bugs` を dnt ビルドで付与（`scripts/dnt/package-metadata.ts`、`deno task check:npm-readme`）
+- ランタイム互換スモーク: `compat/node` / `compat/bun` / `compat/workers`（`deno task test:compat`）
+
+### 変更
+
+- `@wyrly/core` README: Deno（JSR）のインストールとランタイム表を前面に
+- npm ビルドから `@deno/shim-deno` を除去、`i18n` の環境変数参照をポータブル化
+
 ## [1.0.4] - 2026-05-22
 
 ### 変更
@@ -69,6 +82,7 @@ English: [CHANGELOG.md](./CHANGELOG.md)
 
 - 第一級の `resolveAsync` なし（非同期 factory の DI モデルは限定的）
 
+[1.0.5]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.5
 [1.0.4]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.4
 [1.0.3]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.3
 [1.0.2]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.2

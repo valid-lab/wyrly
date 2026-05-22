@@ -115,7 +115,10 @@ Install adapters as needed (for example `@wyrly/next`). Keep the same major vers
 
 npm packages are built with [dnt](https://github.com/denoland/dnt) from Deno sources. Output is **ESM only** (`scriptModule: false`) under `packages/*/npm/` (gitignored).
 
+**Package README and keywords:** Edit `packages/<name>/README.md` (English, shown on npm) and `README.ja.md` (Japanese, GitHub only) before release. Metadata (`keywords`, `homepage`, `bugs`) lives in [`scripts/dnt/package-metadata.ts`](scripts/dnt/package-metadata.ts). `deno task build:npm` copies `README.md` into each `packages/*/npm/` and merges metadata into `package.json`.
+
 ```sh
+deno task check:npm-readme   # verify all six packages have README.md + README.ja.md
 deno task build:npm          # five npm packages (core first, then adapters; fresh excluded)
 deno task build:npm:core     # core only
 ```
