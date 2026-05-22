@@ -1,4 +1,9 @@
-import { buildNpmPackage, NPM_PACKAGE_ORDER, PACKAGE_CONFIGS, type NpmPackageId } from "./_common.ts";
+import {
+  buildNpmPackage,
+  NPM_PACKAGE_ORDER,
+  type NpmPackageId,
+  PACKAGE_CONFIGS,
+} from "./_common.ts";
 
 const arg = Deno.args[0];
 
