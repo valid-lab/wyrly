@@ -96,8 +96,9 @@ Wyrly DI **v1.0.0** の **安定公開 export** 一覧です。ここに載っ�
 | `diMiddleware` | Express ミドルウェア（リクエストごとに scope、`req.di`） |
 | `ExpressRequestToken` | `Request` 用 token |
 | `ExpressResponseToken` | `Response` 用 token |
+| `ExpressRequestWithDI` | `Request & { di: Scope }` — ルートで `req.di` を型付けする |
 
-副作用: 本パッケージ import 時に `./types.ts` が読み込まれ、`Express.Request` に `di` が拡張されます。
+JSR 公開パッケージでは `declare global` が使えないため、グローバル拡張は廃止しました。必要ならアプリ側で `Express.Request` を拡張する `.d.ts` を置いてください。
 
 ---
 

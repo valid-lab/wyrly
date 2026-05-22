@@ -8,6 +8,12 @@ English: [CHANGELOG.md](./CHANGELOG.md)
 
 ## [Unreleased]
 
+## [1.0.2] - 2026-05-22
+
+### 修正
+
+- **`@wyrly/express`**: JSR で禁止の `declare global` を削除し、`ExpressRequestWithDI` を export（`req.di` の型付け用）
+
 ## [1.0.1] - 2026-05-22
 
 ### 修正
@@ -42,5 +48,6 @@ English: [CHANGELOG.md](./CHANGELOG.md)
 
 - 第一級の `resolveAsync` なし（非同期 factory の DI モデルは限定的）
 
+[1.0.2]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.2
 [1.0.1]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.1
 [1.0.0]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.0

@@ -1,7 +1,7 @@
 import { assert, assertEquals } from "jsr:@std/assert@1";
 import express from "express";
 import { createContainer, Injectable, token } from "@wyrly/core";
-import { diMiddleware, ExpressRequestToken } from "./mod.ts";
+import { diMiddleware, ExpressRequestToken, type ExpressRequestWithDI } from "./mod.ts";
 
 const PingToken = token<string>("Ping");
 
@@ -14,9 +14,10 @@ Deno.test("diMiddleware attaches req.di and resolves tokens", async () => {
 
   let seenReq = false;
   app.get("/", (req, res) => {
-    assert(req.di);
-    assertEquals(req.di.resolve(PingToken), "pong");
-    assertEquals(req.di.resolve(ExpressRequestToken), req);
+    const r = req as ExpressRequestWithDI;
+    assert(r.di);
+    assertEquals(r.di.resolve(PingToken), "pong");
+    assertEquals(r.di.resolve(ExpressRequestToken), req);
     seenReq = true;
     res.status(200).end("ok");
   });
@@ -49,8 +50,9 @@ Deno.test("diMiddleware disposes scope after response finish", async () => {
 
   let disposedAfterHandler = false;
   app.get("/", (req, res) => {
-    req.di.resolve(ScopedSvc);
-    disposedAfterHandler = req.di.isDisposed();
+    const r = req as ExpressRequestWithDI;
+    r.di.resolve(ScopedSvc);
+    disposedAfterHandler = r.di.isDisposed();
     res.status(200).end("ok");
   });
 
@@ -82,7 +84,7 @@ Deno.test("diMiddleware double dispose on finish and close is safe", async () =>
   const app = express();
   app.use(diMiddleware(container));
   app.get("/", (req, res) => {
-    req.di.resolve(Counted);
+    (req as ExpressRequestWithDI).di.resolve(Counted);
     res.status(200).end("ok");
   });
 

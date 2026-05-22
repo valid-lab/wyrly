@@ -96,8 +96,9 @@ Entry: [`packages/express/mod.ts`](./packages/express/mod.ts)
 | `diMiddleware` | Express middleware: one scope per request, `req.di` |
 | `ExpressRequestToken` | Typed token for `Request` |
 | `ExpressResponseToken` | Typed token for `Response` |
+| `ExpressRequestWithDI` | `Request & { di: Scope }` — use in route handlers for typed `req.di` |
 
-Side-effect import: `./types.ts` augments `Express.Request` with `di` (loaded when importing from this package).
+JSR does not allow `declare global` in published packages. Optionally augment `Express.Request` in a project-local `.d.ts` if you prefer ambient typing.
 
 ---
 

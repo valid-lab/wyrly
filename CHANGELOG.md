@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/) from **1.
 
 ## [Unreleased]
 
+## [1.0.2] - 2026-05-22
+
+### Fixed
+
+- **`@wyrly/express`**: remove `declare global` (disallowed on JSR); export `ExpressRequestWithDI` for typed `req.di` instead
+
 ## [1.0.1] - 2026-05-22
 
 ### Fixed
@@ -43,5 +49,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/) from **1.
 
 - No first-class `resolveAsync` (async factory results are not fully modeled as async DI)
 
+[1.0.2]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.2
 [1.0.1]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.1
 [1.0.0]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.0
