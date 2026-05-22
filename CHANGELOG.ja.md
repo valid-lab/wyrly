@@ -8,7 +8,7 @@ English: [CHANGELOG.md](./CHANGELOG.md)
 
 ## [Unreleased]
 
-## [1.0.5] - 2026-05-23
+## [1.0.5] - 2026-05-22
 
 ### 追加
 
