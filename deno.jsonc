@@ -45,6 +45,7 @@
     "ci": "deno task ci:deno && deno task publish:dry-run && deno task test:compat && deno task publish:npm:dry-run",
     "publish:dry-run": "deno publish --dry-run --allow-dirty --config packages/core/deno.json && deno publish --dry-run --allow-dirty --config packages/express/deno.json && deno publish --dry-run --allow-dirty --config packages/hono/deno.json && deno publish --dry-run --allow-dirty --config packages/fresh/deno.json && deno publish --dry-run --allow-dirty --config packages/graphql/deno.json && deno publish --dry-run --allow-dirty --config packages/next/deno.json",
     "publish:jsr": "deno publish --config packages/core/deno.json && deno publish --config packages/express/deno.json && deno publish --config packages/hono/deno.json && deno publish --config packages/fresh/deno.json && deno publish --config packages/graphql/deno.json && deno publish --config packages/next/deno.json",
+    "publish:jsr:ci": "deno publish --allow-dirty --config packages/core/deno.json && deno publish --allow-dirty --config packages/express/deno.json && deno publish --allow-dirty --config packages/hono/deno.json && deno publish --allow-dirty --config packages/fresh/deno.json && deno publish --allow-dirty --config packages/graphql/deno.json && deno publish --allow-dirty --config packages/next/deno.json",
     "build:npm": "deno run -A scripts/dnt/build.ts all",
     "build:npm:core": "deno run -A scripts/dnt/build.ts core",
     "build:npm:compat": "deno run -A scripts/dnt/build.ts all",

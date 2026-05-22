@@ -57,17 +57,12 @@ jobs:
             }
           " "$NPM_VER"
 
+      # JSR publish does not need dnt output. --allow-dirty: test:compat runs npm install and updates compat lockfiles.
+      - name: Publish to JSR
+        run: deno task publish:jsr:ci
+
       - name: Build npm packages (dnt)
         run: deno task build:npm
-
-      - name: Publish to JSR
-        run: |
-          deno publish --config packages/core/deno.json
-          deno publish --config packages/express/deno.json
-          deno publish --config packages/hono/deno.json
-          deno publish --config packages/fresh/deno.json
-          deno publish --config packages/graphql/deno.json
-          deno publish --config packages/next/deno.json
 
       - name: Publish to npm
         run: deno task publish:npm:ci
