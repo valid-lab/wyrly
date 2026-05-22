@@ -109,6 +109,10 @@ import { createContainer, token } from "@wyrly/core";
 
 adapter は必要に応じて追加します（例: `npm install @wyrly/next`）。**`@wyrly/fresh` は JSR のみ**（Fresh 2.x に npm パッケージはありません）。公開手順（[dnt](https://github.com/denoland/dnt) によるビルド）は [PUBLISHING.ja.md](./PUBLISHING.ja.md) を参照してください。
 
+### Bun / Cloudflare Workers
+
+npm 公開の全パッケージ（`@wyrly/fresh` を除く）は **Node.js**（`compat/node`）と **Bun**（`compat/bun`）でスモークテスト。**Cloudflare Workers** は `@wyrly/core` と `@wyrly/hono`（`compat/workers`）。メンテナ向け: `deno task test:compat` — [PUBLISHING.ja.md](./PUBLISHING.ja.md) 参照。
+
 ### 本リポジトリでの開発（workspace）
 
 ```sh

@@ -66,10 +66,17 @@ org **`wyrly`** で、各パッケージに **Trusted Publisher → GitHub Actio
 | 項目 | 推奨 |
 | ---- | ---- |
 | **Description** | 1 文（250 字以内）。例 core: `Explicit DI for modern TypeScript — typed tokens, standard decorators, request scopes.` |
-| **Runtime compatibility** | **Deno: Supported**、**Node.js: Supported**（npm も出す adapter 向け。`@wyrly/fresh` は Deno/Fresh のみ） |
+| **Runtime compatibility** | 下表参照。その他 adapter は **Deno + Node: Supported**；Bun / Cloudflare Workers は未検証なら **Unknown**。 |
 | **Readme source** | デフォルト（`mod.ts` の `@module` を Overview に表示） |
 
-コード側: CI の `deno task doc:lint`、`no-slow-types` の lint、`--allow-slow-types` なしの `publish:dry-run`。
+| パッケージ | Deno | Node.js | Bun | Cloudflare Workers |
+| ---------- | ---- | ------- | --- | ------------------ |
+| `@wyrly/core` | Supported | **Supported**（CI: `compat/node`） | **Supported**（CI: `compat/bun`） | **Supported**（CI: `compat/workers`） |
+| `@wyrly/hono` | Supported | **Supported**（CI: `compat/node`） | **Supported**（CI: `compat/bun`） | **Supported** |
+| `@wyrly/express`, `@wyrly/graphql`, `@wyrly/next` | Supported | **Supported**（CI: `compat/node`） | **Supported**（CI: `compat/bun`） | Unknown |
+| `@wyrly/fresh` | Supported | —（JSR のみ） | Unknown | Unknown |
+
+コード側: CI の `deno task doc:lint`、`no-slow-types` の lint、`--allow-slow-types` なしの `publish:dry-run`、**`deno task test:compat`**（Node + Bun は npm 全パッケージ、Workers は core + hono）。
 
 ## 利用者の import
 
@@ -136,3 +143,4 @@ deno task publish:npm:dry-run
 | JSR Score が低い（readme / examples / symbol doc） | `packages/*/mod.ts` に `@module` と `@example` を追加。`deno task doc:lint` を通す |
 | JSR Score「slow types」（0/5） | `deno lint --rules-include=no-slow-types packages/` で修正。`--allow-slow-types` なしで publish |
 | JSR Score の runtime / description（0/1） | JSR の **Description** と **Runtime compatibility** を Settings で設定（`deno.json` では不可） |
+| `deno task test:compat` が失敗 | 先に `deno task build:npm:compat`；Node/npm と Bun のインストールを確認；`compat/node` / `compat/bun` / `compat/workers` を参照 |

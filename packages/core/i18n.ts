@@ -33,7 +33,18 @@ export function normalizeLocaleTag(tag: string): Locale {
 
 function envGet(key: string): string | undefined {
   try {
-    return Deno.env.get(key);
+    const proc = (globalThis as { process?: { env?: Record<string, string | undefined> } })
+      .process;
+    const fromProcess = proc?.env?.[key];
+    if (fromProcess !== undefined) return fromProcess;
+  } catch {
+    // ignore
+  }
+  try {
+    const runtime = globalThis as Record<string, unknown>;
+    const env = (runtime["Deno"] as { env?: { get(k: string): string | undefined } } | undefined)
+      ?.env;
+    return env?.get(key);
   } catch {
     return undefined;
   }

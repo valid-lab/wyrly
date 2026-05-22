@@ -68,10 +68,18 @@ After each release, on [jsr.io](https://jsr.io/) open **Settings** for every `@w
 | Field | Suggested value |
 | ----- | ---------------- |
 | **Description** | One sentence (≤250 chars). Example core: `Explicit DI for modern TypeScript — typed tokens, standard decorators, request scopes.` |
-| **Runtime compatibility** | **Deno: Supported**, **Node.js: Supported** (adapters also publish to npm; `@wyrly/fresh` is Deno/Fresh only). Leave Cloudflare Workers / Bun as **Unknown** unless you verify. |
+| **Runtime compatibility** | See table below. Other adapters: **Deno + Node: Supported**; Bun / Cloudflare Workers: **Unknown** unless verified. |
 | **Readme source** | Default (module doc on Overview when `@module` is present in `mod.ts`) |
 
-Code-side checks in CI: `deno task doc:lint` (module docs on core + express + graphql + fresh), `deno lint` with `no-slow-types`, and `deno task publish:dry-run` without `--allow-slow-types`.
+| Package | Deno | Node.js | Bun | Cloudflare Workers |
+| ------- | ---- | ------- | --- | ------------------ |
+| `@wyrly/core` | Supported | **Supported** (CI: `compat/node`) | **Supported** (CI: `compat/bun`) | **Supported** (CI: `compat/workers`) |
+| `@wyrly/hono` | Supported | **Supported** (CI: `compat/node`) | **Supported** (CI: `compat/bun`) | **Supported** |
+| `@wyrly/express`, `@wyrly/graphql`, `@wyrly/next` | Supported | **Supported** (CI: `compat/node`) | **Supported** (CI: `compat/bun`) | Unknown |
+| `@wyrly/fresh` | Supported | — (JSR only) | Unknown | Unknown |
+| `@wyrly/fresh` | Supported | — (JSR only) | Unknown | Unknown |
+
+Code-side checks in CI: `deno task doc:lint` (module docs on core + express + graphql + fresh), `deno lint` with `no-slow-types`, `deno task publish:dry-run` without `--allow-slow-types`, and **`deno task test:compat`** (Node + Bun smoke on all npm packages; Workers on core + hono).
 
 ## Consumer imports
 
@@ -167,3 +175,4 @@ The workflow sets `permissions: id-token: write` for OIDC and uses Node **24.x**
 | Low JSR Score (readme / examples / symbol docs) | Add `@module` + `@example` in `packages/*/mod.ts`; run `deno task doc:lint`; document exports with JSDoc |
 | JSR Score “slow types” (0/5) | Run `deno lint --rules-include=no-slow-types packages/`; fix explicit types; publish without `--allow-slow-types` |
 | JSR Score runtime / description (0/1 each) | Set **Description** and **Runtime compatibility** in JSR package Settings (not in `deno.json`) |
+| `deno task test:compat` fails | Run `deno task build:npm:compat` first; ensure Node/npm and Bun are installed; see `compat/node`, `compat/bun`, and `compat/workers` |

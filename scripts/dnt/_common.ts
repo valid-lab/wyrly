@@ -125,7 +125,7 @@ export async function buildNpmPackage(config: PackageBuildConfig): Promise<void>
       typeCheck: false,
       test: false,
       scriptModule: false,
-      shims: { deno: true },
+      shims: { deno: false },
       importMap: path.toFileUrl(importMapPath).href,
       configFile: path.toFileUrl(
         config.dntConfigFile

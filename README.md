@@ -115,6 +115,10 @@ import { createContainer, token } from "@wyrly/core";
 
 Add adapters as needed (for example `npm install @wyrly/next`). **`@wyrly/fresh` is JSR-only** (Fresh 2.x has no npm package). See [PUBLISHING.md](./PUBLISHING.md) for release steps (built with [dnt](https://github.com/denoland/dnt)).
 
+### Bun / Cloudflare Workers
+
+All npm packages (`@wyrly/core`, adapters except `@wyrly/fresh`) are smoke-tested on **Node.js** (`compat/node`) and **Bun** (`compat/bun`). **Cloudflare Workers** covers `@wyrly/core` and `@wyrly/hono` (`compat/workers`). Maintainers: `deno task test:compat` (Node/npm and Bun). See [PUBLISHING.md](./PUBLISHING.md).
+
 ### Workspace development (this repository)
 
 ```sh

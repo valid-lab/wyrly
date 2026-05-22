@@ -1,0 +1,25 @@
+{
+  "name": "@wyrly/compat-node",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --import tsx --test *.smoke.test.ts"
+  },
+  "dependencies": {
+    "@wyrly/core": "file:../../packages/core/npm",
+    "@wyrly/express": "file:../../packages/express/npm",
+    "@wyrly/graphql": "file:../../packages/graphql/npm",
+    "@wyrly/hono": "file:../../packages/hono/npm",
+    "@wyrly/next": "file:../../packages/next/npm",
+    "express": "^5.0.0",
+    "hono": "^4.0.0",
+    "next": "^15.0.0",
+    "react": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^20.9.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  }
+}
