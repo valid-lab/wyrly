@@ -36,6 +36,12 @@ deno task ci         # フルゲート（GitHub Actions と同等。Node + Bun �
 - [CI ワークフロー](.github/workflows/ci.yml) が通ること（ランナー上で `deno task ci`）。
 - Conventional Commits（`feat:`、`fix:`、`docs:` など）は任意ですが推奨します。
 
+## Dependabot
+
+[`.github/dependabot.yml`](./.github/dependabot.yml) は **GitHub Actions** のみ更新します。`compat/` の npm は gitignore された `packages/*/npm/` への `file:` 参照のため、Dependabot のスキャン対象外です。
+
+**Dependabot** ワークフローが `path_dependencies_not_reachable` でまだ失敗する場合は、リポジトリ **Settings → Advanced Security** で **Dependabot security updates** を無効化してください（**Dependabot alerts** は有効のまま）。`express` / `hono` などはアラートに従い `compat/*/package.json` を手動更新します。
+
 ## リリース
 
 リリースはメンテナが git タグ `vX.Y.Z` と [PUBLISHING.md](./PUBLISHING.md)（日本語: [PUBLISHING.ja.md](./PUBLISHING.ja.md)）に従って行います。コントリビュータが JSR / npm に直接公開する必要はありません。

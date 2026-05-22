@@ -1,10 +1,23 @@
-# Dependabot scans only ecosystems listed here.
-# npm is omitted: compat/*/package.json uses file:../../packages/*/npm (gitignored),
-# which causes path_dependencies_not_reachable in Dependabot jobs.
-# compat deps (express, hono, etc.) are updated manually; use Security → Dependabot alerts.
+# Dependabot: github-actions updates + npm security-update scope override.
+#
+# compat/*/package.json and package-lock.json use file:../../packages/*/npm (gitignored).
+# Without an npm entry + exclude-paths, UI-enabled "Dependabot security updates" still scans
+# compat/ and jobs fail with path_dependencies_not_reachable (@wyrly/core).
+#
+# If failures persist after merging to main: Settings → Advanced Security →
+# disable "Dependabot security updates" (keep "Dependabot alerts"); update compat deps manually.
 version: 2
 updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
+
+  # No package.json outside compat/ — exclude-paths skips all npm manifests/locks.
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 0
+    exclude-paths:
+      - "compat/**"

@@ -37,6 +37,12 @@ deno task ci         # full gate (same as GitHub Actions; needs Node + Bun)
 - Ensure the [CI workflow](.github/workflows/ci.yml) passes (`deno task ci` on the runner).
 - Conventional Commits (`feat:`, `fix:`, `docs:`) are appreciated but not required.
 
+## Dependabot
+
+[`.github/dependabot.yml`](./.github/dependabot.yml) updates **GitHub Actions** only. `compat/` npm manifests use `file:` paths to gitignored `packages/*/npm/` and are excluded from Dependabot scans.
+
+If **Dependabot** workflows still fail on `path_dependencies_not_reachable`, disable **Dependabot security updates** under repository **Settings → Advanced Security** (keep **Dependabot alerts**). Bump `express`, `hono`, etc. in `compat/*/package.json` manually when alerts appear.
+
 ## Releases
 
 Maintainers cut releases with git tags `vX.Y.Z` and [PUBLISHING.md](./PUBLISHING.md). Contributors do not need to publish to JSR/npm.
