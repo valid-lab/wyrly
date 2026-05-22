@@ -1,7 +1,7 @@
 import type { NextFunction, Request, RequestHandler, Response } from "express";
 import type { Container } from "@wyrly/core";
 import { ExpressRequestToken, ExpressResponseToken } from "./tokens.ts";
-import type { ExpressRequestWithDI } from "./types.ts";
+import { asExpressRequestWithDI } from "./types.ts";
 
 /**
  * Creates a DI scope per request and attaches it to `req.di`.
@@ -15,7 +15,7 @@ export function diMiddleware(container: Container): RequestHandler {
     const scope = container.createScope();
     scope.set(ExpressRequestToken, req);
     scope.set(ExpressResponseToken, res);
-    (req as ExpressRequestWithDI).di = scope;
+    asExpressRequestWithDI(req).di = scope;
 
     const disposeScope = () => {
       void scope.dispose();
