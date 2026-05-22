@@ -17,7 +17,7 @@ English: [PUBLISHING.md](./PUBLISHING.md)
 
 ## 前提
 
-- **Deno 2.x**、**Node.js 22.x**（CI の npm Trusted Publishing）、ローカル dnt は Node 20.x でも可
+- **Deno 2.x**、**Node.js 24.x**（CI の npm Trusted Publishing。npm 11.5.1+ 必須）、ローカル dnt は Node 20.x でも可
 - **JSR** スコープ `@wyrly`、**npm** org `wyrly`
 
 **GitHub Actions では長期トークンは使いません。** [JSR OIDC](https://jsr.io/docs/publishing-packages#publishing-from-github-actions) と [npm Trusted Publishing](https://docs.npmjs.com/trusted-publishers/) で認証します。初回リリース前に下のワンタイム設定を完了してください。
@@ -117,6 +117,7 @@ deno task publish:npm:dry-run
 | ---- | ---- |
 | Actions で JSR 認証失敗 | 各パッケージの Settings で `OWNER/REPO` をリンク |
 | JSR `globalTypeAugmentation` | 公開コードに `declare global` / `declare module` を置かない。export 型（`ExpressRequestWithDI`、`HonoDIVariables`、`FreshDIState` 等）を使う |
-| Actions で npm `403` | Trusted Publisher の repo / `publish.yml` / パッケージ名を確認。CI は Node 22+ |
+| Actions で npm `404` / “not in this registry”（provenance は成功している場合あり） | CI を **Node 24.x** に（Node 22 は npm 10.x で誤った 404 になりやすい）。`publish.yml` 修正後に再実行 |
+| Actions で npm `403` | Trusted Publisher: `valid-lab/wyrly`、`publish.yml`、**Allow npm publish**。CI は Node 24+ / npm 11.5.1+ |
 | ローカルで `provider: null`（provenance） | ローカルは `deno task publish:npm`。`--provenance` は CI の `publish:npm:ci` のみ |
 | provenance / Trusted Publishing エラー（CI） | Trusted Publisher 設定と `publish:npm:ci` を確認 |

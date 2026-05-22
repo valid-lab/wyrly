@@ -34,8 +34,23 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "22.x"
+          # Trusted Publishing requires npm >= 11.5.1 (Node 22 images ship npm 10.x → misleading 404)
+          node-version: "24.x"
           registry-url: https://registry.npmjs.org
+
+      - name: Verify npm CLI (Trusted Publishing)
+        run: |
+          node -v
+          NPM_VER=$(npm -v)
+          echo "npm ${NPM_VER}"
+          node -e "
+            const v = process.argv[1].split('.').map(Number);
+            const ok = v[0] > 11 || (v[0] === 11 && (v[1] > 5 || (v[1] === 5 && v[2] >= 1)));
+            if (!ok) {
+              console.error('npm >= 11.5.1 required for Trusted Publishing (use Node 24.x in CI)');
+              process.exit(1);
+            }
+          " "$NPM_VER"
 
       - name: Build npm packages (dnt)
         run: deno task build:npm

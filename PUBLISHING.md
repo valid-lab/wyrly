@@ -18,7 +18,7 @@ All packages share the same **semver** in each `packages/*/deno.json` and are re
 ## Prerequisites
 
 - **Deno 2.x** (development and JSR publish)
-- **Node.js 22.x** + **npm 11.5.1+** (npm Trusted Publishing in CI; Node 20.x is fine for local dnt builds)
+- **Node.js 24.x** + **npm 11.5.1+** in CI (Trusted Publishing; Node 20.x+ is fine for local dnt builds)
 - **JSR**: `@wyrly` scope on [jsr.io](https://jsr.io/)
 - **npm**: `@wyrly` organization on [npmjs.com](https://www.npmjs.com/) (free public packages)
 
@@ -132,7 +132,7 @@ Prefer **tag push → GitHub Actions** for production releases. For local publis
 
 **No repository secrets are required** when JSR repository links and npm Trusted Publishers are configured.
 
-The workflow sets `permissions: id-token: write` for OIDC and uses Node **22.x** for npm CLI compatibility.
+The workflow sets `permissions: id-token: write` for OIDC and uses Node **24.x** so the runner ships **npm 11.5.1+** (Node 22 images bundle npm 10.x).
 
 ## Package notes
 
@@ -148,6 +148,7 @@ The workflow sets `permissions: id-token: write` for OIDC and uses Node **22.x**
 | npm 404 for `@fresh/core` or `@wyrly/fresh` | Expected; Fresh stack uses JSR (`jsr:@wyrly/fresh`) |
 | JSR publish fails in Actions with auth error | Link `OWNER/REPO` on each package’s JSR Settings page |
 | JSR `globalTypeAugmentation` / `modifying global types` | Do not use `declare global` or `declare module` in published sources; use exported types (`ExpressRequestWithDI`, `HonoDIVariables`, `FreshDIState`, etc.) |
-| npm publish `403` in Actions | Check Trusted Publisher: repo, workflow `publish.yml`, and package name; ensure Node 22+ / npm 11.5.1+ in CI |
+| npm publish `404` / “not in this registry” in Actions (provenance may still sign) | Use **Node 24.x** in CI so **npm ≥ 11.5.1** (Node 22 → npm 10.x gives a misleading 404). Re-run after fixing `publish.yml` |
+| npm publish `403` in Actions | Check Trusted Publisher: repo `valid-lab/wyrly`, workflow `publish.yml`, **Allow npm publish**; Node 24+ / npm 11.5.1+ |
 | `Automatic provenance generation not supported for provider: null` (local) | Use `deno task publish:npm` locally (no `--provenance`). Use `deno task publish:npm:ci` only in GitHub Actions with Trusted Publishing |
 | npm provenance / trusted publish errors (CI) | Check Trusted Publisher settings; workflow must run `publish:npm:ci` |
