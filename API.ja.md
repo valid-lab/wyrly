@@ -109,9 +109,12 @@ JSR 公開パッケージでは `declare global` が使えないため、グロ�
 
 | Export | 説明 |
 |--------|------|
-| `di` | Hono ミドルウェア（`c.set("di", scope)`） |
+| `di` | Hono ミドルウェア（コンテキスト変数 `di` に scope を設定） |
 | `HonoContextToken` | Hono コンテキスト用 token |
 | `RequestToken` | 生の `Request` 用 token |
+| `diVariableKey` | `"di"`（`di()` が使うキー） |
+| `HonoDIVariables` | `{ di: Scope }` — `new Hono<{ Variables: HonoDIVariables }>()` に渡す |
+| `getDI` | コンテキストから scope を取得（JSR 向け、`declare module` なし） |
 
 ---
 

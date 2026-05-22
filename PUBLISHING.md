@@ -147,6 +147,7 @@ The workflow sets `permissions: id-token: write` for OIDC and uses Node **22.x**
 | Adapter dnt build fails on `@wyrly/core` | Run `deno task build:npm:core` first |
 | npm 404 for `@fresh/core` or `@wyrly/fresh` | Expected; Fresh stack uses JSR (`jsr:@wyrly/fresh`) |
 | JSR publish fails in Actions with auth error | Link `OWNER/REPO` on each package’s JSR Settings page |
+| JSR `globalTypeAugmentation` / `modifying global types` | Do not use `declare global` or `declare module` in published sources; use exported types (`ExpressRequestWithDI`, `HonoDIVariables`, `FreshDIState`, etc.) |
 | npm publish `403` in Actions | Check Trusted Publisher: repo, workflow `publish.yml`, and package name; ensure Node 22+ / npm 11.5.1+ in CI |
 | `Automatic provenance generation not supported for provider: null` (local) | Use `deno task publish:npm` locally (no `--provenance`). Use `deno task publish:npm:ci` only in GitHub Actions with Trusted Publishing |
 | npm provenance / trusted publish errors (CI) | Check Trusted Publisher settings; workflow must run `publish:npm:ci` |

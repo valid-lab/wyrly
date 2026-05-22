@@ -1,6 +1,7 @@
 import type { MiddlewareHandler } from "hono";
 import type { Container } from "@wyrly/core";
 import { HonoContextToken, RequestToken } from "./tokens.ts";
+import { diVariableKey } from "./types.ts";
 
 /**
  * Creates a DI scope per request and attaches it via `c.set("di", scope)`.
@@ -14,7 +15,7 @@ export function di(container: Container): MiddlewareHandler {
     const scope = container.createScope();
     scope.set(HonoContextToken, c);
     scope.set(RequestToken, c.req.raw);
-    c.set("di", scope);
+    c.set(diVariableKey, scope);
     try {
       await next();
     } finally {

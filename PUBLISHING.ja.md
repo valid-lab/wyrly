@@ -116,6 +116,7 @@ deno task publish:npm:dry-run
 | 現象 | 対処 |
 | ---- | ---- |
 | Actions で JSR 認証失敗 | 各パッケージの Settings で `OWNER/REPO` をリンク |
+| JSR `globalTypeAugmentation` | 公開コードに `declare global` / `declare module` を置かない。export 型（`ExpressRequestWithDI`、`HonoDIVariables`、`FreshDIState` 等）を使う |
 | Actions で npm `403` | Trusted Publisher の repo / `publish.yml` / パッケージ名を確認。CI は Node 22+ |
 | ローカルで `provider: null`（provenance） | ローカルは `deno task publish:npm`。`--provenance` は CI の `publish:npm:ci` のみ |
 | provenance / Trusted Publishing エラー（CI） | Trusted Publisher 設定と `publish:npm:ci` を確認 |

@@ -109,9 +109,12 @@ Entry: [`packages/hono/mod.ts`](./packages/hono/mod.ts)
 
 | Export | Description |
 |--------|-------------|
-| `di` | Hono middleware: `c.set("di", scope)` |
+| `di` | Hono middleware: sets the `di` context variable to a request scope |
 | `HonoContextToken` | Typed token for Hono context |
 | `RequestToken` | Typed token for raw `Request` |
+| `diVariableKey` | `"di"` — variable key used by `di()` |
+| `HonoDIVariables` | `{ di: Scope }` — use as `Hono<{ Variables: HonoDIVariables }>` |
+| `getDI` | Read the scope from context (JSR-safe; no `declare module "hono"`) |
 
 ---
 

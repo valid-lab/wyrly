@@ -8,11 +8,20 @@ English: [CHANGELOG.md](./CHANGELOG.md)
 
 ## [Unreleased]
 
+## [1.0.3] - 2026-05-21
+
+### 変更
+
+- **1.0.2** の JSR / npm が一部のみ公開だったため、同一内容を **1.0.3** で再リリース（既存バージョンの上書きは不可）
+- `examples/express-api` / `examples/hono-api` を export 型ベースの adapter API に合わせて更新
+- `README.ja.md` を `README.md` と同等の全文日本語版に更新
+
 ## [1.0.2] - 2026-05-22
 
 ### 修正
 
-- **`@wyrly/express`**: JSR で禁止の `declare global` を削除し、`ExpressRequestWithDI` を export（`req.di` の型付け用）
+- **`@wyrly/express`**: JSR で禁止の `declare global` を削除し、`ExpressRequestWithDI` と `asExpressRequestWithDI` を export
+- **`@wyrly/hono`**: JSR で禁止の `declare module "hono"` を削除し、`HonoDIVariables`・`getDI`・`diVariableKey` を export
 
 ## [1.0.1] - 2026-05-22
 
@@ -48,6 +57,7 @@ English: [CHANGELOG.md](./CHANGELOG.md)
 
 - 第一級の `resolveAsync` なし（非同期 factory の DI モデルは限定的）
 
+[1.0.3]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.3
 [1.0.2]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.2
 [1.0.1]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.1
 [1.0.0]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.0

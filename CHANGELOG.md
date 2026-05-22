@@ -9,11 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/) from **1.
 
 ## [Unreleased]
 
+## [1.0.3] - 2026-05-21
+
+### Changed
+
+- Release **1.0.3** so JSR (6 packages) and npm (5 packages) receive the same artifacts after partial **1.0.2** publishes (registries do not allow overwriting an existing version)
+- `examples/express-api` and `examples/hono-api` updated for exported adapter types
+- `README.ja.md` aligned with `README.md` (full Japanese README)
+
 ## [1.0.2] - 2026-05-22
 
 ### Fixed
 
-- **`@wyrly/express`**: remove `declare global` (disallowed on JSR); export `ExpressRequestWithDI` for typed `req.di` instead
+- **`@wyrly/express`**: remove `declare global` (disallowed on JSR); export `ExpressRequestWithDI` and `asExpressRequestWithDI` instead
+- **`@wyrly/hono`**: remove `declare module "hono"` (disallowed on JSR); export `HonoDIVariables`, `getDI`, and `diVariableKey` instead
 
 ## [1.0.1] - 2026-05-22
 
@@ -49,6 +58,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/) from **1.
 
 - No first-class `resolveAsync` (async factory results are not fully modeled as async DI)
 
+[1.0.3]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.3
 [1.0.2]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.2
 [1.0.1]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.1
 [1.0.0]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.0

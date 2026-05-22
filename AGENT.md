@@ -252,14 +252,15 @@ Keep adapters thin.
 ### Express adapter
 
 - Create a scope per request
-- Expose `req.di`
+- Attach scope via `asExpressRequestWithDI(req).di` (no `declare global` on JSR)
+- Export `ExpressRequestWithDI` / `asExpressRequestWithDI` for handlers
 - Dispose the scope when the response finishes
 - Register Express request/response tokens
 
 ### Hono adapter
 
 - Create a scope per request
-- Use `c.set("di", scope)`
+- Use `c.set(diVariableKey, scope)`; consumers use `getDI(c)` and `Hono<{ Variables: HonoDIVariables }>` (no `declare module "hono"` on JSR)
 - Dispose after the handler completes
 
 ### Fresh adapter

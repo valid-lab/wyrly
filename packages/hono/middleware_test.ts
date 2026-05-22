@@ -1,7 +1,7 @@
 import { assert, assertEquals } from "jsr:@std/assert@1";
 import { Hono } from "hono";
 import { createContainer, Injectable, token } from "@wyrly/core";
-import { di, HonoContextToken, RequestToken } from "./mod.ts";
+import { di, getDI, HonoContextToken, RequestToken } from "./mod.ts";
 
 const PingToken = token<string>("Ping");
 
@@ -14,7 +14,7 @@ Deno.test("di attaches c.get di and resolves tokens", async () => {
 
   let seen = false;
   app.get("/", (c) => {
-    const scope = c.get("di");
+    const scope = getDI(c);
     assertEquals(scope.resolve(PingToken), "pong");
     assertEquals(scope.resolve(HonoContextToken), c);
     assertEquals(scope.resolve(RequestToken), c.req.raw);
@@ -45,8 +45,8 @@ Deno.test("di disposes scope after handler completes", async () => {
 
   let disposedInHandler = false;
   app.get("/", (c) => {
-    c.get("di").resolve(ScopedSvc);
-    disposedInHandler = c.get("di").isDisposed();
+    getDI(c).resolve(ScopedSvc);
+    disposedInHandler = getDI(c).isDisposed();
     return c.text("ok");
   });
 
@@ -72,7 +72,7 @@ Deno.test("di disposes scope when handler throws", async () => {
   const app = new Hono();
   app.use(di(container));
   app.get("/", (c) => {
-    c.get("di").resolve(ScopedSvc);
+    getDI(c).resolve(ScopedSvc);
     throw new Error("handler error");
   });
   app.onError(() => new Response("error", { status: 500 }));
@@ -98,7 +98,7 @@ Deno.test("di disposes only once when handler throws", async () => {
   const app = new Hono();
   app.use(di(container));
   app.get("/", (c) => {
-    c.get("di").resolve(Counted);
+    getDI(c).resolve(Counted);
     throw new Error("fail");
   });
   app.onError(() => new Response(null, { status: 500 }));

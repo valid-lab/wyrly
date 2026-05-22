@@ -320,7 +320,7 @@ Web adapters create one scope per request.
 
 ```ts
 import express from "express";
-import { diMiddleware } from "@wyrly/express";
+import { asExpressRequestWithDI, diMiddleware } from "@wyrly/express";
 import { appContainer } from "./di/container";
 
 const app = express();
@@ -328,7 +328,7 @@ const app = express();
 app.use(diMiddleware(appContainer));
 
 app.get("/users/:id", async (req, res) => {
-  const usecase = req.di.resolve(GetUserUseCase);
+  const usecase = asExpressRequestWithDI(req).di.resolve(GetUserUseCase);
   const user = await usecase.execute(req.params.id);
 
   res.json(user);
@@ -339,16 +339,15 @@ app.get("/users/:id", async (req, res) => {
 
 ```ts
 import { Hono } from "hono";
-import { di } from "@wyrly/hono";
+import { di, getDI, type HonoDIVariables } from "@wyrly/hono";
 import { appContainer } from "./di/container";
 
-const app = new Hono();
+const app = new Hono<{ Variables: HonoDIVariables }>();
 
 app.use(di(appContainer));
 
 app.get("/users/:id", async (c) => {
-  const scope = c.get("di");
-  const usecase = scope.resolve(GetUserUseCase);
+  const usecase = getDI(c).resolve(GetUserUseCase);
 
   return c.json(await usecase.execute(c.req.param("id")));
 });
