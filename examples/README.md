@@ -46,8 +46,7 @@ Express examples require `net` permission.
 deno task validate:example
 ```
 
-Uses [`dependency-graph/main.ts`](./dependency-graph/main.ts) (`container.validate()`). For the
-**`wyrly` CLI**, use Wyrly Pro (private repo).
+Uses [`dependency-graph/main.ts`](./dependency-graph/main.ts) (`container.validate()`).
 
 ## Run all
 

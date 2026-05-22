@@ -1,5 +1,6 @@
 import type { MiddlewareHandler } from "hono";
 import type { Container } from "@wyrly/core";
+import type { HonoMiddlewareHandler } from "./public_types.ts";
 import { HonoContextToken, RequestToken } from "./tokens.ts";
 import { diVariableKey } from "./types.ts";
 
@@ -10,8 +11,8 @@ import { diVariableKey } from "./types.ts";
  * In the domain layer, avoid injecting `HonoContextToken` / `RequestToken` directly;
  * map them to port tokens (e.g. `CurrentUser`) in the composition root instead.
  */
-export function di(container: Container): MiddlewareHandler {
-  return async (c, next) => {
+export function di(container: Container): HonoMiddlewareHandler {
+  const handler: MiddlewareHandler = async (c, next) => {
     const scope = container.createScope();
     scope.set(HonoContextToken, c);
     scope.set(RequestToken, c.req.raw);
@@ -22,4 +23,5 @@ export function di(container: Container): MiddlewareHandler {
       await scope.dispose();
     }
   };
+  return handler;
 }

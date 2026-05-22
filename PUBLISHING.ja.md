@@ -66,17 +66,27 @@ org **`wyrly`** で、各パッケージに **Trusted Publisher → GitHub Actio
 | 項目 | 推奨 |
 | ---- | ---- |
 | **Description** | 1 文（250 字以内）。例 core: `Explicit DI for modern TypeScript — typed tokens, standard decorators, request scopes.` |
-| **Runtime compatibility** | 下表参照。その他 adapter は **Deno + Node: Supported**；Bun / Cloudflare Workers は未検証なら **Unknown**。 |
+| **Runtime compatibility** | 下の [JSR Runtime チェックリスト](#jsr-runtime-チェックリスト) に従いパッケージごとに設定（CI の `test:compat` と整合）。 |
 | **Readme source** | デフォルト（`mod.ts` の `@module` を Overview に表示） |
+
+#### JSR Runtime チェックリスト
+
+リリース後、[jsr.io/@wyrly](https://jsr.io/@wyrly) で各パッケージの **Settings → Runtime compatibility** を開き、次を設定:
 
 | パッケージ | Deno | Node.js | Bun | Cloudflare Workers |
 | ---------- | ---- | ------- | --- | ------------------ |
-| `@wyrly/core` | Supported | **Supported**（CI: `compat/node`） | **Supported**（CI: `compat/bun`） | **Supported**（CI: `compat/workers`） |
-| `@wyrly/hono` | Supported | **Supported**（CI: `compat/node`） | **Supported**（CI: `compat/bun`） | **Supported** |
-| `@wyrly/express`, `@wyrly/graphql`, `@wyrly/next` | Supported | **Supported**（CI: `compat/node`） | **Supported**（CI: `compat/bun`） | Unknown |
-| `@wyrly/fresh` | Supported | —（JSR のみ） | Unknown | Unknown |
+| `@wyrly/core` | Supported | Supported | Supported | Supported |
+| `@wyrly/hono` | Supported | Supported | Supported | Supported |
+| `@wyrly/express` | Supported | Supported | Supported | Unknown |
+| `@wyrly/graphql` | Supported | Supported | Supported | Unknown |
+| `@wyrly/next` | Supported | Supported | Supported | Unknown |
+| `@wyrly/fresh` | Supported | Unsupported | Unknown | Unknown |
 
-コード側: CI の `deno task doc:lint`、`no-slow-types` の lint、`--allow-slow-types` なしの `publish:dry-run`、**`deno task test:compat`**（Node + Bun は npm 全パッケージ、Workers は core + hono）。
+- **Supported** — CI で検証済み（`compat/node` / `compat/bun` / `compat/workers` の該当範囲）。
+- **Unknown** — そのランタイムではスモーク未実施（安全側のデフォルト）。
+- **Unsupported** — 対象外（`@wyrly/fresh` は npm 非公開のため Node.js は N/A）。
+
+コード側: GitHub Actions とローカルの **`deno task ci`** が `ci:deno`（fmt、`check:npm-readme`、lint、`core` / `express` / `graphql` / `fresh` の `doc:lint`、check、test、examples）→ JSR `publish:dry-run` → **`test:compat`** → `publish:npm:dry-run` を実行。`@wyrly/hono` と `@wyrly/next` は `mod.ts` に `@module` あり。公開 `Token<>` が Hono/Next の型を参照するため `deno doc --lint` では `private-type-ref` となり、`doc:lint` 対象外。Deno のみなら **`deno task ci:deno`**。
 
 ## 利用者の import
 
@@ -106,13 +116,11 @@ deno task build:npm:core   # core のみ
 
 成果物は `packages/*/npm/`（gitignore、ESM のみ）。
 
-## ローカル dry-run
+## ローカルチェック
 
 ```sh
-deno task ci
-deno task publish:dry-run
-deno task build:npm
-deno task publish:npm:dry-run
+deno task ci:deno    # Deno のみ（高速。Node/Bun 不要）
+deno task ci          # フル: ci:deno + JSR dry-run + test:compat + npm dry-run（Node 20+ と Bun が必要）
 ```
 
 ## 手動リリース（ローカル）
@@ -121,15 +129,18 @@ deno task publish:npm:dry-run
 
 1. 6 パッケージ（JSR）の version 更新（npm は 5 パッケージ、fresh を除く）
 2. CHANGELOG 更新
-3. `deno task ci`
-4. `deno task publish:dry-run`
+3. `deno task ci`（Node 20+ と Bun が必要）
+4. ランタイム対応が変わったら [JSR Runtime チェックリスト](#jsr-runtime-チェックリスト) を jsr.io で更新
 5. **JSR:** `deno task publish:jsr`（ブラウザで承認）
-6. `deno task build:npm` → `deno task publish:npm:dry-run` → **npm:** `npm login` 後に `deno task publish:npm`（**core が先**）
-7. タグ `vX.Y.Z` を push（CI に任せる場合は tag のみ）
+6. `deno task build:npm`（未ビルドの場合。`ci` 内の `test:compat` で npm 成果物は生成済み）
+7. **npm:** `npm login` 後に `deno task publish:npm`（**core が先**）
+8. タグ `vX.Y.Z` を push（CI に任せる場合は tag のみ）
 
 ## GitHub Actions
 
-[`.github/workflows/publish.yml`](./.github/workflows/publish.yml) — タグ `v*` または `workflow_dispatch`。
+[`.github/workflows/ci.yml`](./.github/workflows/ci.yml) — `main` への push/PR で `deno task ci`（Deno + Node 20 + Bun）。
+
+[`.github/workflows/publish.yml`](./.github/workflows/publish.yml) — タグ `v*` または `workflow_dispatch` → `deno task ci` → `build:npm` → JSR 公開 → `publish:npm:ci`（Trusted Publishing、Node 24.x）。
 
 **リポジトリシークレットは不要**（JSR リンクと npm Trusted Publisher 設定済みの場合）。`id-token: write` で OIDC 認証します。
 

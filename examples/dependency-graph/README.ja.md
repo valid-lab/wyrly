@@ -3,6 +3,8 @@
 `container.inspect()` と `container.validate()`
 で依存グラフを確認する例です。`export const container` が composition root です。
 
+English: [README.md](./README.md)
+
 ## 学ぶこと
 
 - 依存グラフのノード・エッジ
@@ -19,16 +21,6 @@ OSS の validate タスク:
 
 ```sh
 deno task validate:example
-```
-
-## Wyrly Pro CLI（任意）
-
-`wyrly doctor` / `wyrly graph` / CI 向け `validate --format json` などは **Wyrly
-Pro**（非公開リポジトリ）の CLI です。entry の例:
-
-```sh
-# Wyrly Pro 側（../pro）から
-deno task wyrly validate -- --entry ../oss/examples/dependency-graph/main.ts
 ```
 
 ## 関連

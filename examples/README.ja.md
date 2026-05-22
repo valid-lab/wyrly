@@ -1,8 +1,8 @@
 # Examples
 
-English: [README.md](./README.md)
-
 Wyrly DI の実行可能サンプルです。各フォルダは **1 シナリオ = 1 用途** です。
+
+English: [README.md](./README.md)
 
 ## 学習順序（推奨）
 
@@ -45,8 +45,6 @@ Express 系は `net` 権限が必要です。
 ```sh
 deno task validate:example
 ```
-
-`wyrly` CLI は **Wyrly Pro**（非公開）を利用してください。
 
 ## 一括実行
 

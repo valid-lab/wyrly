@@ -2,6 +2,8 @@
 
 DDD 風の composition root と request scope（`createScope` / `dispose`）の最小例です。
 
+English: [README.md](./README.md)
+
 ## 学ぶこと
 
 - 型付き `token` と port インターフェース

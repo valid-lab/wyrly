@@ -4,6 +4,7 @@ Japanese: [API.ja.md](./API.ja.md)
 
 This document lists the **stable public exports** for Wyrly DI v1.0.0. Anything not listed here is not part of the semver guarantee (internal modules, deep imports).
 
+
 ## Versioning policy
 
 Packages follow [Semantic Versioning](https://semver.org/) from **1.0.0**:

@@ -68,18 +68,27 @@ After each release, on [jsr.io](https://jsr.io/) open **Settings** for every `@w
 | Field | Suggested value |
 | ----- | ---------------- |
 | **Description** | One sentence (≤250 chars). Example core: `Explicit DI for modern TypeScript — typed tokens, standard decorators, request scopes.` |
-| **Runtime compatibility** | See table below. Other adapters: **Deno + Node: Supported**; Bun / Cloudflare Workers: **Unknown** unless verified. |
+| **Runtime compatibility** | Set per package using the [JSR Runtime checklist](#jsr-runtime-checklist) below (aligned with `deno task test:compat` in CI). |
 | **Readme source** | Default (module doc on Overview when `@module` is present in `mod.ts`) |
+
+#### JSR Runtime checklist
+
+After each release, on [jsr.io/@wyrly](https://jsr.io/@wyrly) open **Settings → Runtime compatibility** for each package and apply:
 
 | Package | Deno | Node.js | Bun | Cloudflare Workers |
 | ------- | ---- | ------- | --- | ------------------ |
-| `@wyrly/core` | Supported | **Supported** (CI: `compat/node`) | **Supported** (CI: `compat/bun`) | **Supported** (CI: `compat/workers`) |
-| `@wyrly/hono` | Supported | **Supported** (CI: `compat/node`) | **Supported** (CI: `compat/bun`) | **Supported** |
-| `@wyrly/express`, `@wyrly/graphql`, `@wyrly/next` | Supported | **Supported** (CI: `compat/node`) | **Supported** (CI: `compat/bun`) | Unknown |
-| `@wyrly/fresh` | Supported | — (JSR only) | Unknown | Unknown |
-| `@wyrly/fresh` | Supported | — (JSR only) | Unknown | Unknown |
+| `@wyrly/core` | Supported | Supported | Supported | Supported |
+| `@wyrly/hono` | Supported | Supported | Supported | Supported |
+| `@wyrly/express` | Supported | Supported | Supported | Unknown |
+| `@wyrly/graphql` | Supported | Supported | Supported | Unknown |
+| `@wyrly/next` | Supported | Supported | Supported | Unknown |
+| `@wyrly/fresh` | Supported | Unsupported | Unknown | Unknown |
 
-Code-side checks in CI: `deno task doc:lint` (module docs on core + express + graphql + fresh), `deno lint` with `no-slow-types`, `deno task publish:dry-run` without `--allow-slow-types`, and **`deno task test:compat`** (Node + Bun smoke on all npm packages; Workers on core + hono).
+- **Supported** — verified by CI (`compat/node`, `compat/bun`, and/or `compat/workers` as applicable).
+- **Unknown** — not smoke-tested on that runtime (safe default).
+- **Unsupported** — not applicable (`@wyrly/fresh` has no npm build; Node.js is N/A).
+
+Code-side: GitHub Actions and local **`deno task ci`** run `ci:deno` (fmt, `check:npm-readme`, lint, `doc:lint` on `core` / `express` / `graphql` / `fresh` `mod.ts`, check, test, examples), then JSR `publish:dry-run`, **`test:compat`**, and `publish:npm:dry-run`. `@wyrly/hono` and `@wyrly/next` include `@module` on `mod.ts` but are omitted from `doc:lint` because `deno doc --lint` reports `private-type-ref` on Hono/Next framework types in public `Token<>` exports. For Deno-only checks locally, use **`deno task ci:deno`**.
 
 ## Consumer imports
 
@@ -125,13 +134,11 @@ deno task build:npm:core     # core only
 
 Adapter builds require a prior core npm build (`packages/core/npm/`).
 
-## Local dry-run
+## Local checks
 
 ```sh
-deno task ci
-deno task publish:dry-run    # JSR
-deno task build:npm
-deno task publish:npm:dry-run
+deno task ci:deno    # Deno only (fast; no Node/Bun required)
+deno task ci          # full gate: ci:deno + JSR dry-run + test:compat + npm dry-run (needs Node 20+ and Bun)
 ```
 
 ## Manual release (local)
@@ -139,19 +146,20 @@ deno task publish:npm:dry-run
 Prefer **tag push → GitHub Actions** for production releases. For local publishes:
 
 1. Bump `version` in all six `packages/*/deno.json` files.
-2. Update [CHANGELOG.md](./CHANGELOG.md) and [CHANGELOG.ja.md](./CHANGELOG.ja.md).
-3. `deno task ci`
-4. `deno task publish:dry-run` (JSR)
+2. Update [CHANGELOG.md](./CHANGELOG.md).
+3. `deno task ci` (requires Node 20+ and Bun).
+4. Apply the [JSR Runtime checklist](#jsr-runtime-checklist) on jsr.io if runtime support changed.
 5. **JSR:** `deno task publish:jsr` — opens the browser to approve each package.
-6. `deno task build:npm`
-7. `deno task publish:npm:dry-run`
-8. **npm:** `deno task publish:npm` after `npm login` to the `@wyrly` org (**core first** is enforced by task order). Trusted Publishing applies only in GitHub Actions.
+6. `deno task build:npm` (if not already built; `ci` runs `test:compat` which builds npm artifacts).
+7. **npm:** `deno task publish:npm` after `npm login` to the `@wyrly` org (**core first** is enforced by task order). Trusted Publishing applies only in GitHub Actions.
 
-9. Tag `vX.Y.Z` and push (or push the tag only and let CI publish).
+8. Tag `vX.Y.Z` and push (or push the tag only and let CI publish).
 
 ## GitHub Actions
 
-[`.github/workflows/publish.yml`](./.github/workflows/publish.yml): tag `v*` or `workflow_dispatch` → CI → JSR publish (OIDC) → `build:npm` → npm dry-run → `deno task publish:npm:ci` (Trusted Publishing + `--provenance`).
+[`.github/workflows/ci.yml`](./.github/workflows/ci.yml): on push/PR to `main` → `deno task ci` (Deno + Node 20 + Bun).
+
+[`.github/workflows/publish.yml`](./.github/workflows/publish.yml): tag `v*` or `workflow_dispatch` → `deno task ci` → `build:npm` → JSR publish (OIDC) → `deno task publish:npm:ci` (Trusted Publishing + `--provenance`, Node 24.x).
 
 **No repository secrets are required** when JSR repository links and npm Trusted Publishers are configured.
 

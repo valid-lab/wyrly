@@ -2,6 +2,8 @@
 
 `useValue` / `useFactory` / `useExisting` の 3 パターンを 1 つの composition root で示します。
 
+English: [README.md](./README.md)
+
 ## 学ぶこと
 
 - 定数・設定値の `useValue`

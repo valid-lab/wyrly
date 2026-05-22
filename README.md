@@ -1,10 +1,15 @@
 # Wyrly DI
 
+[![CI](https://github.com/valid-lab/wyrly/actions/workflows/ci.yml/badge.svg)](https://github.com/valid-lab/wyrly/actions/workflows/ci.yml)
+[![JSR @wyrly/core](https://jsr.io/badges/@wyrly/core)](https://jsr.io/@wyrly/core)
+[![npm @wyrly/core](https://img.shields.io/npm/v/@wyrly/core)](https://www.npmjs.com/package/@wyrly/core)
+[![License](https://img.shields.io/github/license/valid-lab/wyrly)](https://github.com/valid-lab/wyrly/blob/main/LICENSE)
+
 > Explicit DI for modern TypeScript.
 
-Japanese documentation: [README.ja.md](README.ja.md) · [API (JA)](API.ja.md) ·
-[Changelog (JA)](CHANGELOG.ja.md) · [Publishing (JA)](PUBLISHING.ja.md) ·
-[Examples (JA)](examples/README.ja.md)
+Japanese: [README.ja.md](./README.ja.md)
+
+Contributing: [CONTRIBUTING.md](CONTRIBUTING.md) · Security: [SECURITY.md](SECURITY.md)
 
 Wyrly DI is a Wyrly DI dependency injection toolkit designed for explicit, analyzable, type-safe
 application architecture.
@@ -75,9 +80,6 @@ It intentionally avoids:
 @wyrly/fresh
 @wyrly/graphql
 ```
-
-Wyrly Pro CLI (`wyrly doctor`, `wyrly graph`, `wyrly validate`, `wyrly generate`) is a separate
-commercial product (private repository), not part of this OSS repo.
 
 See [API.md](./API.md) for the frozen **v1.0** public export surface.
 
@@ -511,7 +513,7 @@ This enables:
 - AI-assisted code understanding
 - debugging
 
-## Validation without Pro CLI
+## Validation
 
 Use the core API from your composition root or CI:
 
@@ -527,9 +529,6 @@ deno task validate:example
 ```
 
 Graph export helpers live in `@wyrly/core` (`graphToJson`, `graphToDot`, `graphToMermaid`).
-
-For **`wyrly` CLI** (doctor, CI JSON reports, HTML graph, scaffolding), use **Wyrly Pro** (private
-repo, commercial license).
 
 ## TypeScript Configuration
 
@@ -578,26 +577,10 @@ Delivered in **1.0.0**: core, adapters, inspect/validate, examples, and CI in th
 - Production-oriented docs and [CHANGELOG.md](./CHANGELOG.md)
 - Runnable template-style examples under `examples/`
 
-## Monetization Plan
-
-The core and adapters should be free OSS.
-
-Paid products may include:
-
-- Pro CLI
-- visual dependency graph
-- CI architecture validation
-- starter templates
-- enterprise support
-- architecture review
-- migration support
-
 ## License
 
 Core, adapters, and examples in this repository are licensed under the
 [Apache License 2.0](LICENSE).
-
-Wyrly Pro (CLI, templates) is licensed separately; source is not in this repository.
 
 ## Developing with Deno
 
@@ -637,5 +620,4 @@ per the [Deno docs](https://docs.deno.com/).
 **v1.0.0** — `@wyrly/core` and adapters are stable for the surface documented in [API.md](./API.md).
 Report issues via your project’s issue tracker.
 
-Contributors: see [AGENT.md](./AGENT.md). Japanese user docs: [README.ja.md](README.ja.md),
-[API.ja.md](API.ja.md), [CHANGELOG.ja.md](CHANGELOG.ja.md).
+Contributors: see [AGENT.md](./AGENT.md).

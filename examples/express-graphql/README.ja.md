@@ -4,6 +4,8 @@
 
 `POST /graphql` は本格パーサなしで `operation` 名で分岐するスタブです。
 
+English: [README.md](./README.md)
+
 ## 実行
 
 ```sh

@@ -2,10 +2,10 @@
 
 `createGraphQLDIContext` and a scoped **DataLoader-style** batch loader (no GraphQL server).
 
-Japanese: [README.ja.md](./README.ja.md)
-
 This is the reference example for **v0.3 DataLoader integration**: one GraphQL request = one DI
 scope = one loader instance.
+
+Japanese: [README.ja.md](./README.ja.md)
 
 ## DataLoader pattern
 

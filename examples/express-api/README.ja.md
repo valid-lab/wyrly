@@ -2,6 +2,8 @@
 
 `@wyrly/express` の `diMiddleware` と request scope の軽量 DDD 例です。
 
+English: [README.md](./README.md)
+
 ## 実行
 
 ```sh

@@ -12,7 +12,9 @@ Place each package under `packages/<name>/` and publish as `@wyrly/*` (see [READ
 
 Common tasks: `deno task check`, `deno task test`, `deno task example:*` (see `deno.jsonc`).
 
-**Git hooks (Lefthook, once per clone):** `deno task setup:hooks` runs `lefthook install` ([`lefthook.yml`](lefthook.yml)): **pre-commit** → `deno fmt` (`stage_fixed`) + `deno task lint`; **pre-push** → `deno task fmt:check`. Lefthook is pinned as `npm:lefthook@2.1.6` in root `deno.jsonc` (no separate `package.json`). CI still runs `deno task ci`. Manual: `deno task pre-commit` / `deno task pre-push`.
+**CI tasks:** `deno task ci:deno` — Deno-only checks (fmt, lint, doc:lint, check, test, examples). `deno task ci` — full PR/release gate (adds JSR dry-run, `test:compat`, npm dry-run; requires Node 20+ and Bun). GitHub Actions runs `deno task ci` only.
+
+**Git hooks (Lefthook, once per clone):** `deno task setup:hooks` runs `lefthook install` ([`lefthook.yml`](lefthook.yml)): **pre-commit** → `deno fmt` (`stage_fixed`) + `deno task lint`; **pre-push** → `deno task fmt:check`. Lefthook is pinned as `npm:lefthook@2.1.6` in root `deno.jsonc` (no separate `package.json`). Manual: `deno task pre-commit` / `deno task pre-push`.
 
 ## 1. Product purpose
 
@@ -469,7 +471,7 @@ Lifetime validation.
 
 | Area | Rule |
 |------|------|
-| User-facing docs | **English** first: root [README.md](README.md) and [examples/](examples/) `README.md`. Japanese: sibling `README.ja.md` |
+| User-facing docs | **English** first: root [README.md](README.md) and [examples/](examples/) `README.md`. Each English `*.md` links only to its sibling `*.ja.md` (`Japanese: …`); Japanese `*.ja.md` link back with `English: …` (root [README.ja.md](README.ja.md) may add extra Japanese doc links on the same line). Do not link from English files to other Japanese docs. **Placement (same in en/ja pairs):** (1) *Doc-style* — `CHANGELOG`, `API`, `SECURITY`, `CONTRIBUTING`, `PUBLISHING`, `guides/SERVER_COMPONENTS`: language line immediately after `# title` (optional badges / `>` quote / `**Runtimes:**` line only before it). (2) *README-style* — package and example `README`: after the tagline paragraph(s), before the first `##` or `\|` table. (3) Root `README`: after blockquote, before `Contributing:` / body. |
 | Source comments / JSDoc | **English** |
 | Core runtime messages | [`packages/core/i18n.ts`](packages/core/i18n.ts). `ValidationIssue.code` is a stable ID; display text is locale-dependent |
 | Locale resolution | `resolveLocale()` — priority: `locale` argument > `WYRLY_LOCALE` > `LC_ALL` / `LC_MESSAGES` / `LANG` > Intl / `navigator.language` > `en` |
@@ -479,8 +481,8 @@ Lifetime validation.
 
 ### 15.2 Publishing
 
-- Release docs: [PUBLISHING.md](PUBLISHING.md) (Japanese: [PUBLISHING.ja.md](PUBLISHING.ja.md))
-- Before a release: `deno task ci` (includes `doc:lint` and `no-slow-types` lint), `deno task publish:dry-run` (no `--allow-slow-types`), `deno task build:npm`, `deno task publish:npm:dry-run`, aligned `version` in all six `packages/*/deno.json`
+- Release docs: [PUBLISHING.md](PUBLISHING.md)
+- Before a release: `deno task ci` (full gate: `ci:deno`, JSR dry-run, `test:compat`, npm dry-run; Node 20+ and Bun required), aligned `version` in all six `packages/*/deno.json`, then [JSR Runtime checklist](PUBLISHING.md#jsr-runtime-checklist) on jsr.io if needed
 - **JSR Score:** module doc (`@module` + `@example` in each `packages/*/mod.ts`), JSDoc on public exports, no slow types; set Description and runtime compatibility on jsr.io — see PUBLISHING.md
 - **GitHub Actions** (`.github/workflows/publish.yml`): JSR via **OIDC** (`id-token: write`); npm via **Trusted Publishing** (`publish:npm:ci` with `--provenance`). One-time setup: link each JSR package to the repo; register npm Trusted Publishers for five `@wyrly/*` packages — see PUBLISHING.md
 - **Local JSR:** `deno task publish:jsr` (browser auth, no token by default)

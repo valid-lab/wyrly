@@ -7,7 +7,25 @@ All notable changes to the `@wyrly/*` packages in this repository are documented
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/) from **1.0.0**.
 
+
 ## [Unreleased]
+
+## [1.0.6] - 2026-05-22
+
+### Added
+
+- `deno task ci:deno` (Deno-only checks) and full `deno task ci` (adds JSR dry-run, `test:compat`, npm dry-run)
+- [CONTRIBUTING.md](./CONTRIBUTING.md) and [SECURITY.md](./SECURITY.md)
+- CI / JSR / npm / License badges on README
+
+### Changed
+
+- GitHub Actions [ci.yml](./.github/workflows/ci.yml): single job runs `deno task ci` (Deno + Node + Bun)
+- [publish.yml](./.github/workflows/publish.yml): pre-publish `deno task ci` includes compat; removed duplicate dry-run steps
+- `@wyrly/hono` / `@wyrly/next`: package-public types (`HonoContext`, `HonoMiddlewareHandler`, `NextRequest`); `doc:lint` still omits these two packages (framework `private-type-ref`)
+- [PUBLISHING.md](./PUBLISHING.md): JSR Runtime checklist per package (aligned with compat CI)
+- Documentation: aligned en/ja language-link placement; English docs link only to sibling `*.ja.md`; removed unreleased Pro CLI references from OSS docs
+- Git hooks: Lefthook (`lefthook.yml`, `deno task setup:hooks`)
 
 ## [1.0.5] - 2026-05-22
 
@@ -83,6 +101,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/) from **1.
 
 - No first-class `resolveAsync` (async factory results are not fully modeled as async DI)
 
+[1.0.6]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.6
 [1.0.5]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.5
 [1.0.4]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.4
 [1.0.3]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.3

@@ -5,6 +5,7 @@ Japanese: [SERVER_COMPONENTS.ja.md](./SERVER_COMPONENTS.ja.md)
 This guide explains how to use `createServerDI` from `@wyrly/next` in the **App Router** without
 storing request scopes globally.
 
+
 ## Requirements
 
 - **Next.js 15+** App Router

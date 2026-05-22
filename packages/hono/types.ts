@@ -1,5 +1,5 @@
-import type { Context } from "hono";
 import type { Scope } from "@wyrly/core";
+import type { HonoContext } from "./public_types.ts";
 
 /** Context variable key used by `di()` middleware. */
 export const diVariableKey = "di" as const;
@@ -10,6 +10,6 @@ export type HonoDIVariables = {
 };
 
 /** Read the request DI scope set by `di()` (use when `Variables` is not generic). */
-export function getDI(c: Context): Scope {
+export function getDI(c: HonoContext): Scope {
   return c.get(diVariableKey) as Scope;
 }

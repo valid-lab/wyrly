@@ -1,9 +1,15 @@
 # Wyrly DI
 
+[![CI](https://github.com/valid-lab/wyrly/actions/workflows/ci.yml/badge.svg)](https://github.com/valid-lab/wyrly/actions/workflows/ci.yml)
+[![JSR @wyrly/core](https://jsr.io/badges/@wyrly/core)](https://jsr.io/@wyrly/core)
+[![npm @wyrly/core](https://img.shields.io/npm/v/@wyrly/core)](https://www.npmjs.com/package/@wyrly/core)
+[![License](https://img.shields.io/github/license/valid-lab/wyrly)](https://github.com/valid-lab/wyrly/blob/main/LICENSE)
+
 > モダン TypeScript 向けの明示的 DI。
 
 English: [README.md](README.md) · [API（日本語）](API.ja.md) · [変更履歴（日本語）](CHANGELOG.ja.md) ·
-[公開手順（日本語）](PUBLISHING.ja.md) · [Examples（日本語）](examples/README.ja.md)
+[公開手順（日本語）](PUBLISHING.ja.md) · [コントリビューション](CONTRIBUTING.ja.md) · [セキュリティ](SECURITY.ja.md) ·
+[Examples（日本語）](examples/README.ja.md)
 
 Wyrly DI は、明示的で解析しやすく型安全なアプリケーション構成のための依存性注入（DI）ツールキットです。
 
@@ -71,8 +77,6 @@ Wyrly DI は NestJS のクローンにはなりません。
 @wyrly/fresh
 @wyrly/graphql
 ```
-
-Wyrly Pro CLI（`wyrly doctor`、`wyrly graph`、`wyrly validate`、`wyrly generate`）は別製品（非公開リポジトリ・商用）であり、本 OSS リポジトリには含まれません。
 
 凍結された **v1.0** の公開 API 一覧は [API.ja.md](./API.ja.md) を参照してください。
 
@@ -506,7 +510,7 @@ const graph = container.inspect();
 - AI 支援によるコード理解
 - デバッグ
 
-## Pro CLI なしでの検証
+## 検証
 
 composition root や CI から core API を直接使えます:
 
@@ -522,8 +526,6 @@ deno task validate:example
 ```
 
 グラフ出力ヘルパーは `@wyrly/core` にあります（`graphToJson`、`graphToDot`、`graphToMermaid`）。
-
-**`wyrly` CLI**（doctor、CI 向け JSON レポート、HTML グラフ、スキャフォールド）は **Wyrly Pro**（非公開リポジトリ・商用ライセンス）です。
 
 ## TypeScript 設定
 
@@ -575,25 +577,9 @@ legacy decorators より標準デコレーター。
 - 本番向けドキュメントと [CHANGELOG.ja.md](./CHANGELOG.ja.md)
 - `examples/` 配下の実行可能なテンプレート風サンプル
 
-## マネタイズ
-
-core と adapter は無料 OSS として提供します。
-
-有償製品の例:
-
-- Pro CLI
-- 依存グラフのビジュアル表示
-- CI 向けアーキテクチャ検証
-- スターターテンプレート
-- エンタープライズサポート
-- アーキテクチャレビュー
-- 移行サポート
-
 ## ライセンス
 
 本リポジトリの core、adapter、examples は [Apache License 2.0](LICENSE) です。
-
-Wyrly Pro（CLI、テンプレート）は別ライセンスであり、ソースは本リポジトリに含まれません。
 
 ## Deno での開発
 

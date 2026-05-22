@@ -2,6 +2,8 @@
 
 `@wyrly/hono` でリクエストスコープ DI + DDD レイヤー分離の例です。
 
+English: [README.md](./README.md)
+
 ## 構成
 
 | レイヤー         | ファイル                                | 役割                                      |

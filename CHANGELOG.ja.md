@@ -8,6 +8,23 @@ English: [CHANGELOG.md](./CHANGELOG.md)
 
 ## [Unreleased]
 
+## [1.0.6] - 2026-05-22
+
+### 追加
+
+- `deno task ci:deno`（Deno のみ）とフル `deno task ci`（JSR dry-run、`test:compat`、npm dry-run を含む）
+- [CONTRIBUTING.md](./CONTRIBUTING.md) / [CONTRIBUTING.ja.md](./CONTRIBUTING.ja.md) と [SECURITY.md](./SECURITY.md) / [SECURITY.ja.md](./SECURITY.ja.md)
+- README に CI / JSR / npm / License バッジ
+
+### 変更
+
+- GitHub Actions [ci.yml](./.github/workflows/ci.yml): 1 ジョブで `deno task ci`（Deno + Node + Bun）
+- [publish.yml](./.github/workflows/publish.yml): 公開前 `deno task ci` に compat を含む。重複 dry-run ステップを削除
+- `@wyrly/hono` / `@wyrly/next`: パッケージ公開型（`HonoContext` 等）を整理。`doc:lint` は framework の `private-type-ref` のため従来どおり 4 パッケージのみ
+- [PUBLISHING.ja.md](./PUBLISHING.ja.md): パッケージ別 JSR Runtime チェックリスト（compat CI と整合）
+- ドキュメント: 日英の言語リンク位置を統一。英語 doc は対になる `*.ja.md` のみリンク。未公開の Pro CLI 記述を OSS ドキュメントから削除
+- Git フック: Lefthook（`lefthook.yml`、`deno task setup:hooks`）
+
 ## [1.0.5] - 2026-05-22
 
 ### 追加
@@ -82,6 +99,7 @@ English: [CHANGELOG.md](./CHANGELOG.md)
 
 - 第一級の `resolveAsync` なし（非同期 factory の DI モデルは限定的）
 
+[1.0.6]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.6
 [1.0.5]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.5
 [1.0.4]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.4
 [1.0.3]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.3

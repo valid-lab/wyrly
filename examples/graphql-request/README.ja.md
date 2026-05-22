@@ -6,6 +6,8 @@
 v0.3 の **DataLoader 連携パターン**の参照実装です: 1 GraphQL リクエスト = 1 DI scope = 1
 ローダーインスタンス。
 
+English: [README.md](./README.md)
+
 ## DataLoader パターン
 
 | ルール               | 実装                                                                                     |

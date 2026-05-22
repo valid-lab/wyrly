@@ -2,6 +2,8 @@
 
 `@wyrly/next` の 3 パターンを DDD 構成で示す例です（フル Next アプリは含みません）。
 
+English: [README.md](./README.md)
+
 | ファイル                           | API              | 実プロジェクトでの配置例      |
 | ---------------------------------- | ---------------- | ----------------------------- |
 | `presentation/route_handler.ts`    | `withDI`         | `app/api/users/[id]/route.ts` |

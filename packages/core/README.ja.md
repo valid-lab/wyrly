@@ -11,7 +11,7 @@ English: [README.md](./README.md)
 
 | ランタイム   | レジストリ                                       | インポート               |
 | ------------ | ------------------------------------------------ | ------------------------ |
-| **Deno 2.x** | [JSR `@wyrly/core`](https://jsr.io/@wyrly/core)  | `jsr:@wyrly/core@^1.0.5` |
+| **Deno 2.x** | [JSR `@wyrly/core`](https://jsr.io/@wyrly/core)  | `jsr:@wyrly/core@^1.0.6` |
 | Node.js 20+  | [npm](https://www.npmjs.com/package/@wyrly/core) | `@wyrly/core`            |
 | Bun          | npm（同一パッケージ）                            | `@wyrly/core`            |
 
@@ -24,7 +24,7 @@ English: [README.md](./README.md)
 // deno.json
 {
   "imports": {
-    "@wyrly/core": "jsr:@wyrly/core@^1.0.5"
+    "@wyrly/core": "jsr:@wyrly/core@^1.0.6"
   }
 }
 ```
