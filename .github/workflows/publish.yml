@@ -57,12 +57,12 @@ jobs:
 
       - name: Publish to JSR
         run: |
-          deno publish --allow-slow-types --config packages/core/deno.json
-          deno publish --allow-slow-types --config packages/express/deno.json
-          deno publish --allow-slow-types --config packages/hono/deno.json
-          deno publish --allow-slow-types --config packages/fresh/deno.json
-          deno publish --allow-slow-types --config packages/graphql/deno.json
-          deno publish --allow-slow-types --config packages/next/deno.json
+          deno publish --config packages/core/deno.json
+          deno publish --config packages/express/deno.json
+          deno publish --config packages/hono/deno.json
+          deno publish --config packages/fresh/deno.json
+          deno publish --config packages/graphql/deno.json
+          deno publish --config packages/next/deno.json
 
       - name: npm publish dry-run
         run: deno task publish:npm:dry-run

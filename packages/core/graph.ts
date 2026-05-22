@@ -4,20 +4,31 @@ import { graphNodeId, tokenLabel } from "./internal_keys.ts";
 import type { InjectionToken } from "./token.ts";
 import { getInjectableMetadata } from "./metadata.ts";
 
+/** Node in a dependency graph produced by {@link Container.inspect}. */
 export interface DependencyNode {
+  /** Stable node id (token label). */
   id: string;
+  /** Display name for the token or class. */
   name: string;
+  /** Resolved lifetime for this registration. */
   lifetime: Lifetime;
+  /** Kind of provider backing this node. */
   provider: ProviderType;
 }
 
+/** Directed dependency edge between two graph nodes. */
 export interface DependencyEdge {
+  /** Source node id (dependent). */
   from: string;
+  /** Target node id (dependency). */
   to: string;
 }
 
+/** Full dependency graph (nodes and edges). */
 export interface DependencyGraph {
+  /** All registered and inferred nodes. */
   nodes: DependencyNode[];
+  /** Dependency edges between nodes. */
   edges: DependencyEdge[];
 }
 

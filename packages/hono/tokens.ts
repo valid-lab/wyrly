@@ -1,8 +1,8 @@
 import type { Context } from "hono";
-import { token } from "@wyrly/core";
+import { type Token, token } from "@wyrly/core";
 
 /** Current Hono `Context` (resolvable only in request scope) */
-export const HonoContextToken = token<Context>("HonoContext");
+export const HonoContextToken: Token<Context> = token<Context>("HonoContext");
 
 /** Current Web API `Request` (`c.req.raw`; resolvable only in request scope) */
-export const RequestToken = token<Request>("Request");
+export const RequestToken: Token<Request> = token<Request>("Request");

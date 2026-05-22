@@ -61,6 +61,18 @@ Packages:
 
 (`@wyrly/fresh` is not published to npm.)
 
+### JSR Score (manual, per package Settings)
+
+After each release, on [jsr.io](https://jsr.io/) open **Settings** for every `@wyrly/*` package:
+
+| Field | Suggested value |
+| ----- | ---------------- |
+| **Description** | One sentence (≤250 chars). Example core: `Explicit DI for modern TypeScript — typed tokens, standard decorators, request scopes.` |
+| **Runtime compatibility** | **Deno: Supported**, **Node.js: Supported** (adapters also publish to npm; `@wyrly/fresh` is Deno/Fresh only). Leave Cloudflare Workers / Bun as **Unknown** unless you verify. |
+| **Readme source** | Default (module doc on Overview when `@module` is present in `mod.ts`) |
+
+Code-side checks in CI: `deno task doc:lint` (module docs on core + express + graphql + fresh), `deno lint` with `no-slow-types`, and `deno task publish:dry-run` without `--allow-slow-types`.
+
 ## Consumer imports
 
 ### Deno / JSR
@@ -138,7 +150,7 @@ The workflow sets `permissions: id-token: write` for OIDC and uses Node **24.x**
 
 - Adapters use `scripts/dnt/pkg.*.json` for dnt (without `jsr:@wyrly/core` in imports) so workspace resolution does not confuse the npm bundler.
 - Published `@wyrly/core` dependency on adapters is `^VERSION` (not `file:`).
-- JSR publish may use `--allow-slow-types` until adapter tokens get explicit `Token<T>` annotations.
+- Public exports must satisfy [JSR slow types](https://jsr.io/docs/about-slow-types) (explicit `Token<T>` on adapter tokens; no `--allow-slow-types` in publish tasks).
 
 ## Troubleshooting
 
@@ -152,3 +164,6 @@ The workflow sets `permissions: id-token: write` for OIDC and uses Node **24.x**
 | npm publish `403` in Actions | Check Trusted Publisher: repo `valid-lab/wyrly`, workflow `publish.yml`, **Allow npm publish**; Node 24+ / npm 11.5.1+ |
 | `Automatic provenance generation not supported for provider: null` (local) | Use `deno task publish:npm` locally (no `--provenance`). Use `deno task publish:npm:ci` only in GitHub Actions with Trusted Publishing |
 | npm provenance / trusted publish errors (CI) | Check Trusted Publisher settings; workflow must run `publish:npm:ci` |
+| Low JSR Score (readme / examples / symbol docs) | Add `@module` + `@example` in `packages/*/mod.ts`; run `deno task doc:lint`; document exports with JSDoc |
+| JSR Score “slow types” (0/5) | Run `deno lint --rules-include=no-slow-types packages/`; fix explicit types; publish without `--allow-slow-types` |
+| JSR Score runtime / description (0/1 each) | Set **Description** and **Runtime compatibility** in JSR package Settings (not in `deno.json`) |

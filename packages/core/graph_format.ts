@@ -1,6 +1,8 @@
 import type { DependencyGraph, DependencyNode } from "./graph.ts";
 
+/** Options for {@link graphToJson}. */
 export interface GraphToJsonOptions {
+  /** JSON indentation spaces (default `2`). */
   indent?: number;
 }
 

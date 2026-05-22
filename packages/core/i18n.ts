@@ -1,7 +1,10 @@
+/** Supported locales for errors and validation messages. */
 export type Locale = "en" | "ja";
 
+/** Default locale when none is resolved from options or environment. */
 export const DEFAULT_LOCALE: Locale = "en";
 
+/** Validation issue codes used by {@link validationMessage}. */
 export type ValidationMessageCode =
   | "unresolved_dependency"
   | "singleton_depends_on_scoped"
@@ -9,6 +12,7 @@ export type ValidationMessageCode =
   | "circular_dependency"
   | "unused_provider";
 
+/** Runtime error message kinds used by {@link errorMessage}. */
 export type ErrorMessageKind =
   | "ProviderNotFound"
   | "CircularDependency"
@@ -64,6 +68,7 @@ export function resolveLocale(options?: { locale?: Locale }): Locale {
   return DEFAULT_LOCALE;
 }
 
+/** Builds a localized validation issue message for the given code. */
 export function validationMessage(
   code: ValidationMessageCode,
   params: Record<string, string>,
@@ -92,6 +97,7 @@ export function validationMessage(
   }
 }
 
+/** Builds a localized runtime error message for the given kind. */
 export function errorMessage(
   kind: ErrorMessageKind,
   params: Record<string, string>,
@@ -143,12 +149,14 @@ export function errorMessage(
   }
 }
 
+/** Hint appended to {@link ProviderNotFoundError} messages. */
 export function providerNotFoundHint(locale: Locale): string {
   return locale === "ja"
     ? "composition root で register() するか、@Injectable() の deps を確認してください。"
     : "Register it in the composition root or check @Injectable() deps.";
 }
 
+/** Hint appended to {@link LifetimeViolationError} messages. */
 export function lifetimeViolationHint(locale: Locale): string {
   return locale === "ja"
     ? "singleton は scoped インスタンスに依存できません。scoped にするか、依存を singleton/transient に変更してください。"

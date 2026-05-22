@@ -11,18 +11,27 @@ import {
   type ValidationMessageCode,
 } from "./i18n.ts";
 
+/** Single design-time validation finding. */
 export interface ValidationIssue {
+  /** `"error"` blocks `ok`; `"warning"` is informational. */
   severity: "error" | "warning";
+  /** Stable machine-readable code. */
   code: string;
+  /** Localized human-readable message. */
   message: string;
 }
 
+/** Result of {@link Container.validate} or {@link validateNormalizedProviders}. */
 export interface ValidationResult {
+  /** `true` when no issues have `severity: "error"`. */
   ok: boolean;
+  /** All errors and warnings collected. */
   issues: ValidationIssue[];
 }
 
+/** Options for validation and localized messages. */
 export interface ValidateOptions {
+  /** Locale for issue messages (`en` or `ja`). */
   locale?: Locale;
 }
 

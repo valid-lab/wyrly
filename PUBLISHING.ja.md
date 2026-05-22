@@ -59,6 +59,18 @@ org **`wyrly`** で、各パッケージに **Trusted Publisher → GitHub Actio
 
 （`@wyrly/fresh` は npm 非公開）
 
+### JSR Score（各パッケージ Settings で手動）
+
+リリース後、[jsr.io](https://jsr.io/) で各 `@wyrly/*` の **Settings** を開き:
+
+| 項目 | 推奨 |
+| ---- | ---- |
+| **Description** | 1 文（250 字以内）。例 core: `Explicit DI for modern TypeScript — typed tokens, standard decorators, request scopes.` |
+| **Runtime compatibility** | **Deno: Supported**、**Node.js: Supported**（npm も出す adapter 向け。`@wyrly/fresh` は Deno/Fresh のみ） |
+| **Readme source** | デフォルト（`mod.ts` の `@module` を Overview に表示） |
+
+コード側: CI の `deno task doc:lint`、`no-slow-types` の lint、`--allow-slow-types` なしの `publish:dry-run`。
+
 ## 利用者の import
 
 ### Deno / JSR
@@ -121,3 +133,6 @@ deno task publish:npm:dry-run
 | Actions で npm `403` | Trusted Publisher: `valid-lab/wyrly`、`publish.yml`、**Allow npm publish**。CI は Node 24+ / npm 11.5.1+ |
 | ローカルで `provider: null`（provenance） | ローカルは `deno task publish:npm`。`--provenance` は CI の `publish:npm:ci` のみ |
 | provenance / Trusted Publishing エラー（CI） | Trusted Publisher 設定と `publish:npm:ci` を確認 |
+| JSR Score が低い（readme / examples / symbol doc） | `packages/*/mod.ts` に `@module` と `@example` を追加。`deno task doc:lint` を通す |
+| JSR Score「slow types」（0/5） | `deno lint --rules-include=no-slow-types packages/` で修正。`--allow-slow-types` なしで publish |
+| JSR Score の runtime / description（0/1） | JSR の **Description** と **Runtime compatibility** を Settings で設定（`deno.json` では不可） |

@@ -1,8 +1,8 @@
 import type { Request, Response } from "express";
-import { token } from "@wyrly/core";
+import { type Token, token } from "@wyrly/core";
 
 /** Current Express `Request` (resolvable only in request scope) */
-export const ExpressRequestToken = token<Request>("ExpressRequest");
+export const ExpressRequestToken: Token<Request> = token<Request>("ExpressRequest");
 
 /** Current Express `Response` (resolvable only in request scope) */
-export const ExpressResponseToken = token<Response>("ExpressResponse");
+export const ExpressResponseToken: Token<Response> = token<Response>("ExpressResponse");

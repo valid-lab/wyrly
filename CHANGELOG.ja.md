@@ -8,7 +8,19 @@ English: [CHANGELOG.md](./CHANGELOG.md)
 
 ## [Unreleased]
 
-## [1.0.3] - 2026-05-21
+## [1.0.4] - 2026-05-22
+
+### 変更
+
+- JSR 向けドキュメント: 6 パッケージの `mod.ts` に `@module` と `@example`、`@wyrly/core` の公開 export に JSDoc
+- adapter の token に明示的 `Token<T>`（publish から `--allow-slow-types` を削除）
+- CI: `deno task doc:lint`、`no-slow-types` lint、slow-types なしの publish dry-run
+
+### 修正
+
+- Publish workflow の npm を Node **24.x** に（Trusted Publishing / npm ≥ 11.5.1）
+
+## [1.0.3] - 2026-05-22
 
 ### 変更
 
@@ -57,6 +69,7 @@ English: [CHANGELOG.md](./CHANGELOG.md)
 
 - 第一級の `resolveAsync` なし（非同期 factory の DI モデルは限定的）
 
+[1.0.4]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.4
 [1.0.3]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.3
 [1.0.2]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.2
 [1.0.1]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.1

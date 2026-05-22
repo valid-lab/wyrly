@@ -9,7 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/) from **1.
 
 ## [Unreleased]
 
-## [1.0.3] - 2026-05-21
+## [1.0.4] - 2026-05-22
+
+### Changed
+
+- JSR documentation: `@module` + `@example` on all six `packages/*/mod.ts`; JSDoc on public exports in `@wyrly/core`
+- Adapter tokens use explicit `Token<T>` annotations (no `--allow-slow-types` on publish)
+- CI: `deno task doc:lint`, `no-slow-types` lint; publish dry-run without `--allow-slow-types`
+
+### Fixed
+
+- Publish workflow uses Node **24.x** for npm Trusted Publishing (npm ≥ 11.5.1)
+
+## [1.0.3] - 2026-05-22
 
 ### Changed
 
@@ -58,6 +70,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/) from **1.
 
 - No first-class `resolveAsync` (async factory results are not fully modeled as async DI)
 
+[1.0.4]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.4
 [1.0.3]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.3
 [1.0.2]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.2
 [1.0.1]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.1
