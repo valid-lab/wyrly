@@ -31,7 +31,8 @@ import { di, withDI } from "@wyrly/fresh";
 const container = createContainer();
 ```
 
-詳細はリポジトリの [examples/fresh-routes](https://github.com/valid-lab/wyrly/tree/main/examples/fresh-routes) を参照。
+詳細はリポジトリの
+[examples/fresh-routes](https://github.com/valid-lab/wyrly/tree/main/examples/fresh-routes) を参照。
 
 ## ドキュメント
 
@@ -41,14 +42,14 @@ const container = createContainer();
 
 ## 関連パッケージ
 
-| パッケージ | npm | 説明 |
-| ---------- | --- | ---- |
-| `@wyrly/core` | あり | コア DI |
-| `@wyrly/fresh` | JSR のみ | 本パッケージ |
-| `@wyrly/express` | あり | Express |
-| `@wyrly/hono` | あり | Hono |
-| `@wyrly/graphql` | あり | GraphQL |
-| `@wyrly/next` | あり | Next.js |
+| パッケージ       | npm      | 説明         |
+| ---------------- | -------- | ------------ |
+| `@wyrly/core`    | あり     | コア DI      |
+| `@wyrly/fresh`   | JSR のみ | 本パッケージ |
+| `@wyrly/express` | あり     | Express      |
+| `@wyrly/hono`    | あり     | Hono         |
+| `@wyrly/graphql` | あり     | GraphQL      |
+| `@wyrly/next`    | あり     | Next.js      |
 
 ## ライセンス
 

@@ -1,0 +1,16 @@
+# Git hooks — enable once per clone: deno task setup:hooks
+# https://lefthook.dev
+lefthook: deno run -A lefthook
+
+pre-commit:
+  commands:
+    fmt:
+      run: deno fmt
+      stage_fixed: true
+    lint:
+      run: deno task lint
+
+pre-push:
+  commands:
+    fmt-check:
+      run: deno task fmt:check

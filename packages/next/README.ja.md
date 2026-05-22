@@ -1,6 +1,7 @@
 # @wyrly/next
 
-Next.js 15+ App Router 向け Wyrly DI — ルートハンドラ（`withDI`）と Server Components（`createServerDI`）。
+Next.js 15+ App Router 向け Wyrly DI — ルートハンドラ（`withDI`）と Server
+Components（`createServerDI`）。
 
 English: [README.md](./README.md)
 
@@ -31,7 +32,8 @@ export const GET = withDI(container, async (_req, { di }) => {
 });
 ```
 
-Server Components は `createServerDI` — [API.ja.md](https://github.com/valid-lab/wyrly/blob/main/API.ja.md) を参照。
+Server Components は `createServerDI` —
+[API.ja.md](https://github.com/valid-lab/wyrly/blob/main/API.ja.md) を参照。
 
 ## ドキュメント
 
@@ -40,14 +42,14 @@ Server Components は `createServerDI` — [API.ja.md](https://github.com/valid-
 
 ## 関連パッケージ
 
-| パッケージ | npm | 説明 |
-| ---------- | --- | ---- |
-| `@wyrly/core` | あり | コア DI |
-| `@wyrly/next` | あり | 本パッケージ |
-| `@wyrly/express` | あり | Express |
-| `@wyrly/hono` | あり | Hono |
-| `@wyrly/graphql` | あり | GraphQL |
-| `@wyrly/fresh` | JSR のみ | Fresh 2.x |
+| パッケージ       | npm      | 説明         |
+| ---------------- | -------- | ------------ |
+| `@wyrly/core`    | あり     | コア DI      |
+| `@wyrly/next`    | あり     | 本パッケージ |
+| `@wyrly/express` | あり     | Express      |
+| `@wyrly/hono`    | あり     | Hono         |
+| `@wyrly/graphql` | あり     | GraphQL      |
+| `@wyrly/fresh`   | JSR のみ | Fresh 2.x    |
 
 ## ライセンス
 

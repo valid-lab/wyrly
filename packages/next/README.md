@@ -1,6 +1,7 @@
 # @wyrly/next
 
-Wyrly DI adapter for Next.js 15+ App Router — route handlers (`withDI`) and Server Components (`createServerDI`).
+Wyrly DI adapter for Next.js 15+ App Router — route handlers (`withDI`) and Server Components
+(`createServerDI`).
 
 Japanese: [README.ja.md](./README.ja.md)
 
@@ -31,7 +32,8 @@ export const GET = withDI(container, async (_req, { di }) => {
 });
 ```
 
-For Server Components, use `createServerDI` — see [API.md](https://github.com/valid-lab/wyrly/blob/main/API.md).
+For Server Components, use `createServerDI` — see
+[API.md](https://github.com/valid-lab/wyrly/blob/main/API.md).
 
 ## Documentation
 
@@ -41,14 +43,14 @@ For Server Components, use `createServerDI` — see [API.md](https://github.com/
 
 ## Related packages
 
-| Package | npm | Description |
-| ------- | --- | ----------- |
-| `@wyrly/core` | yes | Core DI |
-| `@wyrly/next` | yes | This package |
-| `@wyrly/express` | yes | Express adapter |
-| `@wyrly/hono` | yes | Hono adapter |
-| `@wyrly/graphql` | yes | GraphQL adapter |
-| `@wyrly/fresh` | JSR only | Fresh 2.x |
+| Package          | npm      | Description     |
+| ---------------- | -------- | --------------- |
+| `@wyrly/core`    | yes      | Core DI         |
+| `@wyrly/next`    | yes      | This package    |
+| `@wyrly/express` | yes      | Express adapter |
+| `@wyrly/hono`    | yes      | Hono adapter    |
+| `@wyrly/graphql` | yes      | GraphQL adapter |
+| `@wyrly/fresh`   | JSR only | Fresh 2.x       |
 
 ## License
 

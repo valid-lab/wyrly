@@ -42,14 +42,14 @@ app.get("/users/:id", (c) => {
 
 ## 関連パッケージ
 
-| パッケージ | npm | 説明 |
-| ---------- | --- | ---- |
-| `@wyrly/core` | あり | コア DI |
-| `@wyrly/hono` | あり | 本パッケージ |
-| `@wyrly/express` | あり | Express |
-| `@wyrly/graphql` | あり | GraphQL |
-| `@wyrly/next` | あり | Next.js |
-| `@wyrly/fresh` | JSR のみ | Fresh 2.x |
+| パッケージ       | npm      | 説明         |
+| ---------------- | -------- | ------------ |
+| `@wyrly/core`    | あり     | コア DI      |
+| `@wyrly/hono`    | あり     | 本パッケージ |
+| `@wyrly/express` | あり     | Express      |
+| `@wyrly/graphql` | あり     | GraphQL      |
+| `@wyrly/next`    | あり     | Next.js      |
+| `@wyrly/fresh`   | JSR のみ | Fresh 2.x    |
 
 ## ライセンス
 

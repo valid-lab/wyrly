@@ -118,6 +118,7 @@ npm 公開の全パッケージ（`@wyrly/fresh` を除く）は **Node.js**（`
 ```sh
 git clone <your-fork-or-upstream-url>
 cd wyrly/oss
+deno task setup:hooks   # 任意: Lefthook — pre-commit (fmt+lint), pre-push (fmt:check)
 deno task check
 deno task test
 ```

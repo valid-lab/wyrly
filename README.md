@@ -124,6 +124,7 @@ All npm packages (`@wyrly/core`, adapters except `@wyrly/fresh`) are smoke-teste
 ```sh
 git clone <your-fork-or-upstream-url>
 cd wyrly/oss
+deno task setup:hooks   # optional: Lefthook — pre-commit (fmt+lint), pre-push (fmt:check)
 deno task check
 deno task test
 ```

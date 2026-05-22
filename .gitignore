@@ -1,5 +1,7 @@
 # Dependencies / tooling
 node_modules/
+lefthook-local.yml
+lefthook-local.yaml
 
 # Local env (secrets)
 .env

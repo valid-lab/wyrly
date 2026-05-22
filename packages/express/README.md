@@ -42,14 +42,14 @@ app.get("/users/:id", (req, res) => {
 
 ## Related packages
 
-| Package | npm | Description |
-| ------- | --- | ----------- |
-| `@wyrly/core` | yes | Core DI |
-| `@wyrly/express` | yes | This package |
-| `@wyrly/hono` | yes | Hono adapter |
-| `@wyrly/graphql` | yes | GraphQL adapter |
-| `@wyrly/next` | yes | Next.js adapter |
-| `@wyrly/fresh` | JSR only | Fresh 2.x |
+| Package          | npm      | Description     |
+| ---------------- | -------- | --------------- |
+| `@wyrly/core`    | yes      | Core DI         |
+| `@wyrly/express` | yes      | This package    |
+| `@wyrly/hono`    | yes      | Hono adapter    |
+| `@wyrly/graphql` | yes      | GraphQL adapter |
+| `@wyrly/next`    | yes      | Next.js adapter |
+| `@wyrly/fresh`   | JSR only | Fresh 2.x       |
 
 ## License
 

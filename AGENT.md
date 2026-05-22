@@ -12,6 +12,8 @@ Place each package under `packages/<name>/` and publish as `@wyrly/*` (see [READ
 
 Common tasks: `deno task check`, `deno task test`, `deno task example:*` (see `deno.jsonc`).
 
+**Git hooks (Lefthook, once per clone):** `deno task setup:hooks` runs `lefthook install` ([`lefthook.yml`](lefthook.yml)): **pre-commit** → `deno fmt` (`stage_fixed`) + `deno task lint`; **pre-push** → `deno task fmt:check`. Lefthook is pinned as `npm:lefthook@2.1.6` in root `deno.jsonc` (no separate `package.json`). CI still runs `deno task ci`. Manual: `deno task pre-commit` / `deno task pre-push`.
+
 ## 1. Product purpose
 
 Wyrly DI is a dependency injection toolkit for the TypeScript 7 era: standard decorators, type safety, explicit dependencies, and analyzable wiring.

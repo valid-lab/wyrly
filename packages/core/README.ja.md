@@ -2,19 +2,21 @@
 
 モダン TypeScript 向けの明示的 DI — 型付きトークン、標準デコレータ、リクエストスコープ。
 
-**ランタイム:** [Deno 2.x（JSR）](#インストールdeno--jsr) · [Node.js 20+ / Bun（npm）](#インストールnodejs--bun--npm)
+**ランタイム:** [Deno 2.x（JSR）](#インストールdeno--jsr) ·
+[Node.js 20+ / Bun（npm）](#インストールnodejs--bun--npm)
 
 English: [README.md](./README.md)
 
 ## ランタイム
 
-| ランタイム | レジストリ | インポート |
-| ---------- | ---------- | ---------- |
-| **Deno 2.x** | [JSR `@wyrly/core`](https://jsr.io/@wyrly/core) | `jsr:@wyrly/core@^1.0.5` |
-| Node.js 20+ | [npm](https://www.npmjs.com/package/@wyrly/core) | `@wyrly/core` |
-| Bun | npm（同一パッケージ） | `@wyrly/core` |
+| ランタイム   | レジストリ                                       | インポート               |
+| ------------ | ------------------------------------------------ | ------------------------ |
+| **Deno 2.x** | [JSR `@wyrly/core`](https://jsr.io/@wyrly/core)  | `jsr:@wyrly/core@^1.0.5` |
+| Node.js 20+  | [npm](https://www.npmjs.com/package/@wyrly/core) | `@wyrly/core`            |
+| Bun          | npm（同一パッケージ）                            | `@wyrly/core`            |
 
-**JSR と npm の両方**から同じソースを公開しています。Deno では JSR、Node/Bun では npm を使ってください。
+**JSR と npm の両方**から同じソースを公開しています。Deno では JSR、Node/Bun では npm
+を使ってください。
 
 ## インストール（Deno / JSR）
 
@@ -46,7 +48,8 @@ npm install @wyrly/core
 
 ## 要件
 
-- **TypeScript 5+** と [TC39 標準デコレータ](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-0.html#decorators)（`experimentalDecorators: false`）
+- **TypeScript 5+** と
+  [TC39 標準デコレータ](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-0.html#decorators)（`experimentalDecorators: false`）
 - **ESM**（Node/Bun では `"type": "module"` 推奨）
 - **Deno 2.x**、**Node.js 20+**、**Bun**、または対応バンドラー
 
@@ -87,14 +90,14 @@ try {
 
 ## 関連パッケージ
 
-| パッケージ | Deno（JSR） | npm | 説明 |
-| ---------- | ----------- | --- | ---- |
-| `@wyrly/core` | あり | あり | コアコンテナ・トークン・ライフタイム |
-| `@wyrly/express` | あり | あり | Express 5 ミドルウェア |
-| `@wyrly/hono` | あり | あり | Hono ミドルウェア |
-| `@wyrly/graphql` | あり | あり | GraphQL リクエストスコープ |
-| `@wyrly/next` | あり | あり | Next.js App Router |
-| `@wyrly/fresh` | あり | — | Fresh 2.x（JSR のみ） |
+| パッケージ       | Deno（JSR） | npm  | 説明                                 |
+| ---------------- | ----------- | ---- | ------------------------------------ |
+| `@wyrly/core`    | あり        | あり | コアコンテナ・トークン・ライフタイム |
+| `@wyrly/express` | あり        | あり | Express 5 ミドルウェア               |
+| `@wyrly/hono`    | あり        | あり | Hono ミドルウェア                    |
+| `@wyrly/graphql` | あり        | あり | GraphQL リクエストスコープ           |
+| `@wyrly/next`    | あり        | あり | Next.js App Router                   |
+| `@wyrly/fresh`   | あり        | —    | Fresh 2.x（JSR のみ）                |
 
 ## ライセンス
 

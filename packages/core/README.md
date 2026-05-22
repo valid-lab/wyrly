@@ -2,19 +2,21 @@
 
 Explicit DI for modern TypeScript — typed tokens, standard decorators, and request scopes.
 
-**Runtimes:** [Deno 2.x (JSR)](#install-deno--jsr) · [Node.js 20+ / Bun (npm)](#install-nodejs--bun--npm)
+**Runtimes:** [Deno 2.x (JSR)](#install-deno--jsr) ·
+[Node.js 20+ / Bun (npm)](#install-nodejs--bun--npm)
 
 Japanese: [README.ja.md](./README.ja.md)
 
 ## Runtimes
 
-| Runtime | Registry | Import |
-| ------- | -------- | ------ |
-| **Deno 2.x** | [JSR `@wyrly/core`](https://jsr.io/@wyrly/core) | `jsr:@wyrly/core@^1.0.5` |
-| Node.js 20+ | [npm](https://www.npmjs.com/package/@wyrly/core) | `@wyrly/core` |
-| Bun | npm (same package) | `@wyrly/core` |
+| Runtime      | Registry                                         | Import                   |
+| ------------ | ------------------------------------------------ | ------------------------ |
+| **Deno 2.x** | [JSR `@wyrly/core`](https://jsr.io/@wyrly/core)  | `jsr:@wyrly/core@^1.0.5` |
+| Node.js 20+  | [npm](https://www.npmjs.com/package/@wyrly/core) | `@wyrly/core`            |
+| Bun          | npm (same package)                               | `@wyrly/core`            |
 
-Published to **JSR and npm** from the same source. Deno users should prefer JSR; Node/Bun users use npm.
+Published to **JSR and npm** from the same source. Deno users should prefer JSR; Node/Bun users use
+npm.
 
 ## Install (Deno / JSR)
 
@@ -51,7 +53,9 @@ import { createContainer, Injectable, token } from "@wyrly/core";
 
 ## Requirements
 
-- **TypeScript 5+** with [standard (TC39) decorators](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-0.html#decorators) (`experimentalDecorators: false`)
+- **TypeScript 5+** with
+  [standard (TC39) decorators](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-0.html#decorators)
+  (`experimentalDecorators: false`)
 - **ESM** (`"type": "module"` recommended on Node/Bun)
 - **Deno 2.x**, **Node.js 20+**, **Bun**, or bundlers that support the above
 
@@ -92,14 +96,14 @@ try {
 
 ## Related packages
 
-| Package | Deno (JSR) | npm | Description |
-| ------- | ---------- | --- | ----------- |
-| `@wyrly/core` | yes | yes | Core container, tokens, lifetimes |
-| `@wyrly/express` | yes | yes | Express 5 middleware |
-| `@wyrly/hono` | yes | yes | Hono middleware |
-| `@wyrly/graphql` | yes | yes | GraphQL request scope |
-| `@wyrly/next` | yes | yes | Next.js App Router |
-| `@wyrly/fresh` | yes | — | Fresh 2.x (JSR only) |
+| Package          | Deno (JSR) | npm | Description                       |
+| ---------------- | ---------- | --- | --------------------------------- |
+| `@wyrly/core`    | yes        | yes | Core container, tokens, lifetimes |
+| `@wyrly/express` | yes        | yes | Express 5 middleware              |
+| `@wyrly/hono`    | yes        | yes | Hono middleware                   |
+| `@wyrly/graphql` | yes        | yes | GraphQL request scope             |
+| `@wyrly/next`    | yes        | yes | Next.js App Router                |
+| `@wyrly/fresh`   | yes        | —   | Fresh 2.x (JSR only)              |
 
 ## License
 
