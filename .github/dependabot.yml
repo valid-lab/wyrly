@@ -1,0 +1,10 @@
+# Dependabot scans only ecosystems listed here.
+# npm is omitted: compat/*/package.json uses file:../../packages/*/npm (gitignored),
+# which causes path_dependencies_not_reachable in Dependabot jobs.
+# compat deps (express, hono, etc.) are updated manually; use Security → Dependabot alerts.
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"

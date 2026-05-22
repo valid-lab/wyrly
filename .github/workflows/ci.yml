@@ -22,6 +22,7 @@ on:
       - "PUBLISHING.md"
       - "PUBLISHING.ja.md"
       - ".github/workflows/ci.yml"
+      - ".github/dependabot.yml"
   pull_request:
     branches: [main]
     paths:
@@ -43,6 +44,7 @@ on:
       - "PUBLISHING.md"
       - "PUBLISHING.ja.md"
       - ".github/workflows/ci.yml"
+      - ".github/dependabot.yml"
 
 jobs:
   ci:
