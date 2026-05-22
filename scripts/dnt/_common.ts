@@ -140,8 +140,8 @@ export async function buildNpmPackage(config: PackageBuildConfig): Promise<void>
         sideEffects: false,
         repository: {
           type: "git",
-          url: "git+https://github.com/wyrly/wyrly.git",
-          directory: `oss/packages/${config.id}`,
+          url: "git+https://github.com/valid-lab/wyrly.git",
+          directory: `packages/${config.id}`,
         },
         ...(config.id !== "core"
           ? {

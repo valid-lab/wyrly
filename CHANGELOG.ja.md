@@ -8,6 +8,12 @@ English: [CHANGELOG.md](./CHANGELOG.md)
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-05-22
+
+### 修正
+
+- npm の `repository.url` を `https://github.com/valid-lab/wyrly` に修正（誤: `wyrly/wyrly`）。monorepo の `directory` は `packages/<name>`
+
 ## [1.0.0] - 2026-05-21
 
 ### 追加
@@ -36,4 +42,5 @@ English: [CHANGELOG.md](./CHANGELOG.md)
 
 - 第一級の `resolveAsync` なし（非同期 factory の DI モデルは限定的）
 
-[1.0.0]: https://github.com/your-org/wyrly/releases/tag/v1.0.0
+[1.0.1]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.1
+[1.0.0]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.0

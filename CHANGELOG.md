@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/) from **1.
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-05-22
+
+### Fixed
+
+- npm package metadata: `repository.url` now points to `https://github.com/valid-lab/wyrly` (was `wyrly/wyrly`); monorepo `directory` is `packages/<name>`
+
 ## [1.0.0] - 2026-05-21
 
 ### Added
@@ -37,4 +43,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/) from **1.
 
 - No first-class `resolveAsync` (async factory results are not fully modeled as async DI)
 
-[1.0.0]: https://github.com/your-org/wyrly/releases/tag/v1.0.0
+[1.0.1]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.1
+[1.0.0]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.0
