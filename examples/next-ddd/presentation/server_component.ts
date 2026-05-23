@@ -1,7 +1,8 @@
 import type { Container } from "@wyrly/core";
 import { createServerDI } from "@wyrly/next";
 import { GetUserUseCase } from "../application/get_user.ts";
-import { CurrentUserToken } from "../domain/user.ts";
+import { CurrentUserToken } from "../composition/tokens.ts";
+import { UserId } from "../domain/user.ts";
 
 /** RSC demo: mock `after()` to dispose after response */
 export function createServerComponentDemo(container: Container) {
@@ -13,9 +14,9 @@ export function createServerComponentDemo(container: Container) {
 
   return async function loadUserPage(id: string): Promise<unknown> {
     const di = getDI();
-    di.set(CurrentUserToken, { id: "user-1" });
+    di.set(CurrentUserToken, { id: UserId.from("user-1") });
     const useCase = di.resolve(GetUserUseCase);
-    const user = await useCase.execute(id);
+    const user = await useCase.execute(UserId.from(id));
     await new Promise((r) => setTimeout(r, 0));
     return user;
   };

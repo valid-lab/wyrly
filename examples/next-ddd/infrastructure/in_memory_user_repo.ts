@@ -1,10 +1,10 @@
-import type { User, UserRepository } from "../domain/user.ts";
+import { type User, UserId, type UserRepository } from "../domain/user.ts";
 
 export class InMemoryUserRepository implements UserRepository {
-  findById(id: string): Promise<User | null> {
+  findById(id: UserId): Promise<User | null> {
     const users: Record<string, User> = {
-      "user-1": { id: "user-1", name: "Alice" },
+      "user-1": { id: UserId.from("user-1"), name: "Alice" },
     };
-    return Promise.resolve(users[id] ?? null);
+    return Promise.resolve(users[id.toString()] ?? null);
   }
 }

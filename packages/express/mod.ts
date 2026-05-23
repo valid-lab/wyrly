@@ -45,4 +45,8 @@ export type {
 } from "@wyrly/core";
 export { diMiddleware } from "./middleware.ts";
 export { ExpressRequestToken, ExpressResponseToken } from "./tokens.ts";
-export { asExpressRequestWithDI, type ExpressRequestWithDI } from "./types.ts";
+export {
+  asExpressRequestWithDI,
+  type ExpressDIOptions,
+  type ExpressRequestWithDI,
+} from "./types.ts";

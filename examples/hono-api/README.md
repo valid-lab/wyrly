@@ -8,10 +8,11 @@ Japanese: [README.ja.md](./README.ja.md)
 
 | Layer          | Role                                      |
 | -------------- | ----------------------------------------- |
-| domain         | Entities and port tokens                  |
+| domain         | Entities and port interfaces              |
 | application    | `GetUserUseCase`                          |
 | infrastructure | In-memory repository                      |
 | presentation   | `di()` + `X-User-Id` → `CurrentUserToken` |
+| composition    | DI tokens and container registration      |
 
 ## What this example proves
 

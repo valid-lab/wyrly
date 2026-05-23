@@ -3,14 +3,15 @@ import type { Context } from "fresh";
 import type { Container } from "@wyrly/core";
 import { di, type FreshDIState, withDI } from "@wyrly/fresh";
 import { GetUserUseCase } from "../application/get_user.ts";
-import { CurrentUserToken } from "../domain/user.ts";
+import { CurrentUserToken } from "../composition/tokens.ts";
+import { UserId } from "../domain/user.ts";
 
 function configureCurrentUser(
-  scope: { set: (t: typeof CurrentUserToken, v: { id: string }) => void },
+  scope: { set: (t: typeof CurrentUserToken, v: { id: UserId }) => void },
   ctx: Context<FreshDIState>,
 ): void {
   const userId = ctx.req.headers.get("X-User-Id") ?? "anonymous";
-  scope.set(CurrentUserToken, { id: userId });
+  scope.set(CurrentUserToken, { id: UserId.from(userId) });
 }
 
 function paramId(ctx: Context<FreshDIState>): string {
@@ -29,7 +30,7 @@ export function createMiddlewareHandler(container: Container) {
     )
     .get("/users/:id", (ctx) => {
       const useCase = ctx.state.di.resolve(GetUserUseCase);
-      return useCase.execute(paramId(ctx)).then((u) =>
+      return useCase.execute(UserId.from(paramId(ctx))).then((u) =>
         u ? Response.json(u) : Response.json({ error: "not found" }, { status: 404 })
       );
     })
@@ -42,7 +43,7 @@ export function createWithDIHandler(container: Container) {
     container,
     (ctx) => {
       const useCase = ctx.di.resolve(GetUserUseCase);
-      return useCase.execute(paramId(ctx)).then((u) =>
+      return useCase.execute(UserId.from(paramId(ctx))).then((u) =>
         u ? Response.json(u) : Response.json({ error: "not found" }, { status: 404 })
       );
     },

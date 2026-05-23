@@ -20,6 +20,7 @@ container.register(ConfigToken, {
 
 // useFactory
 container.register(LoggerToken, {
+  deps: [],
   useFactory: () => ({
     log(message: string) {
       console.log(`[log] ${message}`);
@@ -34,15 +35,15 @@ container.register(LoggerAliasToken, {
 });
 
 container.register(ApiClientToken, {
-  useFactory: (scope) => {
-    const config = scope.resolve(ConfigToken);
-    const logger = scope.resolve(LoggerAliasToken);
+  deps: [ConfigToken, LoggerAliasToken],
+  useFactory: (_scope, config, logger) => {
+    const c = config as { apiUrl: string };
+    const l = logger as Logger;
     return {
-      baseUrl: config.apiUrl,
-      log: (msg: string) => logger.log(`api: ${msg}`),
+      baseUrl: c.apiUrl,
+      log: (msg: string) => l.log(`api: ${msg}`),
     };
   },
-  deps: [ConfigToken, LoggerToken],
   lifetime: "singleton",
 });
 

@@ -35,6 +35,16 @@ app.get("/users/:id", (req, res) => {
 });
 ```
 
+scoped resource の非同期 cleanup 失敗を観測したい場合は `onDisposeError` を使います。
+
+```ts
+app.use(diMiddleware(container, {
+  onDisposeError(error, req) {
+    console.error("request scope の破棄に失敗しました", req.path, error);
+  },
+}));
+```
+
 ## ドキュメント
 
 - [@wyrly/core](../core/README.ja.md)

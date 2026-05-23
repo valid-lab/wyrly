@@ -100,6 +100,44 @@ Deno.test("diMiddleware double dispose on finish and close is safe", async () =>
   }
 });
 
+Deno.test("diMiddleware reports async dispose errors", async () => {
+  const container = createContainer();
+  const errors: unknown[] = [];
+
+  @Injectable({ lifetime: "scoped" })
+  class FailingDisposable {
+    async dispose() {
+      await Promise.resolve();
+      throw new Error("dispose failed");
+    }
+  }
+  container.register(FailingDisposable, { useClass: FailingDisposable, lifetime: "scoped" });
+
+  const app = express();
+  app.use(diMiddleware(container, {
+    onDisposeError(error) {
+      errors.push(error);
+    },
+  }));
+  app.get("/", (req, res) => {
+    asExpressRequestWithDI(req).di.resolve(FailingDisposable);
+    res.status(200).end("ok");
+  });
+
+  const server = await listen(app);
+  try {
+    const res = await fetch(`http://127.0.0.1:${server.port}/`);
+    assertEquals(res.status, 200);
+    await res.text();
+    await new Promise((r) => setTimeout(r, 50));
+    assertEquals(errors.length, 1);
+    assert(errors[0] instanceof Error);
+    assertEquals((errors[0] as Error).message, "dispose failed");
+  } finally {
+    await closeServer(server);
+  }
+});
+
 interface TestServer {
   port: number;
   close(): Promise<void>;

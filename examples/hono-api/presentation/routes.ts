@@ -3,7 +3,7 @@ import type { MiddlewareHandler } from "hono";
 import type { Container } from "@wyrly/core";
 import { di, getDI, type HonoDIVariables } from "@wyrly/hono";
 import { GetUserUseCase } from "../application/get_user.ts";
-import { CurrentUserToken } from "../domain/user.ts";
+import { CurrentUserToken } from "../composition/tokens.ts";
 
 /** Map X-User-Id to port token CurrentUserToken (presentation layer). */
 const mapCurrentUser: MiddlewareHandler<{ Variables: HonoDIVariables }> = async (c, next) => {

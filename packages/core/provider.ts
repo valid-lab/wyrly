@@ -36,10 +36,10 @@ export interface ValueProvider<T> {
  * `Promise<T>` is planned for a future `resolveAsync`.
  */
 export interface FactoryProvider<T> {
-  /** Factory invoked with the active scope. */
-  useFactory: (scope: Scope) => T;
-  /** Tokens resolved before the factory runs. */
-  deps?: InjectionToken<unknown>[];
+  /** Factory invoked with the active scope and resolved dependency values. */
+  useFactory: (scope: Scope, ...deps: unknown[]) => T;
+  /** Tokens resolved before the factory runs and passed to `useFactory`. */
+  deps: InjectionToken<unknown>[];
   /** Lifetime for the factory result. */
   lifetime?: Lifetime;
 }
@@ -72,7 +72,7 @@ export interface NormalizedProvider<T = unknown> {
   /** Set when `providerType` is `"value"`. */
   readonly useValue?: T;
   /** Set when `providerType` is `"factory"`. */
-  readonly useFactory?: (scope: Scope) => T;
+  readonly useFactory?: (scope: Scope, ...deps: unknown[]) => T;
   /** Set when `providerType` is `"existing"`. */
   readonly useExisting?: InjectionToken<T>;
 }
@@ -97,7 +97,7 @@ export function normalizeProvider<T>(
   }
 
   if ("useFactory" in provider) {
-    const deps = provider.deps ?? [];
+    const deps = provider.deps;
     const lifetime = provider.lifetime ?? "singleton";
     return {
       token,

@@ -3,13 +3,14 @@ import type { NextFunction, Request, Response } from "express";
 import type { Container } from "@wyrly/core";
 import { asExpressRequestWithDI, diMiddleware } from "@wyrly/express";
 import { GetUserUseCase } from "../application/get_user.ts";
-import { CurrentUserToken } from "../domain/user.ts";
+import { CurrentUserToken } from "../composition/tokens.ts";
+import { UserId } from "../domain/user.ts";
 
 function mapCurrentUser(req: Request, _res: Response, next: NextFunction): void {
   const r = asExpressRequestWithDI(req);
   const userId = r.headers["x-user-id"];
   const id = typeof userId === "string" ? userId : "anonymous";
-  r.di.set(CurrentUserToken, { id });
+  r.di.set(CurrentUserToken, { id: UserId.from(id) });
   next();
 }
 
@@ -21,7 +22,7 @@ export function createApp(container: Container): express.Application {
 
   app.get("/users/:id", async (req, res) => {
     const useCase = asExpressRequestWithDI(req).di.resolve(GetUserUseCase);
-    const user = await useCase.execute(req.params.id);
+    const user = await useCase.execute(UserId.from(req.params.id));
     if (!user) {
       res.status(404).json({ error: "not found" });
       return;

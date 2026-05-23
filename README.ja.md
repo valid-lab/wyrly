@@ -108,11 +108,11 @@ Wyrly DI は NestJS のクローンにはなりません。
 @wyrly/graphql
 ```
 
-凍結された **v1.0** の公開 API 一覧は [API.ja.md](./API.ja.md) を参照してください。
+凍結された **v2.0** の公開 API 一覧は [API.ja.md](./API.ja.md) を参照してください。
 
 ## インストール
 
-**v1.0.0** — **JSR** または **npm** から利用するか、本リポジトリを workspace
+**v2.0.0** — **JSR** または **npm** から利用するか、本リポジトリを workspace
 として開発します。公開の詳細は [PUBLISHING.ja.md](./PUBLISHING.ja.md) を参照してください。
 
 ### JSR（Deno）
@@ -121,7 +121,7 @@ Wyrly DI は NestJS のクローンにはなりません。
 // deno.json
 {
   "imports": {
-    "@wyrly/core": "jsr:@wyrly/core@^1.0.0"
+    "@wyrly/core": "jsr:@wyrly/core@^2.0.0"
   }
 }
 ```
@@ -130,7 +130,7 @@ Wyrly DI は NestJS のクローンにはなりません。
 import { createContainer, token } from "@wyrly/core";
 ```
 
-adapter は必要に応じて追加します（例: `jsr:@wyrly/next@^1.0.0`）。
+adapter は必要に応じて追加します（例: `jsr:@wyrly/next@^2.0.0`）。
 
 ### npm（Node / バンドラー）
 
@@ -300,9 +300,14 @@ container.register(ConfigToken, {
 
 ```ts
 container.register(DatabaseToken, {
-  useFactory: (scope) => createDatabase(scope.resolve(ConfigToken)),
+  deps: [ConfigToken],
+  useFactory: (_scope, config) => createDatabase(config as { databaseUrl: string }),
 });
 ```
+
+factory provider では `deps` の宣言が必須です。Wyrly はその token を先に解決し、
+`useFactory(scope, ...deps)` に値を渡します。これにより実行時の解決と `inspect()` /
+`validate()` の依存グラフが一致しやすくなります。
 
 ## ライフタイム
 
@@ -476,6 +481,7 @@ src/
     http/
     graphql/
   composition/
+    tokens.ts
     container.ts
 ```
 
@@ -488,9 +494,21 @@ export function configureContainer(container: Container) {
     lifetime: "scoped",
   });
 
-  container.register(GetUserUseCase);
+  container.register(GetUserUseCase, {
+    useClass: GetUserUseCase,
+    deps: [UserRepositoryToken, CurrentUserToken],
+    lifetime: "scoped",
+  });
 }
 ```
+
+framework token や DI token は domain 層に置かないでください。domain / application
+は port と Value Object を定義し、`composition/tokens.ts` で Wyrly token に変換します。
+presentation 層は request 由来の値を `CurrentUserToken` などの scoped value にマップします。
+
+`UserId` Value Object を含む厳密寄りの DDD 例は
+[`examples/next-ddd`](./examples/next-ddd/)、[`examples/fresh-routes`](./examples/fresh-routes/)、
+[`examples/express-api`](./examples/express-api/) を参照してください。
 
 ## ライフタイム検証
 
@@ -612,7 +630,7 @@ legacy decorators より標準デコレーター。
 
 **1.0.0** で提供済み: core、adapter、inspect/validate、examples、本リポジトリの CI。
 
-### v1.0（リリース済み）
+### v2.0（リリース済み）
 
 - 安定した公開 API（[API.ja.md](./API.ja.md)）
 - 本番向けドキュメントと [CHANGELOG.ja.md](./CHANGELOG.ja.md)
@@ -657,7 +675,7 @@ JSR や `npm:` 依存を追加したら、再現性のため生成された **`d
 
 ## ステータス
 
-**v1.0.0** — `@wyrly/core` と各 adapter は [API.ja.md](./API.ja.md)
+**v2.0.0** — `@wyrly/core` と各 adapter は [API.ja.md](./API.ja.md)
 に記載の公開面を安定版として扱います。Issue は各プロジェクトのトラッカーへ。
 
 コントリビュータ向け: [AGENT.md](./AGENT.md)（英語）。利用者向け日本語:

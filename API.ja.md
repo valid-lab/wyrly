@@ -1,8 +1,8 @@
-# 公開 API（v1.0）
+# 公開 API（v2.0）
 
 English: [API.md](./API.md)
 
-Wyrly DI **v1.0.0** の **安定公開 export** 一覧です。ここに載っていないシンボルや deep import は semver 保証の対象外です。
+Wyrly DI **v2.0.0** の **安定公開 export** 一覧です。ここに載っていないシンボルや deep import は semver 保証の対象外です。
 
 ## バージョニング方針
 
@@ -85,6 +85,11 @@ Wyrly DI **v1.0.0** の **安定公開 export** 一覧です。ここに載っ�
 | `dispose` | スコープ内インスタンスの破棄 |
 | `isDisposed` | dispose 済みか |
 
+### `FactoryProvider` の補足
+
+`FactoryProvider.deps` は必須です。宣言した依存は先に解決され、
+`useFactory(scope, ...deps)` に渡されます。
+
 ---
 
 ## `@wyrly/express`
@@ -97,6 +102,7 @@ Wyrly DI **v1.0.0** の **安定公開 export** 一覧です。ここに載っ�
 | `ExpressRequestToken` | `Request` 用 token |
 | `ExpressResponseToken` | `Response` 用 token |
 | `ExpressRequestWithDI` | `Request & { di: Scope }` |
+| `ExpressDIOptions` | `diMiddleware` のオプション（`onDisposeError` を含む） |
 | `asExpressRequestWithDI` | `diMiddleware` 後の `req` を絞り込む（`as` よりこちらを推奨） |
 
 JSR 公開パッケージでは `declare global` が使えないため、グローバル拡張は廃止しました。必要ならアプリ側で `Express.Request` を拡張する `.d.ts` を置いてください。

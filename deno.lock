@@ -1251,7 +1251,7 @@
       },
       "packages/express": {
         "dependencies": [
-          "jsr:@wyrly/core@1",
+          "jsr:@wyrly/core@2",
           "npm:@types/express@5",
           "npm:express@5"
         ]
@@ -1259,23 +1259,23 @@
       "packages/fresh": {
         "dependencies": [
           "jsr:@fresh/core@2",
-          "jsr:@wyrly/core@1"
+          "jsr:@wyrly/core@2"
         ]
       },
       "packages/graphql": {
         "dependencies": [
-          "jsr:@wyrly/core@1"
+          "jsr:@wyrly/core@2"
         ]
       },
       "packages/hono": {
         "dependencies": [
-          "jsr:@wyrly/core@1",
+          "jsr:@wyrly/core@2",
           "npm:hono@4"
         ]
       },
       "packages/next": {
         "dependencies": [
-          "jsr:@wyrly/core@1",
+          "jsr:@wyrly/core@2",
           "npm:react@19"
         ]
       }

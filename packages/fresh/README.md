@@ -13,8 +13,8 @@ Japanese: [README.ja.md](./README.ja.md)
 // deno.json
 {
   "imports": {
-    "@wyrly/core": "jsr:@wyrly/core@^1.0.0",
-    "@wyrly/fresh": "jsr:@wyrly/fresh@^1.0.0"
+    "@wyrly/core": "jsr:@wyrly/core@^2.0.0",
+    "@wyrly/fresh": "jsr:@wyrly/fresh@^2.0.0"
   }
 }
 ```

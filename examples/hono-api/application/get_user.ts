@@ -1,17 +1,19 @@
-import { Injectable } from "@wyrly/core";
-import { CurrentUserToken, type UserRepository, UserRepositoryToken } from "../domain/user.ts";
+import type { UserRepository } from "../domain/user.ts";
 
-@Injectable({
-  deps: [UserRepositoryToken, CurrentUserToken],
-  lifetime: "scoped",
-})
+export interface CurrentUser {
+  id: string;
+}
+
 export class GetUserUseCase {
   constructor(
     private readonly users: UserRepository,
-    private readonly currentUser: { id: string },
+    private readonly currentUser: CurrentUser,
   ) {}
 
   execute(targetId: string) {
+    if (this.currentUser.id !== targetId) {
+      return Promise.resolve(null);
+    }
     return this.users.findById(targetId);
   }
 }

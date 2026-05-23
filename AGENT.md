@@ -488,7 +488,7 @@ Lifetime validation.
 - **Local JSR:** `deno task publish:jsr` (browser auth, no token by default)
 - **Local npm:** [dnt](https://github.com/denoland/dnt) via `scripts/dnt/build.ts` → `packages/*/npm/` (five packages; `@wyrly/fresh` is JSR-only), then `deno task publish:npm` after `npm login` to `@wyrly`
 - Adapter dnt configs live under `scripts/dnt/pkg.*.json` (omit `jsr:@wyrly/core` imports used only for JSR publish)
-- Adapter `deno.json` must include `"@wyrly/core": "jsr:@wyrly/core@^1.0.0"` in `imports` for published graphs
+- Adapter `deno.json` must include `"@wyrly/core": "jsr:@wyrly/core@^2.0.0"` in `imports` for published graphs
 
 ## 16. Anti-patterns
 

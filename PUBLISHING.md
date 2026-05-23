@@ -113,7 +113,7 @@ locally, use **`deno task ci:deno`**.
 ```jsonc
 {
   "imports": {
-    "@wyrly/core": "jsr:@wyrly/core@^1.0.0"
+    "@wyrly/core": "jsr:@wyrly/core@^2.0.0"
   }
 }
 ```

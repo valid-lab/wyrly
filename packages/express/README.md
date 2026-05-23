@@ -35,6 +35,16 @@ app.get("/users/:id", (req, res) => {
 });
 ```
 
+Use `onDisposeError` when scoped resources need observable asynchronous cleanup:
+
+```ts
+app.use(diMiddleware(container, {
+  onDisposeError(error, req) {
+    console.error("Failed to dispose request scope", req.path, error);
+  },
+}));
+```
+
 ## Documentation
 
 - [@wyrly/core](../core/README.md)

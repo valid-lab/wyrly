@@ -21,9 +21,10 @@ Core code: [`infrastructure/user_loader.ts`](./infrastructure/user_loader.ts).
 ```ts
 container.register(UserLoaderToken, {
   lifetime: "scoped",
-  useFactory: (scope) => {
+  deps: [GetUsersByIdsUseCase],
+  useFactory: (_scope, getUsersByIds) => {
     const cache = new Map<string, Promise<User | null>>();
-    const useCase = scope.resolve(GetUsersByIdsUseCase);
+    const useCase = getUsersByIds as GetUsersByIdsUseCase;
     return {
       load(id: string) {
         /* batch + cache per request */
@@ -47,10 +48,11 @@ In a real app, register the same factory from your composition root and resolve 
 
 | Layer          | Role                               |
 | -------------- | ---------------------------------- |
-| domain         | Types and port tokens              |
+| domain         | Types and port interfaces          |
 | application    | Batch user fetch use case          |
 | infrastructure | Scoped `UserLoader` factory        |
 | presentation   | Pseudo-resolvers + `ctx.dispose()` |
+| composition    | DI tokens and container wiring     |
 
 ## Run
 

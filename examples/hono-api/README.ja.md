@@ -8,11 +8,11 @@ English: [README.md](./README.md)
 
 | レイヤー         | ファイル                                | 役割                                      |
 | ---------------- | --------------------------------------- | ----------------------------------------- |
-| domain           | `domain/user.ts`                        | エンティティ・port token                  |
+| domain           | `domain/user.ts`                        | エンティティ・port interface              |
 | application      | `application/get_user.ts`               | `GetUserUseCase`                          |
 | infrastructure   | `infrastructure/in_memory_user_repo.ts` | Repository 実装                           |
 | presentation     | `presentation/routes.ts`                | `di()` + `X-User-Id` → `CurrentUserToken` |
-| composition root | `main.ts`                               | `export const container`                  |
+| composition root | `composition/`                          | DI token と container 登録                |
 
 ## この example で確認できること
 
@@ -26,11 +26,8 @@ English: [README.md](./README.md)
 deno task example:hono-api
 ```
 
-`app.request()` でデモするためネットワーク権限は不要です。実サーバで試す場合:
-
-```sh
-cd examples/hono-api && deno run -A --unstable-net main_serve.ts  # 任意
-```
+`app.request()` でデモするためネットワーク権限は不要です。実サーバで試す場合は `main.ts` を参考に
+`Deno.serve` などでラップしてください。
 
 ## 関連
 

@@ -128,7 +128,7 @@ Tests: [`packages/next/server_di_test.ts`](../packages/next/server_di_test.ts).
 ## Stability note
 
 Server Components depend on Next.js and React request semantics. The **shape** of `createServerDI` /
-`getDI()` is stable in v1.0; underlying Next APIs may evolve. Pin Next.js versions in production and
+`getDI()` is stable in v2.0; underlying Next APIs may evolve. Pin Next.js versions in production and
 re-run adapter tests when upgrading Next.
 
 ## See also

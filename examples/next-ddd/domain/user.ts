@@ -1,14 +1,31 @@
-import { token } from "@wyrly/core";
+export class UserId {
+  private constructor(private readonly value: string) {}
 
-export interface User {
-  id: string;
-  name: string;
+  static from(value: string): UserId {
+    if (value.trim() === "") {
+      throw new Error("UserId must not be empty.");
+    }
+    return new UserId(value);
+  }
+
+  equals(other: UserId): boolean {
+    return this.value === other.value;
+  }
+
+  toString(): string {
+    return this.value;
+  }
+
+  toJSON(): string {
+    return this.value;
+  }
 }
 
 export interface UserRepository {
-  findById(id: string): Promise<User | null>;
+  findById(id: UserId): Promise<User | null>;
 }
 
-export const UserRepositoryToken = token<UserRepository>("UserRepository");
-
-export const CurrentUserToken = token<{ id: string }>("CurrentUser");
+export interface User {
+  id: UserId;
+  name: string;
+}

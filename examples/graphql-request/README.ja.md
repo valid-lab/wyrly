@@ -32,10 +32,11 @@ English: [README.md](./README.md)
 
 | レイヤー       | 役割                            |
 | -------------- | ------------------------------- |
-| domain         | 型・port token                  |
+| domain         | 型・port interface              |
 | application    | バッチ取得 UseCase              |
 | infrastructure | scoped `UserLoader` factory     |
 | presentation   | 疑似 resolver + `ctx.dispose()` |
+| composition    | DI token と container 配線      |
 
 ## 実行
 

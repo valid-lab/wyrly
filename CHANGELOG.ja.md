@@ -8,6 +8,23 @@ English: [CHANGELOG.md](./CHANGELOG.md)
 
 ## [Unreleased]
 
+## [2.0.0] - 2026-05-23
+
+### 変更
+
+- **Breaking**: `FactoryProvider.deps` は必須になりました。factory の依存は宣言済み token
+  から解決され、`useFactory(scope, ...deps)` に渡されます。これにより `inspect()` /
+  `validate()` が実行時と同じ依存グラフを見られます。
+- DDD examples は DI token を `domain/` ではなく `composition/tokens.ts` に置き、use case
+  の配線を `composition/container.ts` に集約しました。
+- `examples/next-ddd`、`examples/fresh-routes`、`examples/express-api` は `UserId` Value
+  Object とリクエスト由来の `CurrentUser` を示す構成になりました。
+
+### 追加
+
+- `@wyrly/express` に `diMiddleware(container, { onDisposeError })` を追加し、`finish` /
+  `close` 後の非同期 scope 破棄エラーを観測できるようにしました。
+
 ## [1.0.6] - 2026-05-22
 
 ### 追加
@@ -99,6 +116,7 @@ English: [CHANGELOG.md](./CHANGELOG.md)
 
 - 第一級の `resolveAsync` なし（非同期 factory の DI モデルは限定的）
 
+[2.0.0]: https://github.com/valid-lab/wyrly/releases/tag/v2.0.0
 [1.0.6]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.6
 [1.0.5]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.5
 [1.0.4]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.4

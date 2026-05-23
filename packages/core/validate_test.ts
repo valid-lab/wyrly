@@ -6,8 +6,8 @@ Deno.test("validate detects unresolved_dependency", () => {
   const Missing = token<string>("Missing");
   const Root = token<{ x: string }>("Root");
   c.register(Root, {
-    useFactory: () => ({ x: "v" }),
     deps: [Missing],
+    useFactory: () => ({ x: "v" }),
     lifetime: "singleton",
   });
   const r = c.validate();

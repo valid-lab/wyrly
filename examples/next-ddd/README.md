@@ -1,6 +1,8 @@
 # next-ddd
 
-Three App Router patterns in DDD layout (no full Next app).
+Three App Router patterns in DDD layout (no full Next app). This is a stricter DDD example: DI
+tokens live under `composition/`, while the domain uses a `UserId` value object instead of raw
+strings.
 
 Japanese: [README.ja.md](./README.ja.md)
 
@@ -17,6 +19,7 @@ Japanese: [README.ja.md](./README.ja.md)
 - `@wyrly/next` can create request-scoped DI without relying on global mutable containers.
 - DDD boundaries stay visible even when the presentation layer uses different App Router entry
   points.
+- Request params and action input are converted to domain values at the presentation boundary.
 
 ## Run
 

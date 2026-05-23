@@ -107,11 +107,11 @@ It intentionally avoids:
 @wyrly/graphql
 ```
 
-See [API.md](./API.md) for the frozen **v1.0** public export surface.
+See [API.md](./API.md) for the frozen **v2.0** public export surface.
 
 ## Installation
 
-**v1.0.0** — install from **JSR** or **npm**, or clone this repo for workspace development. See
+**v2.0.0** — install from **JSR** or **npm**, or clone this repo for workspace development. See
 [PUBLISHING.md](./PUBLISHING.md) for release details.
 
 ### JSR (Deno)
@@ -120,7 +120,7 @@ See [API.md](./API.md) for the frozen **v1.0** public export surface.
 // deno.json
 {
   "imports": {
-    "@wyrly/core": "jsr:@wyrly/core@^1.0.0"
+    "@wyrly/core": "jsr:@wyrly/core@^2.0.0"
   }
 }
 ```
@@ -129,7 +129,7 @@ See [API.md](./API.md) for the frozen **v1.0** public export surface.
 import { createContainer, token } from "@wyrly/core";
 ```
 
-Add adapters as needed (for example `jsr:@wyrly/next@^1.0.0`).
+Add adapters as needed (for example `jsr:@wyrly/next@^2.0.0`).
 
 ### npm (Node / bundlers)
 
@@ -299,9 +299,13 @@ container.register(ConfigToken, {
 
 ```ts
 container.register(DatabaseToken, {
-  useFactory: (scope) => createDatabase(scope.resolve(ConfigToken)),
+  deps: [ConfigToken],
+  useFactory: (_scope, config) => createDatabase(config as { databaseUrl: string }),
 });
 ```
+
+Factory providers must declare `deps`. Wyrly resolves those tokens first and passes the values to
+`useFactory(scope, ...deps)`, keeping runtime resolution aligned with `inspect()` / `validate()`.
 
 ## Lifetimes
 
@@ -471,6 +475,7 @@ src/
     http/
     graphql/
   composition/
+    tokens.ts
     container.ts
 ```
 
@@ -483,9 +488,21 @@ export function configureContainer(container: Container) {
     lifetime: "scoped",
   });
 
-  container.register(GetUserUseCase);
+  container.register(GetUserUseCase, {
+    useClass: GetUserUseCase,
+    deps: [UserRepositoryToken, CurrentUserToken],
+    lifetime: "scoped",
+  });
 }
 ```
+
+Keep framework tokens and DI tokens out of the domain layer. Domain and application code should
+define ports and value objects; `composition/tokens.ts` turns those ports into Wyrly tokens, and the
+presentation layer maps request data into scoped values such as `CurrentUserToken`.
+
+For stricter DDD examples with `UserId` value objects, see
+[`examples/next-ddd`](./examples/next-ddd/), [`examples/fresh-routes`](./examples/fresh-routes/),
+and [`examples/express-api`](./examples/express-api/).
 
 ## Lifetime Validation
 
@@ -601,7 +618,7 @@ From **1.0.0**, public APIs are listed in [API.md](./API.md) and follow
 
 Delivered in **1.0.0**: core, adapters, inspect/validate, examples, and CI in this repository.
 
-### v1.0 (released)
+### v2.0 (released)
 
 - Stable public API ([API.md](./API.md))
 - Production-oriented docs and [CHANGELOG.md](./CHANGELOG.md)
@@ -647,7 +664,7 @@ per the [Deno docs](https://docs.deno.com/).
 
 ## Status
 
-**v1.0.0** — `@wyrly/core` and adapters are stable for the surface documented in [API.md](./API.md).
+**v2.0.0** — `@wyrly/core` and adapters are stable for the surface documented in [API.md](./API.md).
 Report issues via your project’s issue tracker.
 
 Contributors: see [AGENT.md](./AGENT.md).

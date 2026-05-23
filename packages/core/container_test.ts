@@ -119,8 +119,8 @@ Deno.test("inspect returns nodes and edges", () => {
   const A = token<number>("A");
   const B = token<number>("B");
   c.register(A, {
-    useFactory: () => 1,
     deps: [B],
+    useFactory: () => 1,
     lifetime: "singleton",
   });
   c.register(B, { useValue: 2, lifetime: "singleton" });
@@ -160,6 +160,7 @@ Deno.test("dispose calls disposers in reverse creation order", async () => {
   const A = token<{ dispose(): void }>("A");
   const B = token<{ dispose(): void }>("B");
   c.register(B, {
+    deps: [],
     useFactory: () => ({
       dispose() {
         log.push(2);
@@ -168,8 +169,8 @@ Deno.test("dispose calls disposers in reverse creation order", async () => {
     lifetime: "scoped",
   });
   c.register(A, {
-    useFactory: (scope) => {
-      scope.resolve(B);
+    deps: [B],
+    useFactory: () => {
       return {
         dispose() {
           log.push(1);

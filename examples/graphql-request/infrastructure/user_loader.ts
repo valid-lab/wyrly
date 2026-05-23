@@ -13,9 +13,10 @@ export const UserLoaderToken = token<UserLoader>("UserLoader");
 export function registerUserLoader(container: Container): void {
   container.register(UserLoaderToken, {
     lifetime: "scoped",
-    useFactory: (scope) => {
+    deps: [GetUsersByIdsUseCase],
+    useFactory: (_scope, getUsersByIds) => {
       const cache = new Map<string, Promise<User | null>>();
-      const useCase = scope.resolve(GetUsersByIdsUseCase);
+      const useCase = getUsersByIds as GetUsersByIdsUseCase;
 
       const loadBatch = async (ids: string[]): Promise<(User | null)[]> => {
         const users = await useCase.execute(ids);

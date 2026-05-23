@@ -9,6 +9,23 @@ adheres to [Semantic Versioning](https://semver.org/) from **1.0.0**.
 
 ## [Unreleased]
 
+## [2.0.0] - 2026-05-23
+
+### Changed
+
+- **Breaking**: `FactoryProvider.deps` is now required. Factory dependencies are resolved from the
+  declared tokens and passed to `useFactory(scope, ...deps)` so `inspect()` / `validate()` can see
+  the same dependency graph used at runtime.
+- DDD examples now keep DI tokens in `composition/tokens.ts` instead of `domain/`, and wire use cases
+  from `composition/container.ts`.
+- `examples/next-ddd`, `examples/fresh-routes`, and `examples/express-api` now demonstrate `UserId`
+  value objects and request-derived `CurrentUser` values.
+
+### Added
+
+- `@wyrly/express` `diMiddleware(container, { onDisposeError })` for observing asynchronous scope
+  disposal failures after `finish` / `close`.
+
 ## [1.0.6] - 2026-05-22
 
 ### Added
@@ -128,6 +145,7 @@ adheres to [Semantic Versioning](https://semver.org/) from **1.0.0**.
 
 - No first-class `resolveAsync` (async factory results are not fully modeled as async DI)
 
+[2.0.0]: https://github.com/valid-lab/wyrly/releases/tag/v2.0.0
 [1.0.6]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.6
 [1.0.5]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.5
 [1.0.4]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.4

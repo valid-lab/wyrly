@@ -1,6 +1,6 @@
 import type { Container } from "@wyrly/core";
 import { createGraphQLDIContext } from "@wyrly/graphql";
-import { CurrentUserToken } from "../domain/user.ts";
+import { CurrentUserToken } from "../composition/tokens.ts";
 import { UserLoaderToken } from "../infrastructure/user_loader.ts";
 
 export type GraphQLOperation = "user" | "users";

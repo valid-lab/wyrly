@@ -1,8 +1,8 @@
-# Public API (v1.0)
+# Public API (v2.0)
 
 Japanese: [API.ja.md](./API.ja.md)
 
-This document lists the **stable public exports** for Wyrly DI v1.0.0. Anything not listed here is not part of the semver guarantee (internal modules, deep imports).
+This document lists the **stable public exports** for Wyrly DI v2.0.0. Anything not listed here is not part of the semver guarantee (internal modules, deep imports).
 
 
 ## Versioning policy
@@ -86,6 +86,11 @@ Entry: [`packages/core/mod.ts`](./packages/core/mod.ts)
 | `dispose` | Dispose scoped instances |
 | `isDisposed` | Whether scope was disposed |
 
+### `FactoryProvider` note
+
+`FactoryProvider.deps` is required. Declared dependencies are resolved first and passed to
+`useFactory(scope, ...deps)`.
+
 ---
 
 ## `@wyrly/express`
@@ -98,6 +103,7 @@ Entry: [`packages/express/mod.ts`](./packages/express/mod.ts)
 | `ExpressRequestToken` | Typed token for `Request` |
 | `ExpressResponseToken` | Typed token for `Response` |
 | `ExpressRequestWithDI` | `Request & { di: Scope }` |
+| `ExpressDIOptions` | Options for `diMiddleware`, including `onDisposeError` |
 | `asExpressRequestWithDI` | Narrow `req` after `diMiddleware` (prefer over `as ExpressRequestWithDI`) |
 
 JSR does not allow `declare global` in published packages. Optionally augment `Express.Request` in a project-local `.d.ts` if you prefer ambient typing.

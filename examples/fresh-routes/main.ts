@@ -1,25 +1,17 @@
-import { createContainer } from "@wyrly/core";
 import type { Context } from "fresh";
-import { GetUserUseCase } from "./application/get_user.ts";
-import { InMemoryUserRepository } from "./infrastructure/in_memory_user_repo.ts";
-import { UserRepositoryToken } from "./domain/user.ts";
+import { createAppContainer } from "./composition/container.ts";
 import { createMiddlewareHandler, createWithDIHandler } from "./presentation/app.ts";
 import type { FreshDIState } from "@wyrly/fresh";
 
-export const container = createContainer();
-
-container.register(UserRepositoryToken, {
-  useClass: InMemoryUserRepository,
-  lifetime: "scoped",
-});
-container.register(GetUserUseCase);
+export const container = createAppContainer();
 
 function testContext(
   url: string,
   params: Record<string, string> = {},
+  init?: RequestInit,
 ): Context<FreshDIState> {
   return {
-    req: new Request(url),
+    req: new Request(url, init),
     params,
     state: { di: undefined! },
     url,
@@ -38,7 +30,7 @@ if (import.meta.main) {
 
   const withDi = createWithDIHandler(container);
   const res = await withDi(
-    testContext("http://localhost/users/user-1", { id: "user-1" }),
+    testContext("http://localhost/users/user-1", { id: "user-1" }, { headers }),
   );
   console.log("withDI():", (res as Response).status, await (res as Response).json());
 }

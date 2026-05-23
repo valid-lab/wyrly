@@ -33,6 +33,7 @@ test("Symbol.asyncDispose on scoped instance", async () => {
   const T = token<{ [Symbol.asyncDispose](): Promise<void> }>("AsyncDispose");
 
   c.register(T, {
+    deps: [],
     useFactory: () => ({
       async [Symbol.asyncDispose]() {
         await Promise.resolve();

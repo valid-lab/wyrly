@@ -1,18 +1,7 @@
-import { createContainer } from "@wyrly/core";
-import { GetUsersByIdsUseCase } from "./application/get_users.ts";
-import { InMemoryUserRepository } from "./infrastructure/in_memory_user_repo.ts";
-import { registerUserLoader } from "./infrastructure/user_loader.ts";
-import { UserRepositoryToken } from "./domain/user.ts";
+import { createAppContainer } from "./composition/container.ts";
 import { createApp, listen } from "./presentation/app.ts";
 
-export const container = createContainer();
-
-container.register(UserRepositoryToken, {
-  useClass: InMemoryUserRepository,
-  lifetime: "scoped",
-});
-container.register(GetUsersByIdsUseCase);
-registerUserLoader(container);
+export const container = createAppContainer();
 
 const app = createApp(container);
 

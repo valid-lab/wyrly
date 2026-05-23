@@ -333,10 +333,8 @@ class ContainerImpl implements Container {
       }
 
       case "factory": {
-        for (const d of np.deps) {
-          resolveDep(d);
-        }
-        return np.useFactory!(scope) as T;
+        const args = np.deps.map((d) => resolveDep(d));
+        return np.useFactory!(scope, ...args) as T;
       }
 
       case "class": {

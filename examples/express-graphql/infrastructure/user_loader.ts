@@ -12,8 +12,9 @@ export const UserLoaderToken = token<UserLoader>("UserLoader");
 export function registerUserLoader(container: Container): void {
   container.register(UserLoaderToken, {
     lifetime: "scoped",
-    useFactory: (scope) => {
-      const useCase = scope.resolve(GetUsersByIdsUseCase);
+    deps: [GetUsersByIdsUseCase],
+    useFactory: (_scope, getUsersByIds) => {
+      const useCase = getUsersByIds as GetUsersByIdsUseCase;
       const cache = new Map<string, Promise<User | null>>();
 
       return {

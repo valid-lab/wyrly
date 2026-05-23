@@ -95,7 +95,7 @@ di.set(CurrentUserToken, { id: userId });
 
 ## 安定性
 
-`createServerDI` / `getDI()` の API 形状は v1.0 で安定です。内部で使う Next / React
+`createServerDI` / `getDI()` の API 形状は v2.0 で安定です。内部で使う Next / React
 の挙動はバージョンに依存するため、Next アップグレード時は adapter テストを再実行してください。
 
 ## 関連
