@@ -1,6 +1,7 @@
 # @wyrly/fresh
 
-Fresh 2.x 向け Wyrly DI — `di()` ミドルウェアと `withDI` ルートハンドラ（**JSR のみ**）。
+Fresh 2.x / Deno 向けの request-scoped DI。`reflect-metadata` 不要で、`di()` ミドルウェアと `withDI`
+ルートハンドラを扱えます（**JSR のみ**）。
 
 English: [README.md](./README.md)
 

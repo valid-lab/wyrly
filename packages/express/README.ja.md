@@ -1,6 +1,7 @@
 # @wyrly/express
 
-Express 向け Wyrly DI アダプター — `diMiddleware` で HTTP リクエストごとにスコープを張ります。
+Express 向けの request-scoped DI。`reflect-metadata` 不要で、`diMiddleware` により HTTP
+リクエストごとに 1 つの scope を扱えます。
 
 English: [README.md](./README.md)
 

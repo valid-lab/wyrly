@@ -1,5 +1,8 @@
 /**
- * Hono adapter for Wyrly DI — request scope via `di()` middleware and `getDI(c)`.
+ * Request-scoped dependency injection for Hono, Workers, and modern TypeScript.
+ *
+ * Use `di()` middleware and `getDI(c)` to create one explicit Wyrly DI scope per request without
+ * `reflect-metadata` or global mutable containers.
  *
  * @example
  * ```ts

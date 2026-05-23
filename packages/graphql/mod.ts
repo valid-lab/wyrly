@@ -1,5 +1,8 @@
 /**
- * GraphQL adapter for Wyrly DI — one scope per GraphQL request via `createGraphQLDIContext`.
+ * Request-scoped dependency injection for GraphQL and DataLoader-style resolver patterns.
+ *
+ * Use `createGraphQLDIContext` to give each GraphQL request one explicit Wyrly DI scope without
+ * `reflect-metadata` or global loader caches.
  *
  * @example
  * ```ts

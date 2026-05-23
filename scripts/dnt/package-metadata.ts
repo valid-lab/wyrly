@@ -9,6 +9,14 @@ const COMMON_KEYWORDS = [
   "dependency-injection",
   "di",
   "typescript",
+  "standard-decorators",
+  "decorators",
+  "reflect-metadata",
+  "no-reflect-metadata",
+  "request-scope",
+  "scoped",
+  "clean-architecture",
+  "ddd",
   "inversion-of-control",
   "ioc",
 ] as const;
@@ -32,17 +40,15 @@ export const PACKAGE_METADATA: Record<PackageId, PackageMetadata> = {
   core: {
     id: "core",
     npmName: "@wyrly/core",
-    description:
-      "Explicit DI for modern TypeScript — typed tokens, standard decorators, request scopes",
+    description: "Type-safe dependency injection for modern TypeScript without reflect-metadata",
     keywords: [
       ...COMMON_KEYWORDS,
       "deno",
       "jsr",
-      "decorators",
-      "clean-architecture",
-      "ddd",
-      "scoped",
+      "bun",
+      "workers",
       "container",
+      "dependency-graph",
     ],
     homepage: homepage("core"),
     bugs: BUGS,
@@ -51,12 +57,13 @@ export const PACKAGE_METADATA: Record<PackageId, PackageMetadata> = {
   express: {
     id: "express",
     npmName: "@wyrly/express",
-    description: "Wyrly DI adapter for Express — request scope via diMiddleware",
+    description: "Request-scoped dependency injection adapter for Express and TypeScript",
     keywords: [
       ...COMMON_KEYWORDS,
       "express",
       "middleware",
       "node",
+      "nodejs",
       "http",
     ],
     homepage: homepage("express"),
@@ -66,12 +73,15 @@ export const PACKAGE_METADATA: Record<PackageId, PackageMetadata> = {
   hono: {
     id: "hono",
     npmName: "@wyrly/hono",
-    description: "Wyrly DI adapter for Hono — request scope via di() middleware",
+    description: "Request-scoped dependency injection adapter for Hono, Workers, and TypeScript",
     keywords: [
       ...COMMON_KEYWORDS,
       "hono",
       "middleware",
+      "deno",
+      "jsr",
       "bun",
+      "workers",
       "cloudflare-workers",
       "edge",
     ],
@@ -82,12 +92,13 @@ export const PACKAGE_METADATA: Record<PackageId, PackageMetadata> = {
   graphql: {
     id: "graphql",
     npmName: "@wyrly/graphql",
-    description: "Wyrly DI adapter for GraphQL — one scope per request via createGraphQLDIContext",
+    description: "Request-scoped dependency injection context for GraphQL and DataLoader patterns",
     keywords: [
       ...COMMON_KEYWORDS,
       "graphql",
-      "request-scope",
       "context",
+      "dataloader",
+      "resolvers",
     ],
     homepage: homepage("graphql"),
     bugs: BUGS,
@@ -96,7 +107,7 @@ export const PACKAGE_METADATA: Record<PackageId, PackageMetadata> = {
   next: {
     id: "next",
     npmName: "@wyrly/next",
-    description: "Wyrly DI adapter for Next.js App Router — withDI and createServerDI",
+    description: "Request-scoped dependency injection for Next.js App Router and Server Components",
     keywords: [
       ...COMMON_KEYWORDS,
       "nextjs",
@@ -112,7 +123,7 @@ export const PACKAGE_METADATA: Record<PackageId, PackageMetadata> = {
   fresh: {
     id: "fresh",
     npmName: "@wyrly/fresh",
-    description: "Wyrly DI adapter for Fresh 2.x — di() middleware and withDI (JSR only)",
+    description: "Request-scoped dependency injection adapter for Fresh 2.x and Deno",
     keywords: [
       ...COMMON_KEYWORDS,
       "fresh",

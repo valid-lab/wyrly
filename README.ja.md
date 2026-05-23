@@ -5,15 +5,44 @@
 [![npm @wyrly/core](https://img.shields.io/npm/v/@wyrly/core)](https://www.npmjs.com/package/@wyrly/core)
 [![License](https://img.shields.io/github/license/valid-lab/wyrly)](https://github.com/valid-lab/wyrly/blob/main/LICENSE)
 
-> モダン TypeScript 向けの明示的 DI。
+> モダン TypeScript 向けの型安全な DI。`reflect-metadata` 不要。標準デコレーター対応。 Web
+> アプリのリクエストスコープまで扱える。
 
-English: [README.md](README.md) · [API（日本語）](API.ja.md) · [変更履歴（日本語）](CHANGELOG.ja.md) ·
-[公開手順（日本語）](PUBLISHING.ja.md) · [コントリビューション](CONTRIBUTING.ja.md) · [セキュリティ](SECURITY.ja.md) ·
-[Examples（日本語）](examples/README.ja.md)
+English: [README.md](README.md) · [API（日本語）](API.ja.md) · [変更履歴（日本語）](CHANGELOG.ja.md)
+· [公開手順（日本語）](PUBLISHING.ja.md) · [コントリビューション](CONTRIBUTING.ja.md) ·
+[セキュリティ](SECURITY.ja.md) · [Examples（日本語）](examples/README.ja.md)
 
-Wyrly DI は、明示的で解析しやすく型安全なアプリケーション構成のための依存性注入（DI）ツールキットです。
+Wyrly DI
+は、明示的で解析しやすく型安全なアプリケーション構成のための依存性注入（DI）ツールキットです。
 
-DDD、クリーンアーキテクチャ、リクエストスコープ、型付き token、標準デコレーター、各種フレームワーク adapter を想定した、モダン TypeScript アプリケーション向けに設計されています。
+legacy decorator metadata、自動的な実行時型推測、特定フレームワークへの密結合を避けたいモダン
+TypeScript アプリ向けに設計されています。型付き token、明示的な依存定義、リクエストスコープ、DDD /
+クリーンアーキテクチャ、薄い Web adapter を中心にしています。
+
+## まずここから
+
+ランタイムを選ぶ:
+
+| ランタイム  | インストール               | パッケージページ                                               |
+| ----------- | -------------------------- | -------------------------------------------------------------- |
+| Deno 2.x    | `deno add jsr:@wyrly/core` | [JSR `@wyrly/core`](https://jsr.io/@wyrly/core)                |
+| Node.js 20+ | `npm install @wyrly/core`  | [npm `@wyrly/core`](https://www.npmjs.com/package/@wyrly/core) |
+| Bun         | `bun add @wyrly/core`      | [npm `@wyrly/core`](https://www.npmjs.com/package/@wyrly/core) |
+
+フレームワークを選ぶ:
+
+| 使っているもの               | 最初に見る例                                                | 何を確認できるか                                                                  |
+| ---------------------------- | ----------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| Next.js App Router           | [`examples/next-ddd`](./examples/next-ddd/)                 | Route Handler、Server Action、Server Components で request-scoped DI を共有できる |
+| Hono / Cloudflare Workers    | [`examples/hono-api`](./examples/hono-api/)                 | Edge 寄りの middleware でリクエストごとに DI scope を作れる                       |
+| GraphQL / DataLoader         | [`examples/graphql-request`](./examples/graphql-request/)   | GraphQL リクエストごとの scoped loader と破棄を扱える                             |
+| DDD / クリーンアーキテクチャ | [`examples/basic-ddd`](./examples/basic-ddd/)               | port、use case、infrastructure を明示的に配線できる                               |
+| CI 検証                      | [`examples/dependency-graph`](./examples/dependency-graph/) | `inspect()` / `validate()` で依存グラフと lifetime 問題を検出できる               |
+
+比較・移行を検討している場合は [guides/COMPARE.ja.md](./guides/COMPARE.ja.md)、
+[guides/MIGRATING_FROM_TSYRINGE.ja.md](./guides/MIGRATING_FROM_TSYRINGE.ja.md)、
+[guides/MIGRATING_FROM_INVERSIFY.ja.md](./guides/MIGRATING_FROM_INVERSIFY.ja.md)
+を参照してください。
 
 ## コンセプト
 
@@ -24,7 +53,8 @@ for explicit, analyzable, type-safe application architecture.
 
 ## なぜ Wyrly DI か
 
-多くの TypeScript 向け DI ライブラリは、legacy decorators、`reflect-metadata`、`emitDecoratorMetadata` を前提にしています。
+多くの TypeScript 向け DI ライブラリは、legacy
+decorators、`reflect-metadata`、`emitDecoratorMetadata` を前提にしています。
 
 Wyrly DI は別のアプローチを取ります。
 
@@ -82,7 +112,8 @@ Wyrly DI は NestJS のクローンにはなりません。
 
 ## インストール
 
-**v1.0.0** — **JSR** または **npm** から利用するか、本リポジトリを workspace として開発します。公開の詳細は [PUBLISHING.ja.md](./PUBLISHING.ja.md) を参照してください。
+**v1.0.0** — **JSR** または **npm** から利用するか、本リポジトリを workspace
+として開発します。公開の詳細は [PUBLISHING.ja.md](./PUBLISHING.ja.md) を参照してください。
 
 ### JSR（Deno）
 
@@ -111,11 +142,15 @@ npm install @wyrly/core
 import { createContainer, token } from "@wyrly/core";
 ```
 
-adapter は必要に応じて追加します（例: `npm install @wyrly/next`）。**`@wyrly/fresh` は JSR のみ**（Fresh 2.x に npm パッケージはありません）。公開手順（[dnt](https://github.com/denoland/dnt) によるビルド）は [PUBLISHING.ja.md](./PUBLISHING.ja.md) を参照してください。
+adapter は必要に応じて追加します（例: `npm install @wyrly/next`）。**`@wyrly/fresh` は JSR
+のみ**（Fresh 2.x に npm パッケージはありません）。公開手順（[dnt](https://github.com/denoland/dnt)
+によるビルド）は [PUBLISHING.ja.md](./PUBLISHING.ja.md) を参照してください。
 
 ### Bun / Cloudflare Workers
 
-npm 公開の全パッケージ（`@wyrly/fresh` を除く）は **Node.js**（`compat/node`）と **Bun**（`compat/bun`）でスモークテスト。**Cloudflare Workers** は `@wyrly/core` と `@wyrly/hono`（`compat/workers`）。メンテナ向け: `deno task test:compat` — [PUBLISHING.ja.md](./PUBLISHING.ja.md) 参照。
+npm 公開の全パッケージ（`@wyrly/fresh` を除く）は **Node.js**（`compat/node`）と
+**Bun**（`compat/bun`）でスモークテスト。**Cloudflare Workers** は `@wyrly/core` と
+`@wyrly/hono`（`compat/workers`）。
 
 ### 本リポジトリでの開発（workspace）
 
@@ -338,7 +373,8 @@ app.get("/users/:id", async (req, res) => {
 });
 ```
 
-JSR 公開パッケージでは `declare global` が使えません。アプリ側で `Express.Request` を拡張する `.d.ts` を置くこともできます。
+JSR 公開パッケージでは `declare global` が使えません。アプリ側で `Express.Request` を拡張する
+`.d.ts` を置くこともできます。
 
 ## Hono の例
 
@@ -418,7 +454,9 @@ export const GET = withDI(appContainer, async (req, { di, params }) => {
 });
 ```
 
-**Server Components**（`createServerDI`、`getDI()`、`cache()` と `after()` によるリクエストスコープ）については [guides/SERVER_COMPONENTS.ja.md](./guides/SERVER_COMPONENTS.ja.md) を参照してください。
+**Server Components**（`createServerDI`、`getDI()`、`cache()` と `after()`
+によるリクエストスコープ）については
+[guides/SERVER_COMPONENTS.ja.md](./guides/SERVER_COMPONENTS.ja.md) を参照してください。
 
 ## DDD 向けの構成
 
@@ -559,11 +597,14 @@ legacy decorators より標準デコレーター。
 
 ## ランタイムの言語（i18n）
 
-エラーや `validate()` の表示文は実行環境（`LANG`、`WYRLY_LOCALE` など）から自動判定されます。`container.validate({ locale: "ja" })` でも指定できます。
+エラーや `validate()` の表示文は実行環境（`LANG`、`WYRLY_LOCALE`
+など）から自動判定されます。`container.validate({ locale: "ja" })` でも指定できます。
 
 ## API の安定性
 
-**1.0.0** 以降、公開 API は [API.ja.md](./API.ja.md) に列挙し、[Semantic Versioning](https://semver.org/lang/ja/) に従います。リリース内容は [CHANGELOG.ja.md](./CHANGELOG.ja.md) を参照してください。
+**1.0.0** 以降、公開 API は [API.ja.md](./API.ja.md)
+に列挙し、[Semantic Versioning](https://semver.org/lang/ja/) に従います。リリース内容は
+[CHANGELOG.ja.md](./CHANGELOG.ja.md) を参照してください。
 
 ## ロードマップ
 
@@ -583,7 +624,8 @@ legacy decorators より標準デコレーター。
 
 ## Deno での開発
 
-本リポジトリは **Deno workspace** です（[`deno.jsonc`](./deno.jsonc) を参照）。ライブラリは `packages/*` にあり、`@wyrly/core` などの bare specifier で import します。
+本リポジトリは **Deno workspace** です（[`deno.jsonc`](./deno.jsonc) を参照）。ライブラリは
+`packages/*` にあり、`@wyrly/core` などの bare specifier で import します。
 
 要件:
 
@@ -609,10 +651,14 @@ deno task example:provider-patterns
 deno task example:dependency-graph
 ```
 
-JSR や `npm:` 依存を追加したら、再現性のため生成された **`deno.lock`** をコミットしてください。npm パッケージを多く使う場合は [Deno ドキュメント](https://docs.deno.com/) に従い `deno.jsonc` で `nodeModulesDir` を検討してください。
+JSR や `npm:` 依存を追加したら、再現性のため生成された **`deno.lock`** をコミットしてください。npm
+パッケージを多く使う場合は [Deno ドキュメント](https://docs.deno.com/) に従い `deno.jsonc` で
+`nodeModulesDir` を検討してください。
 
 ## ステータス
 
-**v1.0.0** — `@wyrly/core` と各 adapter は [API.ja.md](./API.ja.md) に記載の公開面を安定版として扱います。Issue は各プロジェクトのトラッカーへ。
+**v1.0.0** — `@wyrly/core` と各 adapter は [API.ja.md](./API.ja.md)
+に記載の公開面を安定版として扱います。Issue は各プロジェクトのトラッカーへ。
 
-コントリビュータ向け: [AGENT.md](./AGENT.md)（英語）。利用者向け日本語: [README.ja.md](README.ja.md)、[API.ja.md](API.ja.md)、[CHANGELOG.ja.md](CHANGELOG.ja.md)。
+コントリビュータ向け: [AGENT.md](./AGENT.md)（英語）。利用者向け日本語:
+[README.ja.md](README.ja.md)、[API.ja.md](API.ja.md)、[CHANGELOG.ja.md](CHANGELOG.ja.md)。

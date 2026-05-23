@@ -10,6 +10,12 @@ English: [README.md](./README.md)
 | `presentation/server_action.ts`    | `withActionDI`   | `app/actions/user.ts`         |
 | `presentation/server_component.ts` | `createServerDI` | `app/users/[id]/page.tsx`     |
 
+## この example で確認できること
+
+- Route Handler、Server Action、Server Components が同じ明示的な composition model を共有できる。
+- `@wyrly/next` でグローバルな可変コンテナに頼らず request-scoped DI を扱える。
+- App Router の入口が分かれていても、DDD の境界を見える形で保てる。
+
 ## 実行
 
 ```sh

@@ -13,6 +13,13 @@ Japanese: [README.ja.md](./README.ja.md)
 | infrastructure | In-memory repository                      |
 | presentation   | `di()` + `X-User-Id` → `CurrentUserToken` |
 
+## What this example proves
+
+- `@wyrly/hono` can create one DI scope per request in a Hono app.
+- Request data such as `X-User-Id` can be exposed as scoped dependencies.
+- The same DDD composition root can run in Node.js, Bun, or Cloudflare Workers-oriented Hono
+  deployments.
+
 ## Run
 
 ```sh

@@ -1,6 +1,7 @@
 # @wyrly/express
 
-Wyrly DI adapter for Express — one request scope per HTTP request via `diMiddleware`.
+Request-scoped dependency injection for Express and modern TypeScript without `reflect-metadata` —
+one scope per HTTP request via `diMiddleware`.
 
 Japanese: [README.ja.md](./README.ja.md)
 
@@ -39,6 +40,7 @@ app.get("/users/:id", (req, res) => {
 - [@wyrly/core](../core/README.md)
 - [API reference](https://github.com/valid-lab/wyrly/blob/main/API.md)
 - [Monorepo README](https://github.com/valid-lab/wyrly/blob/main/README.md)
+- [Express DDD example](https://github.com/valid-lab/wyrly/tree/main/examples/express-api)
 
 ## Related packages
 

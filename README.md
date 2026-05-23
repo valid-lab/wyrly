@@ -5,17 +5,43 @@
 [![npm @wyrly/core](https://img.shields.io/npm/v/@wyrly/core)](https://www.npmjs.com/package/@wyrly/core)
 [![License](https://img.shields.io/github/license/valid-lab/wyrly)](https://github.com/valid-lab/wyrly/blob/main/LICENSE)
 
-> Explicit DI for modern TypeScript.
+> Type-safe dependency injection for modern TypeScript. No `reflect-metadata`. Standard decorators.
+> Request scopes for web apps.
 
 Japanese: [README.ja.md](./README.ja.md)
 
 Contributing: [CONTRIBUTING.md](CONTRIBUTING.md) · Security: [SECURITY.md](SECURITY.md)
 
-Wyrly DI is a Wyrly DI dependency injection toolkit designed for explicit, analyzable, type-safe
-application architecture.
+Wyrly DI is a dependency injection toolkit for explicit, analyzable, type-safe application
+architecture.
 
-It is built for modern TypeScript applications using DDD, Clean Architecture, request scopes, typed
-tokens, standard decorators, and framework adapters.
+Use it when you want DI for modern TypeScript apps without legacy decorator metadata, automatic
+runtime type guessing, or framework lock-in. It is built around typed tokens, explicit dependencies,
+request scopes, DDD / Clean Architecture, and thin adapters for web frameworks.
+
+## Start here
+
+Choose your runtime:
+
+| Runtime     | Install                    | Package page                                                   |
+| ----------- | -------------------------- | -------------------------------------------------------------- |
+| Deno 2.x    | `deno add jsr:@wyrly/core` | [JSR `@wyrly/core`](https://jsr.io/@wyrly/core)                |
+| Node.js 20+ | `npm install @wyrly/core`  | [npm `@wyrly/core`](https://www.npmjs.com/package/@wyrly/core) |
+| Bun         | `bun add @wyrly/core`      | [npm `@wyrly/core`](https://www.npmjs.com/package/@wyrly/core) |
+
+Choose your framework:
+
+| If you use...             | Start with                                                  | What it proves                                                                    |
+| ------------------------- | ----------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| Next.js App Router        | [`examples/next-ddd`](./examples/next-ddd/)                 | Route Handlers, Server Actions, and Server Components can share request-scoped DI |
+| Hono / Cloudflare Workers | [`examples/hono-api`](./examples/hono-api/)                 | Edge-friendly middleware can create one DI scope per request                      |
+| GraphQL / DataLoader      | [`examples/graphql-request`](./examples/graphql-request/)   | One GraphQL request can own scoped loaders and dispose them cleanly               |
+| DDD / Clean Architecture  | [`examples/basic-ddd`](./examples/basic-ddd/)               | Ports, use cases, and infrastructure can be wired explicitly                      |
+| CI validation             | [`examples/dependency-graph`](./examples/dependency-graph/) | `inspect()` / `validate()` can catch graph and lifetime issues                    |
+
+Comparing options? See [guides/COMPARE.md](./guides/COMPARE.md),
+[guides/MIGRATING_FROM_TSYRINGE.md](./guides/MIGRATING_FROM_TSYRINGE.md), and
+[guides/MIGRATING_FROM_INVERSIFY.md](./guides/MIGRATING_FROM_INVERSIFY.md).
 
 ## Concept
 
@@ -115,11 +141,15 @@ npm install @wyrly/core
 import { createContainer, token } from "@wyrly/core";
 ```
 
-Add adapters as needed (for example `npm install @wyrly/next`). **`@wyrly/fresh` is JSR-only** (Fresh 2.x has no npm package). See [PUBLISHING.md](./PUBLISHING.md) for release steps (built with [dnt](https://github.com/denoland/dnt)).
+Add adapters as needed (for example `npm install @wyrly/next`). **`@wyrly/fresh` is JSR-only**
+(Fresh 2.x has no npm package). See [PUBLISHING.md](./PUBLISHING.md) for release steps (built with
+[dnt](https://github.com/denoland/dnt)).
 
 ### Bun / Cloudflare Workers
 
-All npm packages (`@wyrly/core`, adapters except `@wyrly/fresh`) are smoke-tested on **Node.js** (`compat/node`) and **Bun** (`compat/bun`). **Cloudflare Workers** covers `@wyrly/core` and `@wyrly/hono` (`compat/workers`). Maintainers: `deno task test:compat` (Node/npm and Bun). See [PUBLISHING.md](./PUBLISHING.md).
+All npm packages (`@wyrly/core`, adapters except `@wyrly/fresh`) are smoke-tested on **Node.js**
+(`compat/node`) and **Bun** (`compat/bun`). **Cloudflare Workers** covers `@wyrly/core` and
+`@wyrly/hono` (`compat/workers`).
 
 ### Workspace development (this repository)
 

@@ -37,6 +37,12 @@ In a real app, register the same factory from your composition root and resolve 
 `ctx.di` in resolvers. See
 [`@wyrly/graphql` `createGraphQLDIContext`](../../packages/graphql/context.ts).
 
+## What this example proves
+
+- A GraphQL request can own exactly one DI scope and one scoped loader instance.
+- DataLoader-style request caches can be modeled as normal scoped dependencies.
+- Resolver code can depend on `ctx.di` without hiding dependency ownership in globals.
+
 ## Layout
 
 | Layer          | Role                               |

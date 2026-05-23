@@ -1,11 +1,23 @@
 # @wyrly/core
 
-モダン TypeScript 向けの明示的 DI — 型付きトークン、標準デコレータ、リクエストスコープ。
+モダン TypeScript 向けの型安全な DI。`reflect-metadata`、`emitDecoratorMetadata`、parameter
+decorators は不要です。
+
+`@wyrly/core` は、フレームワークに密結合せず、明示的な依存定義、型付き
+token、標準デコレーター、リクエストスコープ、解析可能な依存グラフを使いたいときの中核パッケージです。
 
 **ランタイム:** [Deno 2.x（JSR）](#インストールdeno--jsr) ·
 [Node.js 20+ / Bun（npm）](#インストールnodejs--bun--npm)
 
 English: [README.md](./README.md)
+
+## Wyrly DI を選ぶ場面
+
+- legacy decorator metadata ではなく、TypeScript 標準デコレーターで DI したい。
+- interface ベースの依存を型付き token で安全に注入したい。
+- Next.js、Hono、Express、Fresh、GraphQL などで request scope を扱いたい。
+- CI で依存グラフを inspect / validate したい。
+- DDD / クリーンアーキテクチャ向けに composition root で明示的に配線したい。
 
 ## ランタイム
 
@@ -86,6 +98,8 @@ try {
 
 - [API リファレンス](https://github.com/valid-lab/wyrly/blob/main/API.ja.md)
 - [リポジトリ README](https://github.com/valid-lab/wyrly/blob/main/README.ja.md)
+- [比較ガイド](https://github.com/valid-lab/wyrly/blob/main/guides/COMPARE.ja.md)
+- [Examples](https://github.com/valid-lab/wyrly/blob/main/examples/README.ja.md)
 - [公開手順・ランタイム](https://github.com/valid-lab/wyrly/blob/main/PUBLISHING.ja.md)
 
 ## 関連パッケージ

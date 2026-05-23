@@ -22,6 +22,12 @@ English: [README.md](./README.md)
 本番では composition root で同様に登録し、resolver から `ctx.di.resolve(UserLoaderToken)`
 します。[`createGraphQLDIContext`](../../packages/graphql/context.ts) を参照。
 
+## この example で確認できること
+
+- GraphQL リクエストごとに 1 つの DI scope と 1 つの scoped loader instance を所有できる。
+- DataLoader 風の request cache を通常の scoped dependency として表現できる。
+- resolver は global に依存を隠さず、`ctx.di` から依存を解決できる。
+
 ## 構成
 
 | レイヤー       | 役割                            |

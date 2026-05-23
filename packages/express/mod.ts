@@ -1,5 +1,8 @@
 /**
- * Express adapter for Wyrly DI — one scope per HTTP request via `diMiddleware`.
+ * Request-scoped dependency injection for Express and modern TypeScript.
+ *
+ * Use `diMiddleware` to create one explicit Wyrly DI scope per HTTP request without
+ * `reflect-metadata` or parameter decorators.
  *
  * @example
  * ```ts

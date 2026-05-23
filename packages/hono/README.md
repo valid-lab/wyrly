@@ -1,6 +1,7 @@
 # @wyrly/hono
 
-Wyrly DI adapter for Hono — request scope via `di()` middleware and `getDI(c)`.
+Request-scoped dependency injection for Hono, Cloudflare Workers, and modern TypeScript without
+`reflect-metadata` — use `di()` middleware and `getDI(c)`.
 
 Japanese: [README.ja.md](./README.ja.md)
 
@@ -40,6 +41,7 @@ app.get("/users/:id", (c) => {
 - [@wyrly/core](../core/README.md)
 - [API reference](https://github.com/valid-lab/wyrly/blob/main/API.md)
 - [Monorepo README](https://github.com/valid-lab/wyrly/blob/main/README.md)
+- [Hono DDD example](https://github.com/valid-lab/wyrly/tree/main/examples/hono-api)
 
 ## Related packages
 

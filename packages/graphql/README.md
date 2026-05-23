@@ -1,6 +1,7 @@
 # @wyrly/graphql
 
-Wyrly DI adapter for GraphQL — one scope per GraphQL request via `createGraphQLDIContext`.
+Request-scoped dependency injection for GraphQL and DataLoader-style resolver patterns without
+`reflect-metadata` — one scope per request via `createGraphQLDIContext`.
 
 Japanese: [README.ja.md](./README.ja.md)
 
@@ -35,6 +36,7 @@ const context = async ({ req, res }: { req: Request; res: Response }) =>
 - [@wyrly/core](../core/README.md)
 - [API reference](https://github.com/valid-lab/wyrly/blob/main/API.md)
 - [Monorepo README](https://github.com/valid-lab/wyrly/blob/main/README.md)
+- [GraphQL DataLoader example](https://github.com/valid-lab/wyrly/tree/main/examples/graphql-request)
 
 ## Related packages
 

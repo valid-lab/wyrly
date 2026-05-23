@@ -1,5 +1,8 @@
 /**
- * Next.js 15+ adapter for Wyrly DI — route handlers (`withDI`) and Server Components (`createServerDI`).
+ * Request-scoped dependency injection for Next.js 15+ App Router without `reflect-metadata`.
+ *
+ * Use route handlers (`withDI`), Server Actions (`withActionDI`), and Server Components
+ * (`createServerDI`) with the same explicit Wyrly DI composition root.
  *
  * @example
  * ```ts

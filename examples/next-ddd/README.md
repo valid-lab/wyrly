@@ -10,6 +10,14 @@ Japanese: [README.ja.md](./README.ja.md)
 | `presentation/server_action.ts`    | `withActionDI`   | `app/actions/user.ts`         |
 | `presentation/server_component.ts` | `createServerDI` | `app/users/[id]/page.tsx`     |
 
+## What this example proves
+
+- Route Handlers, Server Actions, and Server Components can share the same explicit composition
+  model.
+- `@wyrly/next` can create request-scoped DI without relying on global mutable containers.
+- DDD boundaries stay visible even when the presentation layer uses different App Router entry
+  points.
+
 ## Run
 
 ```sh

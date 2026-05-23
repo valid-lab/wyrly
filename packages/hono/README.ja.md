@@ -1,6 +1,7 @@
 # @wyrly/hono
 
-Hono 向け Wyrly DI アダプター — `di()` ミドルウェアと `getDI(c)` でリクエストスコープ。
+Hono / Cloudflare Workers 向けの request-scoped DI。`reflect-metadata` 不要で、`di()` ミドルウェアと
+`getDI(c)` によりリクエストごとに 1 つの scope を扱えます。
 
 English: [README.md](./README.md)
 

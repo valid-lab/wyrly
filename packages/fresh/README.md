@@ -1,6 +1,7 @@
 # @wyrly/fresh
 
-Wyrly DI adapter for Fresh 2.x — `di()` middleware and `withDI` route handlers.
+Request-scoped dependency injection for Fresh 2.x and Deno without `reflect-metadata` — `di()`
+middleware and `withDI` route handlers.
 
 Japanese: [README.ja.md](./README.ja.md)
 
@@ -43,6 +44,7 @@ the monorepo.
 - [@wyrly/core](../core/README.md) (JSR)
 - [API reference](https://github.com/valid-lab/wyrly/blob/main/API.md)
 - [Publishing](https://github.com/valid-lab/wyrly/blob/main/PUBLISHING.md)
+- [Fresh routes example](https://github.com/valid-lab/wyrly/tree/main/examples/fresh-routes)
 
 ## Related packages
 

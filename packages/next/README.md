@@ -1,7 +1,7 @@
 # @wyrly/next
 
-Wyrly DI adapter for Next.js 15+ App Router — route handlers (`withDI`) and Server Components
-(`createServerDI`).
+Request-scoped dependency injection for Next.js 15+ App Router without `reflect-metadata` — route
+handlers (`withDI`), Server Actions (`withActionDI`), and Server Components (`createServerDI`).
 
 Japanese: [README.ja.md](./README.ja.md)
 
@@ -40,6 +40,7 @@ For Server Components, use `createServerDI` — see
 - [@wyrly/core](../core/README.md)
 - [API reference](https://github.com/valid-lab/wyrly/blob/main/API.md)
 - [Monorepo README](https://github.com/valid-lab/wyrly/blob/main/README.md)
+- [Next.js DDD example](https://github.com/valid-lab/wyrly/tree/main/examples/next-ddd)
 
 ## Related packages
 

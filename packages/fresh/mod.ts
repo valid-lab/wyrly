@@ -1,5 +1,8 @@
 /**
- * Fresh 2.x adapter for Wyrly DI — `di()` middleware and `withDI` route handlers (JSR only).
+ * Request-scoped dependency injection for Fresh 2.x and Deno (JSR only).
+ *
+ * Use `di()` middleware and `withDI` route handlers to create explicit Wyrly DI scopes without
+ * `reflect-metadata` or global mutable containers.
  *
  * @example
  * ```ts

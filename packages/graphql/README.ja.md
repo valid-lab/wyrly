@@ -1,6 +1,7 @@
 # @wyrly/graphql
 
-GraphQL 向け Wyrly DI — `createGraphQLDIContext` でリクエストごとに 1 スコープ。
+GraphQL / DataLoader 風 resolver 向けの request-scoped DI。`reflect-metadata` 不要で、
+`createGraphQLDIContext` によりリクエストごとに 1 つの scope を扱えます。
 
 English: [README.md](./README.md)
 

@@ -1,5 +1,8 @@
 /**
- * Explicit DI for modern TypeScript — typed tokens, standard decorators, and request scopes.
+ * Type-safe dependency injection for modern TypeScript without `reflect-metadata`.
+ *
+ * Wyrly DI uses typed tokens, explicit dependencies, standard decorators, request scopes, and an
+ * inspectable graph instead of legacy decorator metadata or parameter decorators.
  *
  * @example
  * ```ts

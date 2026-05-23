@@ -10,6 +10,12 @@ Japanese: [README.ja.md](./README.ja.md)
 - Standard `@Injectable` with explicit `deps`
 - `scoped` lifetime and `dispose`
 
+## What this example proves
+
+- Wyrly DI can wire a DDD-style use case without `reflect-metadata` or parameter decorators.
+- Interface-based ports remain type-safe through `token<T>()`.
+- A request-like scope can own scoped services and be disposed explicitly.
+
 ## Run
 
 ```sh

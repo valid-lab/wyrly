@@ -1,7 +1,8 @@
 # @wyrly/next
 
-Next.js 15+ App Router 向け Wyrly DI — ルートハンドラ（`withDI`）と Server
-Components（`createServerDI`）。
+Next.js 15+ App Router 向けの request-scoped DI。`reflect-metadata` 不要で、Route
+Handler（`withDI`）、Server Action（`withActionDI`）、Server
+Components（`createServerDI`）を扱えます。
 
 English: [README.md](./README.md)
 

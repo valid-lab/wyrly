@@ -14,6 +14,12 @@ English: [README.md](./README.md)
 | presentation     | `presentation/routes.ts`                | `di()` + `X-User-Id` → `CurrentUserToken` |
 | composition root | `main.ts`                               | `export const container`                  |
 
+## この example で確認できること
+
+- `@wyrly/hono` で Hono アプリのリクエストごとに 1 つの DI scope を作れる。
+- `X-User-Id` のようなリクエスト由来の値を scoped dependency として扱える。
+- 同じ DDD composition root を Node.js、Bun、Cloudflare Workers 寄りの Hono 配置に持ち込める。
+
 ## 実行
 
 ```sh
