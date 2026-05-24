@@ -3,7 +3,7 @@ title: "なぜ Wyrly?"
 description: "Wyrly DI の設計判断。"
 ---
 
-多くの TypeScript DI libraries は、legacy decorators、`reflect-metadata`、
+多くの TypeScript DI ライブラリは、legacy decorators、`reflect-metadata`、
 `emitDecoratorMetadata` を前提に設計されてきました。
 
 Wyrly は別のアプローチを取ります。依存関係は明示的で、トークンは型付きで、コアパッケージ
@@ -11,18 +11,18 @@ Wyrly は別のアプローチを取ります。依存関係は明示的で、�
 
 ## 設計目標
 
-- TypeScript standard decorators で動く
+- TypeScript 標準デコレーターで動く
 - `reflect-metadata` を避ける
 - `emitDecoratorMetadata` を避ける
 - parameter decorators を避ける
-- 依存関係を明示的で reviewable にする
+- 依存関係を明示的でレビューしやすい形にする
 - リクエストスコープの Web アプリケーションをサポートする
-- domain と application code を framework-independent に保つ
-- CI と tooling 向けに dependency graph inspection を提供する
+- ドメインとアプリケーションコードをフレームワーク非依存に保つ
+- CI やツール向けに依存グラフの検査機能を提供する
 
 ## DDD と Clean Architecture
 
-DDD や Clean Architecture の codebase では、application services が port に依存することがよくあります。
+DDD や Clean Architecture のコードベースでは、application services が port に依存することがよくあります。
 
 ```ts
 interface PaymentGateway {
@@ -30,15 +30,13 @@ interface PaymentGateway {
 }
 ```
 
-Wyrly では、その依存関係を typed token として model 化し、composition root で infrastructure
-adapter に bind できます。
+Wyrly では、その依存関係を型付きトークンとしてモデル化し、composition root でインフラアダプターにバインドできます。
 
-これにより、domain language を code の近くに保ちながら、inner layers から database、HTTP
-client、SDK、framework API への import を避けられます。
+これにより、ドメイン言語をコードの近くに保ちながら、内側の層からデータベース、HTTP クライアント、SDK、フレームワーク API への import を避けられます。
 
 ## 暗黙的な自動化より明示性
 
-Wyrly は意図的に dependency declarations を必要とします。
+Wyrly は意図的に依存宣言を必要とします。
 
 ```ts
 @Injectable({ deps: [UserRepositoryToken] })
@@ -47,20 +45,17 @@ class GetUserUseCase {
 }
 ```
 
-この 1 行により、依存グラフが人間にも tooling にも見えるようになります。また、runtime や bundler
-によって挙動が変わる runtime metadata への依存も避けられます。
+この 1 行により、依存グラフが人間にもツールにも見えるようになります。また、ランタイムやバンドラーによって挙動が変わる実行時メタデータへの依存も避けられます。
 
 ## Request scopes
 
-Web apps では、1 request につき 1 dependency scope が必要になることがよくあります。Wyrly
-は core package で scoped lifetimes を support し、popular frameworks 向けに薄い adapters
-を提供します。
+Web アプリでは、1 リクエストにつき 1 つの依存スコープが必要になることがよくあります。Wyrly はコアパッケージでスコープ付きライフタイムをサポートし、主要フレームワーク向けに薄いアダプターを提供します。
 
-Request scope は次のような用途に使います。
+リクエストスコープは次のような用途に使います。
 
-- request context
-- authenticated user context
-- unit-of-work objects
-- DataLoader instances
-- request-local caches
-- disposable resources
+- リクエストコンテキスト
+- 認証済みユーザーコンテキスト
+- unit-of-work オブジェクト
+- DataLoader インスタンス
+- リクエストローカルなキャッシュ
+- 破棄が必要なリソース

@@ -1,6 +1,6 @@
 ---
 title: "Lifetimes and scopes"
-description: "Wyrly DI における singleton、scoped、transient dependencies の挙動。"
+description: "Wyrly DI における singleton、scoped、transient な依存関係の挙動。"
 ---
 
 ライフタイムは、解決されたインスタンスがどれだけ長く生きるかを定義します。
@@ -21,15 +21,15 @@ container.register(LoggerToken, {
 よい候補:
 
 - loggers
-- configuration readers
-- pure policies
-- stateless mappers
+- 設定リーダー
+- 純粋なポリシー
+- ステートレスなマッパー
 
-Request state を singleton に入れることは避けてください。
+リクエスト固有の状態を singleton に持たせることは避けてください。
 
 ## Scoped
 
-`scoped` は 1 request または 1 unit of work の中で再利用すべき dependencies に使います。
+`scoped` は 1 リクエストまたは 1 単位の処理の中で再利用すべき依存関係に使います。
 
 ```ts
 container.register(UserRepositoryToken, {
@@ -40,10 +40,10 @@ container.register(UserRepositoryToken, {
 
 よい候補:
 
-- request context
-- request transaction に bound された repositories
-- DataLoader instances
-- request-local caches
+- リクエストコンテキスト
+- リクエストトランザクションに紐づくリポジトリ
+- DataLoader インスタンス
+- リクエストローカルなキャッシュ
 
 ## Transient
 
@@ -57,8 +57,7 @@ Transient は、状態を共有する必要がない、短期間だけ使うオ�
 
 ## Request scopes
 
-Web frameworks では、request が始まると request scope が作られ、request が終わると dispose
-されます。
+Web フレームワークでは、リクエストが始まるとリクエストスコープが作られ、リクエストが終わると破棄されます。
 
 ```ts
 const scope = container.createScope();
@@ -70,7 +69,7 @@ try {
 }
 ```
 
-対応している framework では、adapter がこれを自動で行います。
+対応しているフレームワークでは、アダプターがこれを自動で行います。
 
 ## Lifetime validation
 

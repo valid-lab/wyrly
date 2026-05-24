@@ -1,6 +1,6 @@
 ---
 title: "Core model"
-description: "Wyrly DI の中核となる objects: tokens、providers、containers、scopes、lifetimes。"
+description: "Wyrly DI の中核となるオブジェクト: トークン、プロバイダー、コンテナ、スコープ、ライフタイム。"
 ---
 
 Wyrly の core model は小さく保たれています。ほとんどの application で必要なのは、tokens、
@@ -64,15 +64,15 @@ try {
 | `scoped` | scope につき 1 instance |
 | `transient` | resolution ごとに新しい instance |
 
-Dependency の state と resource ownership に合う、最も狭い lifetime を選んでください。
+依存関係の状態とリソースの所有権に合う、最も狭いライフタイムを選んでください。
 
 ## Validation
 
 本番環境に出す前に依存グラフの問題を検出するには、`container.validate()` を使います。
 
-- missing providers
-- circular dependencies
-- invalid provider shapes
-- lifetime violations
+- プロバイダーの不足
+- 循環依存
+- 不正なプロバイダー定義
+- ライフタイム違反
 
 検証は依存の組み立てを検査可能な成果物にできるため、CI で特に有用です。

@@ -1,17 +1,17 @@
 ---
 title: "Examples"
-description: "Wyrly DI を学ぶための実行可能な examples。"
+description: "Wyrly DI を学ぶための実行可能なサンプル。"
 ---
 
 Wyrly のリポジトリには実行可能なサンプルが含まれています。それぞれのサンプルは、1 つのシナリオと 1 つの学習目標に絞っています。
 
 ## おすすめの学習順
 
-1. Core examples から始める。
-2. Graph inspection と validation を学ぶ。
-3. 自分の framework に合う adapter へ進む。
+1. コアサンプルから始める。
+2. グラフ検査と検証を学ぶ。
+3. 自分のフレームワークに合うアダプターへ進む。
 
-## Core examples
+## コアサンプル
 
 | Folder | Topic | Run |
 | --- | --- | --- |
@@ -20,13 +20,13 @@ Wyrly のリポジトリには実行可能なサンプルが含まれていま�
 | `examples/provider-patterns` | `useValue`、`useFactory`、`useExisting` | `deno task example:provider-patterns` |
 | `examples/dependency-graph` | `inspect()` と `validate()` | `deno task example:dependency-graph` |
 
-すべての core examples を実行する:
+すべてのコアサンプルを実行する:
 
 ```sh
 deno task examples:core
 ```
 
-## Adapter examples
+## アダプターサンプル
 
 | Folder | Package | Run |
 | --- | --- | --- |
@@ -37,7 +37,7 @@ deno task examples:core
 | `examples/fresh-routes` | `@wyrly/fresh` | `deno task example:fresh-routes` |
 | `examples/next-ddd` | `@wyrly/next` | `deno task example:next-ddd` |
 
-すべての adapter examples を実行する:
+すべてのアダプターサンプルを実行する:
 
 ```sh
 deno task examples:adapters
@@ -49,7 +49,7 @@ deno task examples:adapters
 deno task examples
 ```
 
-Express examples には `net` permission が必要です。
+Express サンプルには `net` パーミッションが必要です。
 
 ## サンプルを composition root の参考にする
 

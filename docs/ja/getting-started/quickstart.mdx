@@ -3,7 +3,7 @@ title: "Quickstart"
 description: "型付きトークンを作成し、プロバイダーを登録して、スコープから use case を解決します。"
 ---
 
-この guide では、Wyrly の最小構成を示します。typed port、concrete implementation、use case、request-like scope の 4 要素を使います。
+この guide では、Wyrly の最小構成を示します。型付きポート、具体的な実装、use case、リクエスト風スコープの 4 要素を使います。
 
 ## Token を作る
 
@@ -41,7 +41,7 @@ class GetUserUseCase {
 }
 ```
 
-## Providers を登録する
+## プロバイダーを登録する
 
 具体的な実装は composition root で登録します。
 
@@ -62,7 +62,7 @@ container.register(UserRepositoryToken, {
 container.register(GetUserUseCase);
 ```
 
-## Scope から resolve する
+## スコープから解決する
 
 リクエスト単位の処理では scope を作り、リクエストが終わったら破棄します。
 
@@ -78,7 +78,7 @@ try {
 }
 ```
 
-## Graph を validate する
+## グラフを検証する
 
 テストや CI で検証を実行すると、プロバイダーの不足やライフタイムの問題を早期に検出できます。
 

@@ -1,10 +1,9 @@
 ---
 title: "インストール"
-description: "Deno、Node.js、Bun、対応 web frameworks 向けに Wyrly DI をインストールします。"
+description: "Deno、Node.js、Bun、対応 Web フレームワーク向けに Wyrly DI をインストールします。"
 ---
 
-まず `@wyrly/core` をインストールします。Framework adapter は、アプリで必要になったときだけ
-追加してください。
+まず `@wyrly/core` をインストールします。フレームワークアダプターは、アプリで必要になったときだけ追加してください。
 
 ## Deno 2.x
 
@@ -22,7 +21,7 @@ import { createContainer, Injectable, token } from "@wyrly/core";
 
 ## Node.js 20+
 
-Node.js と bundler-based applications では npm を使います。
+Node.js とバンドラーベースのアプリケーションでは npm を使います。
 
 ```sh
 npm install @wyrly/core
@@ -34,7 +33,7 @@ import { createContainer, Injectable, token } from "@wyrly/core";
 
 ## Bun
 
-Bun では npm package を使います。
+Bun では npm パッケージを使います。
 
 ```sh
 bun add @wyrly/core
@@ -46,7 +45,7 @@ import { createContainer, Injectable, token } from "@wyrly/core";
 
 ## Framework adapters
 
-runtime に合う adapter をインストールします。
+ランタイムに合うアダプターをインストールします。
 
 | Runtime | Package |
 | --- | --- |
@@ -65,10 +64,10 @@ npm install @wyrly/next @wyrly/core
 ## 要件
 
 - TypeScript 5+
-- Standard decorators
+- 標準デコレーター
 - `experimentalDecorators: false`
-- ESM-compatible runtime または bundler
-- Deno 2.x、Node.js 20+、Bun、または対応 web framework
+- ESM 対応のランタイムまたはバンドラー
+- Deno 2.x、Node.js 20+、Bun、または対応 Web フレームワーク
 
 Wyrly は `reflect-metadata` や `emitDecoratorMetadata` を必要としません。
 

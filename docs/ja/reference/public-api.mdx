@@ -9,24 +9,24 @@ description: "Wyrly DI v2.0 の安定した public exports。"
 
 ## `@wyrly/core`
 
-Core entrypoint:
+コアのエントリポイント:
 
 ```ts
 import { createContainer, Injectable, token } from "@wyrly/core";
 ```
 
-Common exports:
+主なエクスポート:
 
 | Export | Purpose |
 | --- | --- |
-| `token` | typed injection token を作成する |
-| `Injectable` | explicit `deps` と `lifetime` のための standard decorator |
-| `createContainer` | root DI container を作成する |
-| `graphToJson` | dependency graph を JSON に serialize する |
-| `graphToDot` | dependency graph を DOT に serialize する |
-| `graphToMermaid` | dependency graph を Mermaid に serialize する |
+| `token` | 型付きインジェクショントークンを作成する |
+| `Injectable` | 明示的な `deps` と `lifetime` のための標準デコレーター |
+| `createContainer` | ルート DI コンテナを作成する |
+| `graphToJson` | 依存グラフを JSON にシリアライズする |
+| `graphToDot` | 依存グラフを DOT にシリアライズする |
+| `graphToMermaid` | 依存グラフを Mermaid にシリアライズする |
 
-Core types include:
+コアの型:
 
 - `Token`
 - `ClassToken`

@@ -41,7 +41,7 @@ app.use(diMiddleware(container));
 
 ## Hono
 
-Hono adapter は edge-friendly な request scopes に使います。
+Hono アダプターはエッジ向けのリクエストスコープに使います。
 
 ```ts
 import { di, getDI } from "@wyrly/hono";
@@ -57,7 +57,7 @@ app.get("/users/:id", async (c) => {
 
 ## Fresh
 
-Fresh 2.x applications では `@wyrly/fresh` を使います。この package は JSR で公開されています。
+Fresh 2.x アプリケーションでは `@wyrly/fresh` を使います。このパッケージは JSR で公開されています。
 
 ```sh
 deno add jsr:@wyrly/fresh
