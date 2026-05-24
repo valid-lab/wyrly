@@ -1,0 +1,56 @@
+---
+title: "概要"
+description: "Wyrly DI とは何か、どんなときに使うべきか。"
+---
+
+Wyrly DI は、モダン TypeScript アプリケーション向けの小さな dependency injection
+ツールキットです。
+
+runtime type guessing ではなく、明示的な wiring を重視します。アプリケーションは必要な
+依存関係を宣言し、composition root で具体的な provider を登録し、container または
+request scope から use case を resolve します。
+
+## Wyrly を選ぶとき
+
+次のものが必要なら Wyrly を選んでください。
+
+- Standard decorators で動く TypeScript DI
+- Interface-based dependencies のための typed tokens
+- Web applications 向け request scopes
+- Framework-independent な core package
+- CI 向けの dependency graph inspection と validation
+- DDD や Clean Architecture と相性のよい設計スタイル
+
+## Wyrly を選ばないとき
+
+Wyrly は full application framework や NestJS clone を目指していません。
+
+意図的に避けているもの:
+
+- automatic constructor type metadata
+- legacy decorators
+- parameter decorators
+- global container magic
+- auto-scan や glob registration
+- core package における framework coupling
+
+## Architecture fit
+
+Wyrly は domain と application code を framework details から独立させます。
+
+```ts
+interface UserRepository {
+  findById(id: string): Promise<User | null>;
+}
+
+const UserRepositoryToken = token<UserRepository>("UserRepository");
+```
+
+Domain 側の contract は application layer に残し、具体的な implementation は infrastructure
+code に置いて、アプリの外側で wiring できます。
+
+## 次のステップ
+
+- [Installation](/ja/getting-started/installation) で core package をインストールする
+- [Quickstart](/ja/getting-started/quickstart) で最初の container を作る
+- [Core model](/ja/concepts/core-model) で mental model を学ぶ

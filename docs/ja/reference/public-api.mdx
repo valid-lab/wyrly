@@ -1,0 +1,56 @@
+---
+title: "Public API"
+description: "Wyrly DI v2.0 の安定した public exports。"
+---
+
+このページでは、Wyrly DI v2.0 の安定した public API surface をまとめます。
+
+Repository の `API.md` に記載されていないものは、internal modules や deep imports を含め、
+semver guarantee の対象外です。
+
+## `@wyrly/core`
+
+Core entrypoint:
+
+```ts
+import { createContainer, Injectable, token } from "@wyrly/core";
+```
+
+Common exports:
+
+| Export | Purpose |
+| --- | --- |
+| `token` | typed injection token を作成する |
+| `Injectable` | explicit `deps` と `lifetime` のための standard decorator |
+| `createContainer` | root DI container を作成する |
+| `graphToJson` | dependency graph を JSON に serialize する |
+| `graphToDot` | dependency graph を DOT に serialize する |
+| `graphToMermaid` | dependency graph を Mermaid に serialize する |
+
+Core types include:
+
+- `Token`
+- `ClassToken`
+- `InjectionToken`
+- `Lifetime`
+- `Container`
+- `Scope`
+- `Provider`
+- `DependencyGraph`
+- `ValidationResult`
+
+## Adapter packages
+
+| Package | Key exports |
+| --- | --- |
+| `@wyrly/express` | `diMiddleware`, `ExpressRequestToken`, `ExpressResponseToken` |
+| `@wyrly/hono` | `di`, `getDI`, `HonoContextToken`, `RequestToken` |
+| `@wyrly/fresh` | `di`, `withDI`, `FreshContextToken`, `RequestToken` |
+| `@wyrly/graphql` | `createGraphQLDIContext`, `GraphQLRequestToken`, `GraphQLResponseToken` |
+| `@wyrly/next` | `withDI`, `withActionDI`, `createServerDI`, `NextRequestToken` |
+
+## Full API list
+
+完全な public API list は repository にあります。
+
+[API.md](https://github.com/valid-lab/wyrly/blob/main/API.md)

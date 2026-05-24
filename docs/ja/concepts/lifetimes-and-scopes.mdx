@@ -1,0 +1,86 @@
+---
+title: "Lifetimes and scopes"
+description: "Wyrly DI における singleton、scoped、transient dependencies の挙動。"
+---
+
+Lifetimes は、resolve された instances がどれだけ長く生きるかを定義します。
+
+適切な lifetime を選ぶことで、state ownership が明確になり、request-specific dependencies
+が users や requests をまたいで漏れることを防げます。
+
+## Singleton
+
+`singleton` は stateless services や process-wide dependencies に使います。
+
+```ts
+container.register(LoggerToken, {
+  useClass: ConsoleLogger,
+  lifetime: "singleton",
+});
+```
+
+よい候補:
+
+- loggers
+- configuration readers
+- pure policies
+- stateless mappers
+
+Request state を singleton に入れることは避けてください。
+
+## Scoped
+
+`scoped` は 1 request または 1 unit of work の中で再利用すべき dependencies に使います。
+
+```ts
+container.register(UserRepositoryToken, {
+  useClass: UserRepository,
+  lifetime: "scoped",
+});
+```
+
+よい候補:
+
+- request context
+- request transaction に bound された repositories
+- DataLoader instances
+- request-local caches
+
+## Transient
+
+`transient` は、resolve のたびに新しい instance を作るべきときに使います。
+
+```ts
+container.register(ReportBuilder);
+```
+
+Transient は、shared state requirement を持たない短命な objects に有用です。
+
+## Request scopes
+
+Web frameworks では、request が始まると request scope が作られ、request が終わると dispose
+されます。
+
+```ts
+const scope = container.createScope();
+
+try {
+  await handleRequest(scope);
+} finally {
+  await scope.dispose();
+}
+```
+
+可能な場所では、framework adapters がこれを代わりに行います。
+
+## Lifetime validation
+
+Wyrly は lifetime relationships を validate できます。たとえば singleton は scoped dependency
+に依存すべきではありません。そうすると request-specific state を process-wide instance
+に捕まえてしまうためです。
+
+Test や CI の一部として validation を実行してください。
+
+```ts
+const result = container.validate();
+```

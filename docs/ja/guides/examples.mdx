@@ -1,0 +1,58 @@
+---
+title: "Examples"
+description: "Wyrly DI を学ぶための実行可能な examples。"
+---
+
+Wyrly repository には実行可能な examples が含まれています。それぞれの example は、1 つの
+scenario と 1 つの learning goal に絞っています。
+
+## おすすめの学習順
+
+1. Core examples から始める。
+2. Graph inspection と validation を学ぶ。
+3. 自分の framework に合う adapter へ進む。
+
+## Core examples
+
+| Folder | Topic | Run |
+| --- | --- | --- |
+| `examples/basic-ddd` | tokens、`@Injectable`、scoped lifetimes、disposal | `deno task example:basic-ddd` |
+| `examples/explicit-deps` | decorators なしの explicit `register({ deps })` | `deno task example:explicit-deps` |
+| `examples/provider-patterns` | `useValue`、`useFactory`、`useExisting` | `deno task example:provider-patterns` |
+| `examples/dependency-graph` | `inspect()` と `validate()` | `deno task example:dependency-graph` |
+
+すべての core examples を実行する:
+
+```sh
+deno task examples:core
+```
+
+## Adapter examples
+
+| Folder | Package | Run |
+| --- | --- | --- |
+| `examples/hono-api` | `@wyrly/hono` | `deno task example:hono-api` |
+| `examples/express-api` | `@wyrly/express` | `deno task example:express-api` |
+| `examples/graphql-request` | scoped DataLoader 付きの `@wyrly/graphql` | `deno task example:graphql-request` |
+| `examples/express-graphql` | Express and GraphQL | `deno task example:express-graphql` |
+| `examples/fresh-routes` | `@wyrly/fresh` | `deno task example:fresh-routes` |
+| `examples/next-ddd` | `@wyrly/next` | `deno task example:next-ddd` |
+
+すべての adapter examples を実行する:
+
+```sh
+deno task examples:adapters
+```
+
+## すべて実行する
+
+```sh
+deno task examples
+```
+
+Express examples には `net` permission が必要です。
+
+## Examples を composition-root の参考にする
+
+Examples は意図的に小さく作られています。Provider registration をどこに置くべきか、request
+scopes をどう作るか、framework code から application use cases にどう処理を渡すかを確認するために使ってください。

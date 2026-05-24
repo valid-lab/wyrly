@@ -1,0 +1,34 @@
+---
+title: "Releases"
+description: "Wyrly DI の release notes と versioning policy。"
+---
+
+Wyrly packages は `1.0.0` から Semantic Versioning に従います。
+
+## Versioning policy
+
+- Major: documented public symbol、signature、runtime behavior の削除または破壊的変更
+- Minor: new exports または backward-compatible additions
+- Patch: API changes を伴わない bug fixes
+
+Stable public API surface は [Public API](/ja/reference/public-api) に記載しています。
+
+## v2.0.0
+
+Wyrly DI v2.0.0 は現在の stable release line です。
+
+Highlights:
+
+- standard-decorator-first DI model
+- typed tokens
+- singleton、scoped、transient lifetimes
+- request scopes
+- dependency graph inspection
+- graph と lifetime issues の validation
+- Next.js、Express、Hono、Fresh、GraphQL 向け framework adapters
+
+## Full changelog
+
+詳細な release entries は repository changelog を参照してください。
+
+[CHANGELOG.md](https://github.com/valid-lab/wyrly/blob/main/CHANGELOG.md)

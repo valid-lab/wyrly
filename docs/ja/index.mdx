@@ -1,0 +1,71 @@
+---
+title: "Wyrly DI"
+description: "モダン TypeScript アプリケーション向けの型安全な依存性注入。"
+---
+
+Wyrly DI は、明示的で解析しやすく、型安全なアプリケーションアーキテクチャのための
+依存性注入ツールキットです。
+
+レガシーな decorator metadata、自動的な runtime type guessing、framework lock-in
+なしで、モダン TypeScript アプリに DI を導入したいときに使います。
+
+<CardGroup cols={2}>
+  <Card title="はじめる" icon="rocket" href="/ja/getting-started/installation">
+    Deno、Node.js、Bun 向けに `@wyrly/core` をインストールし、最初の container
+    を作ります。
+  </Card>
+  <Card title="なぜ Wyrly?" icon="sparkles" href="/ja/concepts/why-wyrly">
+    Wyrly が typed tokens、明示的な依存定義、standard decorators を使う理由を学びます。
+  </Card>
+  <Card title="Framework adapters" icon="plug" href="/ja/guides/framework-adapters">
+    Next.js、Express、Hono、Fresh、GraphQL に request-scoped DI を追加します。
+  </Card>
+  <Card title="API reference" icon="code" href="/ja/reference/public-api">
+    Wyrly DI v2.0 の安定した public exports を確認します。
+  </Card>
+</CardGroup>
+
+## Wyrly が向いている用途
+
+Wyrly は、明確な composition root、明示的な依存関係、framework に依存しない domain
+code を重視する TypeScript アプリケーション向けに設計されています。
+
+特に DDD や Clean Architecture と相性がよく、use case は port に依存し、外側の layer
+で typed token を通じて具体的な infrastructure を wiring します。
+
+## 中核となる考え方
+
+- `reflect-metadata` なし
+- `emitDecoratorMetadata` なし
+- parameter decorators なし
+- Type-safe tokens
+- 明示的な依存定義
+- Singleton、scoped、transient lifetimes
+- Web framework 向け request scopes
+- inspection と validation が可能な dependency graph
+
+## Packages
+
+| Package | Purpose |
+| --- | --- |
+| `@wyrly/core` | Core container、typed tokens、lifetimes、validation、graph inspection |
+| `@wyrly/next` | Next.js App Router request-scoped DI |
+| `@wyrly/express` | 1 request につき 1 DI scope を作る Express middleware |
+| `@wyrly/hono` | Edge-friendly な DI scope を作る Hono middleware |
+| `@wyrly/fresh` | Fresh 2.x middleware と route helpers |
+| `@wyrly/graphql` | GraphQL request context integration |
+
+## まず example から始める
+
+初めて Wyrly を使う場合は、core quickstart から始め、その後で runtime に合う adapter
+を選んでください。
+
+<CardGroup cols={2}>
+  <Card title="Core quickstart" icon="play" href="/ja/getting-started/quickstart">
+    Repository implementation を登録し、scope から use case を resolve します。
+  </Card>
+  <Card title="Examples" icon="folder-open" href="/ja/guides/examples">
+    DDD、provider patterns、graph validation、web frameworks 向けの実行可能な examples
+    を確認します。
+  </Card>
+</CardGroup>

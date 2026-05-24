@@ -14,28 +14,27 @@
   "icons": {
     "library": "lucide"
   },
-  "navbar": {
-    "primary": {
-      "type": "button",
-      "label": "Get Started",
-      "href": "/getting-started/installation"
-    },
-    "links": [
-      {
-        "label": "GitHub",
-        "href": "https://github.com/valid-lab/wyrly"
-      },
-      {
-        "label": "Support us",
-        "href": "/support-us"
-      }
-    ]
-  },
   "navigation": {
-    "tabs": [
+    "languages": [
       {
-        "tab": "Documentation",
-        "icon": "book-open",
+        "language": "en",
+        "navbar": {
+          "primary": {
+            "type": "button",
+            "label": "Get Started",
+            "href": "/getting-started/installation"
+          },
+          "links": [
+            {
+              "label": "GitHub",
+              "href": "https://github.com/valid-lab/wyrly"
+            },
+            {
+              "label": "Support us",
+              "href": "/support-us"
+            }
+          ]
+        },
         "groups": [
           {
             "group": "Start here",
@@ -70,13 +69,7 @@
               "support-us",
               "changelog/releases"
             ]
-          }
-        ]
-      },
-      {
-        "tab": "Reference",
-        "icon": "code",
-        "groups": [
+          },
           {
             "group": "API",
             "pages": [
@@ -84,7 +77,144 @@
               "reference/packages"
             ]
           }
-        ]
+        ],
+        "footer": {
+          "socials": {
+            "github": "https://github.com/valid-lab/wyrly"
+          },
+          "links": [
+            {
+              "header": "Project",
+              "items": [
+                {
+                  "label": "GitHub",
+                  "href": "https://github.com/valid-lab/wyrly"
+                },
+                {
+                  "label": "Contributing",
+                  "href": "/contributing/overview"
+                },
+                {
+                  "label": "Support us",
+                  "href": "/support-us"
+                }
+              ]
+            },
+            {
+              "header": "Packages",
+              "items": [
+                {
+                  "label": "JSR @wyrly/core",
+                  "href": "https://jsr.io/@wyrly/core"
+                },
+                {
+                  "label": "npm @wyrly/core",
+                  "href": "https://www.npmjs.com/package/@wyrly/core"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "language": "ja",
+        "navbar": {
+          "primary": {
+            "type": "button",
+            "label": "はじめる",
+            "href": "/ja/getting-started/installation"
+          },
+          "links": [
+            {
+              "label": "GitHub",
+              "href": "https://github.com/valid-lab/wyrly"
+            },
+            {
+              "label": "支援する",
+              "href": "/ja/support-us"
+            }
+          ]
+        },
+        "groups": [
+          {
+            "group": "はじめに",
+            "pages": [
+              "ja/index",
+              "ja/introduction/overview",
+              "ja/getting-started/installation",
+              "ja/getting-started/quickstart"
+            ]
+          },
+          {
+            "group": "Concepts",
+            "pages": [
+              "ja/concepts/why-wyrly",
+              "ja/concepts/core-model",
+              "ja/concepts/lifetimes-and-scopes"
+            ]
+          },
+          {
+            "group": "Guides",
+            "pages": [
+              "ja/guides/framework-adapters",
+              "ja/guides/examples",
+              "ja/configuration/typescript",
+              "ja/troubleshooting/common-issues"
+            ]
+          },
+          {
+            "group": "Project",
+            "pages": [
+              "ja/contributing/overview",
+              "ja/support-us",
+              "ja/changelog/releases"
+            ]
+          },
+          {
+            "group": "API",
+            "pages": [
+              "ja/reference/public-api",
+              "ja/reference/packages"
+            ]
+          }
+        ],
+        "footer": {
+          "socials": {
+            "github": "https://github.com/valid-lab/wyrly"
+          },
+          "links": [
+            {
+              "header": "Project",
+              "items": [
+                {
+                  "label": "GitHub",
+                  "href": "https://github.com/valid-lab/wyrly"
+                },
+                {
+                  "label": "Contributing",
+                  "href": "/ja/contributing/overview"
+                },
+                {
+                  "label": "支援する",
+                  "href": "/ja/support-us"
+                }
+              ]
+            },
+            {
+              "header": "Packages",
+              "items": [
+                {
+                  "label": "JSR @wyrly/core",
+                  "href": "https://jsr.io/@wyrly/core"
+                },
+                {
+                  "label": "npm @wyrly/core",
+                  "href": "https://www.npmjs.com/package/@wyrly/core"
+                }
+              ]
+            }
+          ]
+        }
       }
     ],
     "global": {
@@ -106,42 +236,5 @@
         }
       ]
     }
-  },
-  "footer": {
-    "socials": {
-      "github": "https://github.com/valid-lab/wyrly"
-    },
-    "links": [
-      {
-        "header": "Project",
-        "items": [
-          {
-            "label": "GitHub",
-            "href": "https://github.com/valid-lab/wyrly"
-          },
-          {
-            "label": "Contributing",
-            "href": "/contributing/overview"
-          },
-          {
-            "label": "Support us",
-            "href": "/support-us"
-          }
-        ]
-      },
-      {
-        "header": "Packages",
-        "items": [
-          {
-            "label": "JSR @wyrly/core",
-            "href": "https://jsr.io/@wyrly/core"
-          },
-          {
-            "label": "npm @wyrly/core",
-            "href": "https://www.npmjs.com/package/@wyrly/core"
-          }
-        ]
-      }
-    ]
   }
 }

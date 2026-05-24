@@ -1,0 +1,68 @@
+---
+title: "TypeScript configuration"
+description: "Wyrly の standard-decorator model 向けに TypeScript を設定します。"
+---
+
+Wyrly は TypeScript standard decorators 向けに設計されています。
+
+`reflect-metadata`、`emitDecoratorMetadata`、parameter decorators は必要ありません。
+
+## 推奨設定
+
+TypeScript projects では standard decorators を使います。
+
+```json
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "experimentalDecorators": false,
+    "emitDecoratorMetadata": false,
+    "strict": true
+  }
+}
+```
+
+正確な `module` と `moduleResolution` の値は runtime や build tool によって変わりますが、
+legacy decorator metadata を有効にすることは避けてください。
+
+## Deno
+
+Deno 2.x users は JSR からインストールします。
+
+```sh
+deno add jsr:@wyrly/core
+```
+
+その後、configured bare specifier から import します。
+
+```ts
+import { createContainer, Injectable, token } from "@wyrly/core";
+```
+
+## Node.js and Bun
+
+Node.js と Bun users は npm からインストールします。
+
+```sh
+npm install @wyrly/core
+```
+
+可能な限り ESM を使います。
+
+```json
+{
+  "type": "module"
+}
+```
+
+## reflect metadata setup は不要
+
+これは追加しないでください。
+
+```ts
+import "reflect-metadata";
+```
+
+Wyrly は runtime parameter types を読みません。Dependencies は tokens と `deps` で明示的に宣言します。

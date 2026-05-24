@@ -1,0 +1,80 @@
+---
+title: "Framework adapters"
+description: "Next.js、Express、Hono、Fresh、GraphQL で Wyrly DI を使います。"
+---
+
+Wyrly は framework integration を薄く保ちます。Core package は tokens、providers、containers、
+scopes、validation、graph inspection を担当します。Adapters は request scopes を作り、
+framework-native な方法で expose します。
+
+## Next.js App Router
+
+Install:
+
+```sh
+npm install @wyrly/next @wyrly/core next react
+```
+
+Route Handlers では `withDI` を使います。
+
+```ts
+import { createContainer } from "@wyrly/core";
+import { withDI } from "@wyrly/next";
+
+const container = createContainer();
+
+export const GET = withDI(container, async (_req, { di }) => {
+  const usecase = di.resolve(MyUseCase);
+  return Response.json(await usecase.run());
+});
+```
+
+Next.js adapter は Server Actions と Server Components 向けの helpers も提供します。
+
+## Express
+
+Express adapter を使うと、1 request につき 1 scope を作り、request object から access できます。
+
+```ts
+import { diMiddleware } from "@wyrly/express";
+
+app.use(diMiddleware(container));
+```
+
+## Hono
+
+Hono adapter は edge-friendly な request scopes に使います。
+
+```ts
+import { di, getDI } from "@wyrly/hono";
+
+app.use("*", di(container));
+
+app.get("/users/:id", async (c) => {
+  const scope = getDI(c);
+  const usecase = scope.resolve(GetUserUseCase);
+  return c.json(await usecase.execute(c.req.param("id")));
+});
+```
+
+## Fresh
+
+Fresh 2.x applications では `@wyrly/fresh` を使います。この package は JSR で公開されています。
+
+```sh
+deno add jsr:@wyrly/fresh
+```
+
+## GraphQL
+
+各 GraphQL request が DI scope と request-local loaders を所有すべき場合は、GraphQL adapter
+を使います。
+
+これは DataLoader instances、request context、authentication state、disposable resources
+に有用です。
+
+## Adapter は edge で選ぶ
+
+Framework adapters は application の outer layer に置いてください。Domain objects と use cases
+は `Request`、`Response`、framework context objects ではなく、ports と value objects
+に依存すべきです。

@@ -1,0 +1,85 @@
+---
+title: "インストール"
+description: "Deno、Node.js、Bun、対応 web frameworks 向けに Wyrly DI をインストールします。"
+---
+
+まず `@wyrly/core` をインストールします。Framework adapter は、アプリで必要になったときだけ
+追加してください。
+
+## Deno 2.x
+
+Deno project では JSR を使います。
+
+```sh
+deno add jsr:@wyrly/core
+```
+
+その後、`@wyrly/core` から import します。
+
+```ts
+import { createContainer, Injectable, token } from "@wyrly/core";
+```
+
+## Node.js 20+
+
+Node.js と bundler-based applications では npm を使います。
+
+```sh
+npm install @wyrly/core
+```
+
+```ts
+import { createContainer, Injectable, token } from "@wyrly/core";
+```
+
+## Bun
+
+Bun から npm package を使います。
+
+```sh
+bun add @wyrly/core
+```
+
+```ts
+import { createContainer, Injectable, token } from "@wyrly/core";
+```
+
+## Framework adapters
+
+runtime に合う adapter をインストールします。
+
+| Runtime | Package |
+| --- | --- |
+| Next.js App Router | `@wyrly/next` |
+| Express | `@wyrly/express` |
+| Hono | `@wyrly/hono` |
+| Fresh 2.x | `@wyrly/fresh` |
+| GraphQL request context | `@wyrly/graphql` |
+
+たとえば Next.js adapter は次のようにインストールします。
+
+```sh
+npm install @wyrly/next @wyrly/core
+```
+
+## 要件
+
+- TypeScript 5+
+- Standard decorators
+- `experimentalDecorators: false`
+- ESM-compatible runtime または bundler
+- Deno 2.x、Node.js 20+、Bun、または対応 web framework
+
+Wyrly は `reflect-metadata` や `emitDecoratorMetadata` を必要としません。
+
+## Local repository development
+
+Wyrly 自体へ貢献する場合:
+
+```sh
+git clone https://github.com/valid-lab/wyrly.git
+cd wyrly
+deno task setup:hooks
+deno task check
+deno task test
+```

@@ -1,0 +1,57 @@
+---
+title: "Packages"
+description: "Wyrly DI packages と install 先。"
+---
+
+Wyrly は、焦点を絞った小さな package set として公開されています。
+
+## Package matrix
+
+| Package | Deno JSR | npm | Description |
+| --- | --- | --- | --- |
+| `@wyrly/core` | yes | yes | Core container、tokens、lifetimes、validation |
+| `@wyrly/express` | yes | yes | Express 5 middleware |
+| `@wyrly/hono` | yes | yes | Hono middleware |
+| `@wyrly/graphql` | yes | yes | GraphQL request scope |
+| `@wyrly/next` | yes | yes | Next.js App Router helpers |
+| `@wyrly/fresh` | yes | no | Fresh 2.x helpers |
+
+## Core package
+
+まず core package をインストールします。
+
+```sh
+deno add jsr:@wyrly/core
+```
+
+または:
+
+```sh
+npm install @wyrly/core
+```
+
+## 必要に応じて adapters を追加する
+
+Next.js application の場合:
+
+```sh
+npm install @wyrly/next @wyrly/core
+```
+
+Hono application の場合:
+
+```sh
+deno add jsr:@wyrly/hono jsr:@wyrly/core
+```
+
+Express application の場合:
+
+```sh
+npm install @wyrly/express @wyrly/core
+```
+
+## Registry links
+
+- [JSR `@wyrly/core`](https://jsr.io/@wyrly/core)
+- [npm `@wyrly/core`](https://www.npmjs.com/package/@wyrly/core)
+- [GitHub repository](https://github.com/valid-lab/wyrly)

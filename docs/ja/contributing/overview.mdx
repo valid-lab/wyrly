@@ -1,0 +1,53 @@
+---
+title: "Contributing"
+description: "Wyrly DI への貢献方法。"
+---
+
+Contributions are welcome.
+
+Wyrly は、モダン TypeScript における明示的で型安全な dependency injection のための OSS
+project です。よい contribution は、明示的な dependency model を弱めることなく、correctness、
+documentation、examples、framework integration を改善します。
+
+## Repository
+
+Source は GitHub にあります。
+
+[github.com/valid-lab/wyrly](https://github.com/valid-lab/wyrly)
+
+## Local setup
+
+```sh
+git clone https://github.com/valid-lab/wyrly.git
+cd wyrly
+deno task setup:hooks
+deno task check
+deno task test
+```
+
+## Pull request を開く前に
+
+変更に合う checks を実行してください。
+
+```sh
+deno task check
+deno task test
+deno task examples
+```
+
+Documentation-only changes の場合も、links と examples が正しい packages、examples、guides
+を指していることを確認してください。
+
+## Contribution guidelines
+
+- Core package は framework-independent に保つ。
+- runtime type guessing より明示的な dependency declarations を優先する。
+- `reflect-metadata` や legacy decorator requirements を追加しない。
+- Adapters は薄く、framework-specific に保つ。
+- 挙動が変わるときは examples を追加または更新する。
+- User-facing code changes と同じ PR で `docs/` も更新する。
+
+## Security
+
+Security reports については public issue を開かないでください。現在の reporting process は
+repository の `SECURITY.md` を参照してください。

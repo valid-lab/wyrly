@@ -1,0 +1,99 @@
+---
+title: "Quickstart"
+description: "typed token を作り、providers を登録し、scope から use case を resolve します。"
+---
+
+この guide では、Wyrly の最小構成を示します。typed port、concrete implementation、use
+case、request-like scope を使います。
+
+## Token を作る
+
+Token は interface-based dependencies を runtime でも type-safe に保つために使います。
+
+```ts
+import { createContainer, Injectable, token } from "@wyrly/core";
+
+interface User {
+  id: string;
+}
+
+interface UserRepository {
+  findById(id: string): Promise<User | null>;
+}
+
+const UserRepositoryToken = token<UserRepository>("UserRepository");
+```
+
+## Use case を定義する
+
+`@Injectable` は依存関係を明示的に宣言します。Wyrly は constructor parameter types を runtime
+で読みません。
+
+```ts
+@Injectable({
+  deps: [UserRepositoryToken],
+  lifetime: "scoped",
+})
+class GetUserUseCase {
+  constructor(private readonly users: UserRepository) {}
+
+  execute(id: string) {
+    return this.users.findById(id);
+  }
+}
+```
+
+## Providers を登録する
+
+具体的な implementation は composition root で登録します。
+
+```ts
+class InMemoryUserRepository implements UserRepository {
+  async findById(id: string): Promise<User | null> {
+    return { id };
+  }
+}
+
+const container = createContainer();
+
+container.register(UserRepositoryToken, {
+  useClass: InMemoryUserRepository,
+  lifetime: "scoped",
+});
+
+container.register(GetUserUseCase);
+```
+
+## Scope から resolve する
+
+request-level の作業には scope を作り、request が終わったら dispose します。
+
+```ts
+const scope = container.createScope();
+
+try {
+  const usecase = scope.resolve(GetUserUseCase);
+  const user = await usecase.execute("user-1");
+  console.log(user);
+} finally {
+  await scope.dispose();
+}
+```
+
+## Graph を validate する
+
+tests や CI で validation を実行すると、missing providers や lifetime problems を早期に検出できます。
+
+```ts
+const result = container.validate();
+
+if (!result.ok) {
+  throw new Error(result.issues.map((issue) => issue.message).join("\n"));
+}
+```
+
+## 次のステップ
+
+- [core model](/ja/concepts/core-model) を学ぶ
+- [framework adapter](/ja/guides/framework-adapters) を選ぶ
+- 実行可能な [examples](/ja/guides/examples) を確認する

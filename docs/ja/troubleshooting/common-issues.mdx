@@ -1,0 +1,70 @@
+---
+title: "Common issues"
+description: "Wyrly DI の setup と runtime でよくある問題を解決します。"
+---
+
+このページでは、setup と runtime でよくある問題をまとめます。
+
+## Provider not found
+
+Container が token または class を resolve できない場合、provider が不足しています。
+
+Composition root で provider を登録しているか確認してください。
+
+```ts
+container.register(UserRepositoryToken, {
+  useClass: PrismaUserRepository,
+  lifetime: "scoped",
+});
+```
+
+`deps` で使っている token と registration で使っている token が同じかも確認してください。
+
+## Scoped dependency resolved from root
+
+Scoped dependencies は root container ではなく、scope から resolve してください。
+
+```ts
+const scope = container.createScope();
+
+try {
+  const usecase = scope.resolve(GetUserUseCase);
+} finally {
+  await scope.dispose();
+}
+```
+
+Framework adapters は request scopes を代わりに作ります。
+
+## Singleton depends on scoped dependency
+
+Singleton は request-specific state を捕まえるべきではありません。Validation が lifetime violation
+を報告した場合は、その dependency を scoped または transient lifetime に移すか、singleton
+が request-local data に依存しないよう design を変えてください。
+
+## Decorator metadata is not being read
+
+これは期待される挙動です。Wyrly は `reflect-metadata` や `emitDecoratorMetadata` を使いません。
+
+Dependencies は明示的に宣言してください。
+
+```ts
+@Injectable({ deps: [UserRepositoryToken] })
+class GetUserUseCase {
+  constructor(private readonly users: UserRepository) {}
+}
+```
+
+## Request state leaks between users
+
+Lifetimes を確認してください。Authenticated user context、DataLoader instances、transactions、
+request-local caches などの request-specific objects は通常 `scoped` にすべきです。
+
+## Graph validation fails in CI
+
+Validation failures は wiring errors として扱います。Issue message を読み、provider registration、
+dependency token、lifetime relationship を確認してください。
+
+```ts
+const result = container.validate();
+```
