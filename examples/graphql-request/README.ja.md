@@ -26,7 +26,7 @@ English: [README.md](./README.md)
 
 - GraphQL リクエストごとに 1 つの DI scope と 1 つの scoped loader instance を所有できる。
 - DataLoader 風の request cache を通常の scoped dependency として表現できる。
-- resolver は global に依存を隠さず、`ctx.di` から依存を解決できる。
+- resolver はグローバルな依存の隠蔽に頼らず、`ctx.di` から依存を解決できる。
 
 ## 構成
 

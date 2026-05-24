@@ -16,7 +16,7 @@ English: [README.md](./README.md)
 deno task example:provider-patterns
 ```
 
-## 次のステップ: リクエスト scoped factory
+## 次のステップ: リクエストスコープの factory
 
 ルートの `useFactory` のあと、**リクエストごとの scope** に紐づく factory（GraphQL
 DataLoader）を学ぶ:

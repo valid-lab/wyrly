@@ -87,7 +87,7 @@ container.register(GetUserUseCase);
 - 依存関係がレビュー担当者や静的解析ツールから見える場所に列挙される。
 - 標準デコレーターで十分になり、legacy metadata は不要になる。
 - request scope が明示的になり、HTTP / GraphQL request lifetime と揃えられる。
-- Wyrly core API から graph を export / validate できる。
+- Wyrly のコア API から依存グラフをエクスポート・検証できる。
 
 ## 最初に移行しやすい対象
 

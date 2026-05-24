@@ -15,7 +15,7 @@ peer dependency: **express ^5.0.0**
 
 ## 要件
 
-- [`@wyrly/core`](../core/README.ja.md) の要件を満たすこと
+- [`@wyrly/core`](../core/README.ja.md) の要件
 - **Express 5.x**
 
 ## クイックスタート
@@ -35,7 +35,8 @@ app.get("/users/:id", (req, res) => {
 });
 ```
 
-scoped resource の非同期 cleanup 失敗を観測したい場合は `onDisposeError` を使います。
+スコープ付きリソースの非同期クリーンアップが失敗したときに検知したい場合は `onDisposeError`
+を使います。
 
 ```ts
 app.use(diMiddleware(container, {

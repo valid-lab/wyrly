@@ -15,7 +15,7 @@ English: [README.md](./README.md)
 | フォルダ                                  | 内容                                    | 実行                                  |
 | ----------------------------------------- | --------------------------------------- | ------------------------------------- |
 | [basic-ddd](./basic-ddd/)                 | token, `@Injectable`, scoped, `dispose` | `deno task example:basic-ddd`         |
-| [explicit-deps](./explicit-deps/)         | デコレターなし `register({ deps })`     | `deno task example:explicit-deps`     |
+| [explicit-deps](./explicit-deps/)         | デコレーターなし `register({ deps })`   | `deno task example:explicit-deps`     |
 | [provider-patterns](./provider-patterns/) | `useValue`, `useFactory`, `useExisting` | `deno task example:provider-patterns` |
 | [dependency-graph](./dependency-graph/)   | `inspect()`, `validate()`               | `deno task example:dependency-graph`  |
 

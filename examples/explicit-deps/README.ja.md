@@ -1,6 +1,6 @@
 # explicit-deps
 
-デコレターなしで `register({ deps: [...] })` だけで依存を宣言する例です。
+デコレーターなしで `register({ deps: [...] })` だけで依存を宣言する例です。
 
 English: [README.md](./README.md)
 
@@ -17,7 +17,7 @@ deno task example:explicit-deps
 
 ## 関連
 
-| トピック       | Example                                    |
-| -------------- | ------------------------------------------ |
-| デコレター利用 | [basic-ddd](../basic-ddd/)                 |
-| factory        | [provider-patterns](../provider-patterns/) |
+| トピック         | Example                                    |
+| ---------------- | ------------------------------------------ |
+| デコレーター利用 | [basic-ddd](../basic-ddd/)                 |
+| factory          | [provider-patterns](../provider-patterns/) |

@@ -5,7 +5,8 @@
 
 ## この example で確認できること
 
-- Express middleware で request 由来の値を handler 前に scoped application value へマップできる。
+- Express
+  ミドルウェアでリクエスト由来の値をハンドラの前にスコープ付きのアプリケーション値へ変換できる。
 - route params を presentation 境界で domain value に変換できる。
 - Express 型を domain に漏らさず、DDD use case を request scope で扱える。
 

@@ -9,7 +9,7 @@ English: [README.md](./README.md)
 
 - 依存グラフのノード・エッジ
 - Mermaid / DOT 形式への export（`graphToMermaid` / `graphToDot`）
-- バリデーション issue（循環依存・lifetime 違敗・未使用 provider 等）
+- バリデーション issue（循環依存・lifetime 違反・未使用 provider 等）
 
 ## 実行
 

@@ -75,7 +75,7 @@ class GetUserUseCase {
 - `reflect-metadata` が不要になる。
 - `emitDecoratorMetadata` が不要になる。
 - parameter decorators を使わない。
-- container API から graph を inspect / validate できる。
+- コンテナの API から依存グラフを検査・検証できる。
 - request scope が明示的かつ adapter の責務になるため、破棄タイミングを理解しやすい。
 
 ## 最初に移行しやすい対象
