@@ -28,8 +28,7 @@ Wyrly DI は、依存関係を明示的に管理し、依存グラフを解析�
 Wyrly は、明確な composition root、明示的な依存関係、framework に依存しない domain
 code を重視する TypeScript アプリケーション向けに設計されています。
 
-特に DDD や Clean Architecture と相性がよく、use case は port に依存し、外側の layer
-で typed token を通じて具体的な infrastructure を組み合わせます。
+特に DDD やクリーンアーキテクチャでは、use case が port（抽象）に依存し、composition root など外側の層で型付きトークンを使って具体的な実装を組み立てる構成と相性がよいです。
 
 ## 中核となる考え方
 
