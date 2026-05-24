@@ -1,0 +1,55 @@
+---
+title: "Overview"
+description: "What Wyrly DI is and when to use it."
+---
+
+Wyrly DI is a small dependency injection toolkit for modern TypeScript applications.
+
+It focuses on explicit wiring instead of runtime type guessing. Your application declares the
+dependencies it needs, registers concrete providers at the composition root, and resolves use cases
+from a container or request scope.
+
+## When to choose Wyrly
+
+Choose Wyrly when you want:
+
+- TypeScript DI that works with standard decorators
+- Typed tokens for interface-based dependencies
+- Request scopes for web applications
+- A framework-independent core package
+- Dependency graph inspection and validation for CI
+- A style that works well with DDD and Clean Architecture
+
+## When not to choose Wyrly
+
+Wyrly does not try to be a full application framework or a NestJS clone.
+
+It intentionally avoids:
+
+- automatic constructor type metadata
+- legacy decorators
+- parameter decorators
+- global container magic
+- auto-scan or glob registration
+- framework coupling in the core package
+
+## Architecture fit
+
+Wyrly keeps domain and application code independent from framework details.
+
+```ts
+interface UserRepository {
+  findById(id: string): Promise<User | null>;
+}
+
+const UserRepositoryToken = token<UserRepository>("UserRepository");
+```
+
+The domain-facing contract stays in your application layer, while the concrete implementation can
+live in infrastructure code and be wired at the edge of the app.
+
+## Next steps
+
+- Install the core package in [Installation](/getting-started/installation)
+- Build your first container in [Quickstart](/getting-started/quickstart)
+- Learn the mental model in [Core model](/concepts/core-model)

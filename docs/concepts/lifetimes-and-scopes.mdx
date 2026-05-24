@@ -1,0 +1,85 @@
+---
+title: "Lifetimes and scopes"
+description: "How singleton, scoped, and transient dependencies behave in Wyrly DI."
+---
+
+Lifetimes define how long resolved instances live.
+
+Choosing the right lifetime keeps state ownership clear and prevents request-specific dependencies
+from leaking across users or requests.
+
+## Singleton
+
+Use `singleton` for stateless services or process-wide dependencies.
+
+```ts
+container.register(LoggerToken, {
+  useClass: ConsoleLogger,
+  lifetime: "singleton",
+});
+```
+
+Good candidates:
+
+- loggers
+- configuration readers
+- pure policies
+- stateless mappers
+
+Avoid putting request state in singletons.
+
+## Scoped
+
+Use `scoped` for dependencies that should be reused within one request or unit of work.
+
+```ts
+container.register(UserRepositoryToken, {
+  useClass: UserRepository,
+  lifetime: "scoped",
+});
+```
+
+Good candidates:
+
+- request context
+- repositories bound to a request transaction
+- DataLoader instances
+- request-local caches
+
+## Transient
+
+Use `transient` when every resolution should create a fresh instance.
+
+```ts
+container.register(ReportBuilder);
+```
+
+Transient is useful for short-lived objects with no shared state requirement.
+
+## Request scopes
+
+In web frameworks, a request scope is created when the request starts and disposed when the request
+finishes.
+
+```ts
+const scope = container.createScope();
+
+try {
+  await handleRequest(scope);
+} finally {
+  await scope.dispose();
+}
+```
+
+Framework adapters do this for you where possible.
+
+## Lifetime validation
+
+Wyrly can validate lifetime relationships. For example, a singleton should not depend on a scoped
+dependency because that would capture request-specific state in a process-wide instance.
+
+Run validation as part of test or CI:
+
+```ts
+const result = container.validate();
+```

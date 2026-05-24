@@ -1,0 +1,53 @@
+---
+title: "Contributing"
+description: "How to contribute to Wyrly DI."
+---
+
+Contributions are welcome.
+
+Wyrly is an OSS project for explicit, type-safe dependency injection in modern TypeScript. Good
+contributions improve correctness, documentation, examples, or framework integration without
+weakening the explicit dependency model.
+
+## Repository
+
+The source lives on GitHub:
+
+[github.com/valid-lab/wyrly](https://github.com/valid-lab/wyrly)
+
+## Local setup
+
+```sh
+git clone https://github.com/valid-lab/wyrly.git
+cd wyrly/oss
+deno task setup:hooks
+deno task check
+deno task test
+```
+
+## Before opening a pull request
+
+Run the checks that match your change:
+
+```sh
+deno task check
+deno task test
+deno task examples
+```
+
+For documentation-only changes, make sure links and examples still point to the right packages,
+examples, and guides.
+
+## Contribution guidelines
+
+- Keep the core package framework-independent.
+- Prefer explicit dependency declarations over runtime type guessing.
+- Avoid adding `reflect-metadata` or legacy decorator requirements.
+- Keep adapters thin and framework-specific.
+- Add or update examples when behavior changes.
+- Update docs in `docs/` in the same PR as user-facing code changes.
+
+## Security
+
+Please do not open a public issue for security reports. See the repository's `SECURITY.md` for the
+current reporting process.

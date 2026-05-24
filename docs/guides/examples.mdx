@@ -1,0 +1,58 @@
+---
+title: "Examples"
+description: "Runnable examples for learning Wyrly DI."
+---
+
+The Wyrly repository includes runnable examples. Each example is one scenario and one learning
+goal.
+
+## Recommended learning order
+
+1. Start with core examples.
+2. Learn graph inspection and validation.
+3. Move to the adapter that matches your framework.
+
+## Core examples
+
+| Folder | Topic | Run |
+| --- | --- | --- |
+| `examples/basic-ddd` | tokens, `@Injectable`, scoped lifetimes, disposal | `deno task example:basic-ddd` |
+| `examples/explicit-deps` | explicit `register({ deps })` without decorators | `deno task example:explicit-deps` |
+| `examples/provider-patterns` | `useValue`, `useFactory`, `useExisting` | `deno task example:provider-patterns` |
+| `examples/dependency-graph` | `inspect()` and `validate()` | `deno task example:dependency-graph` |
+
+Run all core examples:
+
+```sh
+deno task examples:core
+```
+
+## Adapter examples
+
+| Folder | Package | Run |
+| --- | --- | --- |
+| `examples/hono-api` | `@wyrly/hono` | `deno task example:hono-api` |
+| `examples/express-api` | `@wyrly/express` | `deno task example:express-api` |
+| `examples/graphql-request` | `@wyrly/graphql` with scoped DataLoader | `deno task example:graphql-request` |
+| `examples/express-graphql` | Express and GraphQL | `deno task example:express-graphql` |
+| `examples/fresh-routes` | `@wyrly/fresh` | `deno task example:fresh-routes` |
+| `examples/next-ddd` | `@wyrly/next` | `deno task example:next-ddd` |
+
+Run all adapter examples:
+
+```sh
+deno task examples:adapters
+```
+
+## Run everything
+
+```sh
+deno task examples
+```
+
+Express examples require `net` permission.
+
+## Use examples as composition-root references
+
+The examples are intentionally small. Use them to see where provider registration belongs, how
+request scopes are created, and how framework code should hand off to application use cases.

@@ -1,0 +1,56 @@
+---
+title: "Public API"
+description: "Stable public exports for Wyrly DI v2.0."
+---
+
+This page summarizes the stable public API surface for Wyrly DI v2.0.
+
+Anything not listed in the repository's `API.md` is not part of the semver guarantee, including
+internal modules and deep imports.
+
+## `@wyrly/core`
+
+Core entrypoint:
+
+```ts
+import { createContainer, Injectable, token } from "@wyrly/core";
+```
+
+Common exports:
+
+| Export | Purpose |
+| --- | --- |
+| `token` | Create a typed injection token |
+| `Injectable` | Standard decorator for explicit `deps` and `lifetime` |
+| `createContainer` | Create the root DI container |
+| `graphToJson` | Serialize a dependency graph to JSON |
+| `graphToDot` | Serialize a dependency graph to DOT |
+| `graphToMermaid` | Serialize a dependency graph to Mermaid |
+
+Core types include:
+
+- `Token`
+- `ClassToken`
+- `InjectionToken`
+- `Lifetime`
+- `Container`
+- `Scope`
+- `Provider`
+- `DependencyGraph`
+- `ValidationResult`
+
+## Adapter packages
+
+| Package | Key exports |
+| --- | --- |
+| `@wyrly/express` | `diMiddleware`, `ExpressRequestToken`, `ExpressResponseToken` |
+| `@wyrly/hono` | `di`, `getDI`, `HonoContextToken`, `RequestToken` |
+| `@wyrly/fresh` | `di`, `withDI`, `FreshContextToken`, `RequestToken` |
+| `@wyrly/graphql` | `createGraphQLDIContext`, `GraphQLRequestToken`, `GraphQLResponseToken` |
+| `@wyrly/next` | `withDI`, `withActionDI`, `createServerDI`, `NextRequestToken` |
+
+## Full API list
+
+The full public API list lives in the repository:
+
+[API.md](https://github.com/valid-lab/wyrly/blob/main/API.md)

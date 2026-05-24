@@ -1,0 +1,84 @@
+---
+title: "Installation"
+description: "Install Wyrly DI for Deno, Node.js, Bun, and supported web frameworks."
+---
+
+Install `@wyrly/core` first. Add framework adapters only when your app needs them.
+
+## Deno 2.x
+
+Use JSR for Deno projects.
+
+```sh
+deno add jsr:@wyrly/core
+```
+
+Then import from `@wyrly/core`.
+
+```ts
+import { createContainer, Injectable, token } from "@wyrly/core";
+```
+
+## Node.js 20+
+
+Use npm for Node.js and bundler-based applications.
+
+```sh
+npm install @wyrly/core
+```
+
+```ts
+import { createContainer, Injectable, token } from "@wyrly/core";
+```
+
+## Bun
+
+Use the npm package from Bun.
+
+```sh
+bun add @wyrly/core
+```
+
+```ts
+import { createContainer, Injectable, token } from "@wyrly/core";
+```
+
+## Framework adapters
+
+Install the adapter that matches your runtime.
+
+| Runtime | Package |
+| --- | --- |
+| Next.js App Router | `@wyrly/next` |
+| Express | `@wyrly/express` |
+| Hono | `@wyrly/hono` |
+| Fresh 2.x | `@wyrly/fresh` |
+| GraphQL request context | `@wyrly/graphql` |
+
+For example, install the Next.js adapter with:
+
+```sh
+npm install @wyrly/next @wyrly/core
+```
+
+## Requirements
+
+- TypeScript 5+
+- Standard decorators
+- `experimentalDecorators: false`
+- ESM-compatible runtime or bundler
+- Deno 2.x, Node.js 20+, Bun, or a supported web framework
+
+Wyrly does not require `reflect-metadata` or `emitDecoratorMetadata`.
+
+## Local repository development
+
+If you are contributing to Wyrly itself:
+
+```sh
+git clone https://github.com/valid-lab/wyrly.git
+cd wyrly/oss
+deno task setup:hooks
+deno task check
+deno task test
+```

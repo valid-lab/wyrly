@@ -1,0 +1,80 @@
+---
+title: "Core model"
+description: "The core objects in Wyrly DI: tokens, providers, containers, scopes, and lifetimes."
+---
+
+Wyrly has a small core model. Most applications only need five ideas: tokens, providers,
+containers, scopes, and lifetimes.
+
+## Tokens
+
+A token is a runtime key with a TypeScript type.
+
+```ts
+const UserRepositoryToken = token<UserRepository>("UserRepository");
+```
+
+Use tokens for interfaces and abstract capabilities. Class constructors can also be registered
+directly when the class itself is the dependency key.
+
+## Providers
+
+A provider tells the container how to create or return a dependency.
+
+Wyrly supports:
+
+- `useClass` for class-backed dependencies
+- `useValue` for constants and test doubles
+- `useFactory` for dependencies that need custom construction
+- `useExisting` for aliases
+
+## Containers
+
+The root container owns application-wide registrations.
+
+```ts
+const container = createContainer();
+container.register(UserRepositoryToken, {
+  useClass: PrismaUserRepository,
+  lifetime: "scoped",
+});
+```
+
+Treat the root container as the composition root. Register concrete infrastructure there rather
+than inside domain or use case code.
+
+## Scopes
+
+A scope is a child resolution context. In web apps, adapters usually create one scope per request.
+
+```ts
+const scope = container.createScope();
+try {
+  const service = scope.resolve(MyService);
+} finally {
+  await scope.dispose();
+}
+```
+
+Scoped dependencies are reused within the same scope and disposed when the scope is disposed.
+
+## Lifetimes
+
+| Lifetime | Meaning |
+| --- | --- |
+| `singleton` | one instance for the root container |
+| `scoped` | one instance per scope |
+| `transient` | a new instance on each resolution |
+
+Pick the narrowest lifetime that matches the dependency's state and resource ownership.
+
+## Validation
+
+Use `container.validate()` to catch graph problems before production:
+
+- missing providers
+- circular dependencies
+- invalid provider shapes
+- lifetime violations
+
+Validation is especially useful in CI because it turns dependency wiring into a checkable artifact.

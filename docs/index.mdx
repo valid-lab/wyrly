@@ -1,0 +1,69 @@
+---
+title: "Wyrly DI"
+description: "Type-safe dependency injection for modern TypeScript applications."
+---
+
+Wyrly DI is a dependency injection toolkit for explicit, analyzable, type-safe application
+architecture.
+
+Use it when you want dependency injection for modern TypeScript apps without legacy decorator
+metadata, automatic runtime type guessing, or framework lock-in.
+
+<CardGroup cols={2}>
+  <Card title="Get started" icon="rocket" href="/getting-started/installation">
+    Install `@wyrly/core` for Deno, Node.js, or Bun and create your first container.
+  </Card>
+  <Card title="Why Wyrly?" icon="sparkles" href="/concepts/why-wyrly">
+    Learn why Wyrly uses typed tokens, explicit dependencies, and standard decorators.
+  </Card>
+  <Card title="Framework adapters" icon="plug" href="/guides/framework-adapters">
+    Add request-scoped DI to Next.js, Express, Hono, Fresh, or GraphQL.
+  </Card>
+  <Card title="API reference" icon="code" href="/reference/public-api">
+    See the stable public exports for Wyrly DI v2.0.
+  </Card>
+</CardGroup>
+
+## What Wyrly is for
+
+Wyrly is designed for TypeScript applications that value clear composition roots, explicit
+dependencies, and framework-independent domain code.
+
+It fits especially well with DDD and Clean Architecture, where use cases depend on ports and the
+outer layer wires concrete infrastructure through typed tokens.
+
+## Core ideas
+
+- No `reflect-metadata`
+- No `emitDecoratorMetadata`
+- No parameter decorators
+- Type-safe tokens
+- Explicit dependencies
+- Singleton, scoped, and transient lifetimes
+- Request scopes for web frameworks
+- Inspectable and validatable dependency graphs
+
+## Packages
+
+| Package | Purpose |
+| --- | --- |
+| `@wyrly/core` | Core container, typed tokens, lifetimes, validation, graph inspection |
+| `@wyrly/next` | Next.js App Router request-scoped DI |
+| `@wyrly/express` | Express middleware for one DI scope per request |
+| `@wyrly/hono` | Hono middleware for edge-friendly DI scopes |
+| `@wyrly/fresh` | Fresh 2.x middleware and route helpers |
+| `@wyrly/graphql` | GraphQL request context integration |
+
+## Start with an example
+
+If you are new to Wyrly, start with the core quickstart, then pick the adapter that matches your
+runtime.
+
+<CardGroup cols={2}>
+  <Card title="Core quickstart" icon="play" href="/getting-started/quickstart">
+    Register a repository implementation and resolve a use case from a scope.
+  </Card>
+  <Card title="Examples" icon="folder-open" href="/guides/examples">
+    Find runnable examples for DDD, provider patterns, graph validation, and web frameworks.
+  </Card>
+</CardGroup>

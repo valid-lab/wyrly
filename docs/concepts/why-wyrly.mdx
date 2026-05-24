@@ -1,0 +1,65 @@
+---
+title: "Why Wyrly?"
+description: "The design choices behind Wyrly DI."
+---
+
+Many TypeScript DI libraries were designed around legacy decorators, `reflect-metadata`, and
+`emitDecoratorMetadata`.
+
+Wyrly takes a different approach: dependencies are explicit, tokens are typed, and the core package
+does not depend on a web framework.
+
+## Design goals
+
+- Work with TypeScript standard decorators
+- Avoid `reflect-metadata`
+- Avoid `emitDecoratorMetadata`
+- Avoid parameter decorators
+- Make dependencies explicit and reviewable
+- Support request-scoped web applications
+- Keep domain and application code framework-independent
+- Provide dependency graph inspection for CI and tooling
+
+## DDD and Clean Architecture
+
+In a DDD or Clean Architecture codebase, application services often depend on ports:
+
+```ts
+interface PaymentGateway {
+  authorize(command: AuthorizePayment): Promise<PaymentAuthorization>;
+}
+```
+
+Wyrly lets you model that dependency as a typed token and bind it to an infrastructure adapter at
+the composition root.
+
+That keeps the domain language close to the code while avoiding imports from databases, HTTP
+clients, SDKs, or framework APIs in the inner layers.
+
+## Explicit over magical
+
+Wyrly intentionally requires dependency declarations:
+
+```ts
+@Injectable({ deps: [UserRepositoryToken] })
+class GetUserUseCase {
+  constructor(private readonly users: UserRepository) {}
+}
+```
+
+The extra line makes the graph visible to humans and tooling. It also avoids relying on runtime
+metadata that may behave differently across runtimes and bundlers.
+
+## Request scopes
+
+Web apps often need one dependency scope per request. Wyrly supports scoped lifetimes in the core
+package and provides thin adapters for popular frameworks.
+
+Use request scopes for dependencies such as:
+
+- request context
+- authenticated user context
+- unit-of-work objects
+- DataLoader instances
+- request-local caches
+- disposable resources

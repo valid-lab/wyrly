@@ -1,0 +1,70 @@
+---
+title: "Common issues"
+description: "Fix common Wyrly DI setup and runtime problems."
+---
+
+This page collects common setup and runtime issues.
+
+## Provider not found
+
+A provider is missing when the container cannot resolve a token or class.
+
+Check that you registered the provider at the composition root:
+
+```ts
+container.register(UserRepositoryToken, {
+  useClass: PrismaUserRepository,
+  lifetime: "scoped",
+});
+```
+
+Also verify that the token used in `deps` is the same token used during registration.
+
+## Scoped dependency resolved from root
+
+Scoped dependencies should be resolved from a scope, not from the root container.
+
+```ts
+const scope = container.createScope();
+
+try {
+  const usecase = scope.resolve(GetUserUseCase);
+} finally {
+  await scope.dispose();
+}
+```
+
+Framework adapters create request scopes for you.
+
+## Singleton depends on scoped dependency
+
+A singleton should not capture request-specific state. If validation reports a lifetime violation,
+move the dependency to a scoped or transient lifetime, or change the design so the singleton does
+not depend on request-local data.
+
+## Decorator metadata is not being read
+
+This is expected. Wyrly does not use `reflect-metadata` or `emitDecoratorMetadata`.
+
+Declare dependencies explicitly:
+
+```ts
+@Injectable({ deps: [UserRepositoryToken] })
+class GetUserUseCase {
+  constructor(private readonly users: UserRepository) {}
+}
+```
+
+## Request state leaks between users
+
+Check lifetimes. Request-specific objects such as authenticated user context, DataLoader instances,
+transactions, and request-local caches should usually be `scoped`.
+
+## Graph validation fails in CI
+
+Treat validation failures as wiring errors. Read the issue message, then check the provider
+registration, dependency token, and lifetime relationship.
+
+```ts
+const result = container.validate();
+```

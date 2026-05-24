@@ -1,0 +1,57 @@
+---
+title: "Packages"
+description: "Wyrly DI packages and where to install them from."
+---
+
+Wyrly is published as a small set of focused packages.
+
+## Package matrix
+
+| Package | Deno JSR | npm | Description |
+| --- | --- | --- | --- |
+| `@wyrly/core` | yes | yes | Core container, tokens, lifetimes, validation |
+| `@wyrly/express` | yes | yes | Express 5 middleware |
+| `@wyrly/hono` | yes | yes | Hono middleware |
+| `@wyrly/graphql` | yes | yes | GraphQL request scope |
+| `@wyrly/next` | yes | yes | Next.js App Router helpers |
+| `@wyrly/fresh` | yes | no | Fresh 2.x helpers |
+
+## Core package
+
+Install the core package first:
+
+```sh
+deno add jsr:@wyrly/core
+```
+
+or:
+
+```sh
+npm install @wyrly/core
+```
+
+## Add adapters as needed
+
+For a Next.js application:
+
+```sh
+npm install @wyrly/next @wyrly/core
+```
+
+For a Hono application:
+
+```sh
+deno add jsr:@wyrly/hono jsr:@wyrly/core
+```
+
+For an Express application:
+
+```sh
+npm install @wyrly/express @wyrly/core
+```
+
+## Registry links
+
+- [JSR `@wyrly/core`](https://jsr.io/@wyrly/core)
+- [npm `@wyrly/core`](https://www.npmjs.com/package/@wyrly/core)
+- [GitHub repository](https://github.com/valid-lab/wyrly)

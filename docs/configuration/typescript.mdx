@@ -1,0 +1,69 @@
+---
+title: "TypeScript configuration"
+description: "Configure TypeScript for Wyrly's standard-decorator model."
+---
+
+Wyrly is designed for TypeScript standard decorators.
+
+It does not require `reflect-metadata`, `emitDecoratorMetadata`, or parameter decorators.
+
+## Recommended settings
+
+For TypeScript projects, use standard decorators:
+
+```json
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "experimentalDecorators": false,
+    "emitDecoratorMetadata": false,
+    "strict": true
+  }
+}
+```
+
+The exact `module` and `moduleResolution` values depend on your runtime and build tool, but avoid
+enabling legacy decorator metadata.
+
+## Deno
+
+Deno 2.x users should install from JSR:
+
+```sh
+deno add jsr:@wyrly/core
+```
+
+Then import through the configured bare specifier:
+
+```ts
+import { createContainer, Injectable, token } from "@wyrly/core";
+```
+
+## Node.js and Bun
+
+Node.js and Bun users should install from npm:
+
+```sh
+npm install @wyrly/core
+```
+
+Use ESM where possible:
+
+```json
+{
+  "type": "module"
+}
+```
+
+## No reflect metadata setup
+
+Do not add this:
+
+```ts
+import "reflect-metadata";
+```
+
+Wyrly does not read runtime parameter types. Dependencies are declared explicitly with tokens and
+`deps`.

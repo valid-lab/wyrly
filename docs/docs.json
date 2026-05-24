@@ -1,0 +1,147 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "maple",
+  "name": "Wyrly DI",
+  "description": "Type-safe dependency injection for modern TypeScript. No reflect-metadata. Standard decorators. Request scopes for web apps.",
+  "colors": {
+    "primary": "#2563EB",
+    "light": "#3B82F6",
+    "dark": "#1D4ED8"
+  },
+  "appearance": {
+    "default": "system"
+  },
+  "icons": {
+    "library": "lucide"
+  },
+  "navbar": {
+    "primary": {
+      "type": "button",
+      "label": "Get Started",
+      "href": "/getting-started/installation"
+    },
+    "links": [
+      {
+        "label": "GitHub",
+        "href": "https://github.com/valid-lab/wyrly"
+      },
+      {
+        "label": "Support us",
+        "href": "/support-us"
+      }
+    ]
+  },
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "icon": "book-open",
+        "groups": [
+          {
+            "group": "Start here",
+            "pages": [
+              "index",
+              "introduction/overview",
+              "getting-started/installation",
+              "getting-started/quickstart"
+            ]
+          },
+          {
+            "group": "Concepts",
+            "pages": [
+              "concepts/why-wyrly",
+              "concepts/core-model",
+              "concepts/lifetimes-and-scopes"
+            ]
+          },
+          {
+            "group": "Guides",
+            "pages": [
+              "guides/framework-adapters",
+              "guides/examples",
+              "configuration/typescript",
+              "troubleshooting/common-issues"
+            ]
+          },
+          {
+            "group": "Project",
+            "pages": [
+              "contributing/overview",
+              "support-us",
+              "changelog/releases"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Reference",
+        "icon": "code",
+        "groups": [
+          {
+            "group": "API",
+            "pages": [
+              "reference/public-api",
+              "reference/packages"
+            ]
+          }
+        ]
+      }
+    ],
+    "global": {
+      "anchors": [
+        {
+          "anchor": "GitHub",
+          "icon": "github",
+          "href": "https://github.com/valid-lab/wyrly"
+        },
+        {
+          "anchor": "JSR",
+          "icon": "package",
+          "href": "https://jsr.io/@wyrly/core"
+        },
+        {
+          "anchor": "npm",
+          "icon": "box",
+          "href": "https://www.npmjs.com/package/@wyrly/core"
+        }
+      ]
+    }
+  },
+  "footer": {
+    "socials": {
+      "github": "https://github.com/valid-lab/wyrly"
+    },
+    "links": [
+      {
+        "header": "Project",
+        "items": [
+          {
+            "label": "GitHub",
+            "href": "https://github.com/valid-lab/wyrly"
+          },
+          {
+            "label": "Contributing",
+            "href": "/contributing/overview"
+          },
+          {
+            "label": "Support us",
+            "href": "/support-us"
+          }
+        ]
+      },
+      {
+        "header": "Packages",
+        "items": [
+          {
+            "label": "JSR @wyrly/core",
+            "href": "https://jsr.io/@wyrly/core"
+          },
+          {
+            "label": "npm @wyrly/core",
+            "href": "https://www.npmjs.com/package/@wyrly/core"
+          }
+        ]
+      }
+    ]
+  }
+}

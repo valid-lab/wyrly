@@ -10,7 +10,8 @@
 
 Japanese: [README.ja.md](./README.ja.md)
 
-Contributing: [CONTRIBUTING.md](CONTRIBUTING.md) · Security: [SECURITY.md](SECURITY.md)
+Documentation source: [docs/](./docs/) · Contributing: [CONTRIBUTING.md](CONTRIBUTING.md) ·
+Security: [SECURITY.md](SECURITY.md)
 
 Wyrly DI is a dependency injection toolkit for explicit, analyzable, type-safe application
 architecture.

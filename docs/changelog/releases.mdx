@@ -1,0 +1,34 @@
+---
+title: "Releases"
+description: "Release notes and versioning policy for Wyrly DI."
+---
+
+Wyrly packages follow Semantic Versioning from `1.0.0`.
+
+## Versioning policy
+
+- Major: removing or breaking a documented public symbol, signature, or runtime behavior
+- Minor: new exports or backward-compatible additions
+- Patch: bug fixes without API changes
+
+The stable public API surface is documented in [Public API](/reference/public-api).
+
+## v2.0.0
+
+Wyrly DI v2.0.0 is the current stable release line.
+
+Highlights:
+
+- standard-decorator-first DI model
+- typed tokens
+- singleton, scoped, and transient lifetimes
+- request scopes
+- dependency graph inspection
+- validation for graph and lifetime issues
+- framework adapters for Next.js, Express, Hono, Fresh, and GraphQL
+
+## Full changelog
+
+See the repository changelog for detailed release entries:
+
+[CHANGELOG.md](https://github.com/valid-lab/wyrly/blob/main/CHANGELOG.md)

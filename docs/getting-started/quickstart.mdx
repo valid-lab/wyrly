@@ -1,0 +1,99 @@
+---
+title: "Quickstart"
+description: "Create a typed token, register providers, and resolve a use case from a scope."
+---
+
+This guide shows the smallest useful Wyrly setup: a typed port, a concrete implementation, a use
+case, and a request-like scope.
+
+## Create a token
+
+Use tokens to keep interface-based dependencies type-safe at runtime.
+
+```ts
+import { createContainer, Injectable, token } from "@wyrly/core";
+
+interface User {
+  id: string;
+}
+
+interface UserRepository {
+  findById(id: string): Promise<User | null>;
+}
+
+const UserRepositoryToken = token<UserRepository>("UserRepository");
+```
+
+## Define a use case
+
+`@Injectable` declares dependencies explicitly. Wyrly does not read constructor parameter types at
+runtime.
+
+```ts
+@Injectable({
+  deps: [UserRepositoryToken],
+  lifetime: "scoped",
+})
+class GetUserUseCase {
+  constructor(private readonly users: UserRepository) {}
+
+  execute(id: string) {
+    return this.users.findById(id);
+  }
+}
+```
+
+## Register providers
+
+Register concrete implementations at the composition root.
+
+```ts
+class InMemoryUserRepository implements UserRepository {
+  async findById(id: string): Promise<User | null> {
+    return { id };
+  }
+}
+
+const container = createContainer();
+
+container.register(UserRepositoryToken, {
+  useClass: InMemoryUserRepository,
+  lifetime: "scoped",
+});
+
+container.register(GetUserUseCase);
+```
+
+## Resolve from a scope
+
+Create a scope for request-level work and dispose it when the request finishes.
+
+```ts
+const scope = container.createScope();
+
+try {
+  const usecase = scope.resolve(GetUserUseCase);
+  const user = await usecase.execute("user-1");
+  console.log(user);
+} finally {
+  await scope.dispose();
+}
+```
+
+## Validate the graph
+
+Run validation in tests or CI to catch missing providers and lifetime problems early.
+
+```ts
+const result = container.validate();
+
+if (!result.ok) {
+  throw new Error(result.issues.map((issue) => issue.message).join("\n"));
+}
+```
+
+## Next steps
+
+- Learn the [core model](/concepts/core-model)
+- Pick a [framework adapter](/guides/framework-adapters)
+- Explore runnable [examples](/guides/examples)

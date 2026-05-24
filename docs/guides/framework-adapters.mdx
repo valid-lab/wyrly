@@ -1,0 +1,78 @@
+---
+title: "Framework adapters"
+description: "Use Wyrly DI with Next.js, Express, Hono, Fresh, and GraphQL."
+---
+
+Wyrly keeps framework integration thin. The core package owns tokens, providers, containers, scopes,
+validation, and graph inspection. Adapters create request scopes and expose them in framework-native
+ways.
+
+## Next.js App Router
+
+Install:
+
+```sh
+npm install @wyrly/next @wyrly/core next react
+```
+
+Use `withDI` for Route Handlers:
+
+```ts
+import { createContainer } from "@wyrly/core";
+import { withDI } from "@wyrly/next";
+
+const container = createContainer();
+
+export const GET = withDI(container, async (_req, { di }) => {
+  const usecase = di.resolve(MyUseCase);
+  return Response.json(await usecase.run());
+});
+```
+
+The Next.js adapter also provides helpers for Server Actions and Server Components.
+
+## Express
+
+Use the Express adapter to create one scope per request and access it from the request object.
+
+```ts
+import { diMiddleware } from "@wyrly/express";
+
+app.use(diMiddleware(container));
+```
+
+## Hono
+
+Use the Hono adapter for edge-friendly request scopes.
+
+```ts
+import { di, getDI } from "@wyrly/hono";
+
+app.use("*", di(container));
+
+app.get("/users/:id", async (c) => {
+  const scope = getDI(c);
+  const usecase = scope.resolve(GetUserUseCase);
+  return c.json(await usecase.execute(c.req.param("id")));
+});
+```
+
+## Fresh
+
+Use `@wyrly/fresh` for Fresh 2.x applications. The package is published on JSR.
+
+```sh
+deno add jsr:@wyrly/fresh
+```
+
+## GraphQL
+
+Use the GraphQL adapter when each GraphQL request should own a DI scope and request-local loaders.
+
+This is useful for DataLoader instances, request context, authentication state, and disposable
+resources.
+
+## Pick the adapter at the edge
+
+Keep framework adapters in the outer layer of your application. Domain objects and use cases should
+depend on ports and value objects, not on `Request`, `Response`, or framework context objects.
