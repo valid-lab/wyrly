@@ -3,14 +3,13 @@ title: "Lifetimes and scopes"
 description: "Wyrly DI における singleton、scoped、transient dependencies の挙動。"
 ---
 
-Lifetimes は、resolve された instances がどれだけ長く生きるかを定義します。
+ライフタイムは、解決されたインスタンスがどれだけ長く生きるかを定義します。
 
-適切な lifetime を選ぶことで、state ownership が明確になり、request-specific dependencies
-が users や requests をまたいで漏れることを防げます。
+適切なライフタイムを選ぶことで、状態の所有関係が明確になり、リクエスト固有の依存関係がユーザーやリクエストをまたいで漏れることを防げます。
 
 ## Singleton
 
-`singleton` は stateless services や process-wide dependencies に使います。
+`singleton` はステートレスなサービスや、プロセス全体で共有する依存関係に使います。
 
 ```ts
 container.register(LoggerToken, {
@@ -54,7 +53,7 @@ container.register(UserRepositoryToken, {
 container.register(ReportBuilder);
 ```
 
-Transient は、shared state requirement を持たない短命な objects に有用です。
+Transient は、状態を共有する必要がない、短期間だけ使うオブジェクトに向いています。
 
 ## Request scopes
 
@@ -71,15 +70,13 @@ try {
 }
 ```
 
-可能な場所では、framework adapters がこれを代わりに行います。
+対応している framework では、adapter がこれを自動で行います。
 
 ## Lifetime validation
 
-Wyrly は lifetime relationships を validate できます。たとえば singleton は scoped dependency
-に依存すべきではありません。そうすると request-specific state を process-wide instance
-に捕まえてしまうためです。
+Wyrly はライフタイムの関係を検証できます。たとえば singleton は scoped な依存関係に依存すべきではありません。プロセス全体で共有されるインスタンスにリクエスト固有の状態が保持されてしまうためです。
 
-Test や CI の一部として validation を実行してください。
+テストや CI の一部として検証を実行してください。
 
 ```ts
 const result = container.validate();

@@ -3,13 +3,11 @@ title: "Framework adapters"
 description: "Next.js、Express、Hono、Fresh、GraphQL で Wyrly DI を使います。"
 ---
 
-Wyrly は framework integration を薄く保ちます。Core package は tokens、providers、containers、
-scopes、validation、graph inspection を担当します。Adapters は request scopes を作り、
-framework-native な方法で expose します。
+Wyrly はフレームワーク統合を薄く保ちます。コアパッケージはトークン、プロバイダー、コンテナ、スコープ、検証、グラフ検査を担当します。アダプターはリクエストスコープを作成し、フレームワーク固有の方法で公開します。
 
 ## Next.js App Router
 
-Install:
+インストール:
 
 ```sh
 npm install @wyrly/next @wyrly/core next react
@@ -33,7 +31,7 @@ Next.js adapter は Server Actions と Server Components 向けの helpers も�
 
 ## Express
 
-Express adapter を使うと、1 request につき 1 scope を作り、request object から access できます。
+Express adapter を使うと、1 request につき 1 scope を作り、request object から取得できます。
 
 ```ts
 import { diMiddleware } from "@wyrly/express";
@@ -67,14 +65,10 @@ deno add jsr:@wyrly/fresh
 
 ## GraphQL
 
-各 GraphQL request が DI scope と request-local loaders を所有すべき場合は、GraphQL adapter
-を使います。
+各 GraphQL リクエストが DI スコープとリクエストローカルなローダーを所有すべき場合は、GraphQL アダプターを使います。
 
-これは DataLoader instances、request context、authentication state、disposable resources
-に有用です。
+DataLoader インスタンス、リクエストコンテキスト、認証状態、破棄が必要なリソースに有用です。
 
-## Adapter は edge で選ぶ
+## Adapter はアプリの外側の層に置く
 
-Framework adapters は application の outer layer に置いてください。Domain objects と use cases
-は `Request`、`Response`、framework context objects ではなく、ports と value objects
-に依存すべきです。
+フレームワークアダプターはアプリケーションの外側の層に置いてください。ドメインオブジェクトや use case は `Request`、`Response`、フレームワークのコンテキストオブジェクトではなく、ポートや値オブジェクトに依存すべきです。

@@ -6,17 +6,17 @@ description: "Wyrly DI の設計判断。"
 多くの TypeScript DI libraries は、legacy decorators、`reflect-metadata`、
 `emitDecoratorMetadata` を前提に設計されてきました。
 
-Wyrly は別の approach を取ります。依存関係は明示的で、tokens は型付きで、core package
-は web framework に依存しません。
+Wyrly は別のアプローチを取ります。依存関係は明示的で、トークンは型付きで、コアパッケージ
+は Web フレームワークに依存しません。
 
-## Design goals
+## 設計目標
 
 - TypeScript standard decorators で動く
 - `reflect-metadata` を避ける
 - `emitDecoratorMetadata` を避ける
 - parameter decorators を避ける
 - 依存関係を明示的で reviewable にする
-- request-scoped web applications を support する
+- リクエストスコープの Web アプリケーションをサポートする
 - domain と application code を framework-independent に保つ
 - CI と tooling 向けに dependency graph inspection を提供する
 
@@ -36,7 +36,7 @@ adapter に bind できます。
 これにより、domain language を code の近くに保ちながら、inner layers から database、HTTP
 client、SDK、framework API への import を避けられます。
 
-## Magic より明示性
+## 暗黙的な自動化より明示性
 
 Wyrly は意図的に dependency declarations を必要とします。
 
@@ -47,7 +47,7 @@ class GetUserUseCase {
 }
 ```
 
-この 1 行により、graph が人間と tooling から見えるようになります。また、runtime や bundler
+この 1 行により、依存グラフが人間にも tooling にも見えるようになります。また、runtime や bundler
 によって挙動が変わる runtime metadata への依存も避けられます。
 
 ## Request scopes
@@ -56,7 +56,7 @@ Web apps では、1 request につき 1 dependency scope が必要になるこ�
 は core package で scoped lifetimes を support し、popular frameworks 向けに薄い adapters
 を提供します。
 
-Request scopes は次のような dependencies に使います。
+Request scope は次のような用途に使います。
 
 - request context
 - authenticated user context

@@ -29,13 +29,13 @@ legacy decorator metadata を有効にすることは避けてください。
 
 ## Deno
 
-Deno 2.x users は JSR からインストールします。
+Deno 2.x をお使いの場合は JSR からインストールします。
 
 ```sh
 deno add jsr:@wyrly/core
 ```
 
-その後、configured bare specifier から import します。
+その後、`@wyrly/core` から import します。
 
 ```ts
 import { createContainer, Injectable, token } from "@wyrly/core";
@@ -43,7 +43,7 @@ import { createContainer, Injectable, token } from "@wyrly/core";
 
 ## Node.js and Bun
 
-Node.js と Bun users は npm からインストールします。
+Node.js と Bun をお使いの場合は npm からインストールします。
 
 ```sh
 npm install @wyrly/core
@@ -57,7 +57,7 @@ npm install @wyrly/core
 }
 ```
 
-## reflect metadata setup は不要
+## reflect-metadata の設定は不要
 
 これは追加しないでください。
 
@@ -65,4 +65,4 @@ npm install @wyrly/core
 import "reflect-metadata";
 ```
 
-Wyrly は runtime parameter types を読みません。Dependencies は tokens と `deps` で明示的に宣言します。
+Wyrly は実行時にパラメーターの型を読み取りません。依存関係はトークンと `deps` で明示的に宣言します。

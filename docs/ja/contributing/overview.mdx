@@ -3,11 +3,10 @@ title: "Contributing"
 description: "Wyrly DI への貢献方法。"
 ---
 
-Contributions are welcome.
+コントリビューションを歓迎します。
 
 Wyrly は、モダン TypeScript における明示的で型安全な dependency injection のための OSS
-project です。よい contribution は、明示的な dependency model を弱めることなく、correctness、
-documentation、examples、framework integration を改善します。
+project です。よいコントリビューションは、明示的な依存モデルを弱めることなく、正確性、ドキュメント、サンプル、フレームワーク統合を改善します。
 
 ## Repository
 
@@ -27,7 +26,7 @@ deno task test
 
 ## Pull request を開く前に
 
-変更に合う checks を実行してください。
+変更内容に応じた checks を実行してください。
 
 ```sh
 deno task check
@@ -35,17 +34,17 @@ deno task test
 deno task examples
 ```
 
-Documentation-only changes の場合も、links と examples が正しい packages、examples、guides
+ドキュメントのみの変更の場合も、links と examples が正しい packages、examples、guides
 を指していることを確認してください。
 
 ## Contribution guidelines
 
-- Core package は framework-independent に保つ。
-- runtime type guessing より明示的な dependency declarations を優先する。
-- `reflect-metadata` や legacy decorator requirements を追加しない。
-- Adapters は薄く、framework-specific に保つ。
-- 挙動が変わるときは examples を追加または更新する。
-- User-facing code changes と同じ PR で `docs/` も更新する。
+- コアパッケージはフレームワークに依存しない状態を保つ。
+- 実行時の型推測より明示的な依存宣言を優先する。
+- `reflect-metadata` や legacy decorator の要件を追加しない。
+- アダプターは薄く、フレームワーク固有の実装に留める。
+- 挙動が変わるときはサンプルを追加または更新する。
+- ユーザーに影響するコード変更と同じ PR で `docs/` も更新する。
 
 ## Security
 

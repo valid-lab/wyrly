@@ -7,9 +7,9 @@ description: "Wyrly DI の setup と runtime でよくある問題を解決し�
 
 ## Provider not found
 
-Container が token または class を resolve できない場合、provider が不足しています。
+コンテナがトークンまたはクラスを解決できない場合、プロバイダーが不足しています。
 
-Composition root で provider を登録しているか確認してください。
+composition root でプロバイダーを登録しているか確認してください。
 
 ```ts
 container.register(UserRepositoryToken, {
@@ -18,11 +18,11 @@ container.register(UserRepositoryToken, {
 });
 ```
 
-`deps` で使っている token と registration で使っている token が同じかも確認してください。
+`deps` で使っているトークンと登録で使っているトークンが同じかも確認してください。
 
 ## Scoped dependency resolved from root
 
-Scoped dependencies は root container ではなく、scope から resolve してください。
+スコープ付きの依存関係はルートコンテナではなく、スコープから解決してください。
 
 ```ts
 const scope = container.createScope();
@@ -34,13 +34,11 @@ try {
 }
 ```
 
-Framework adapters は request scopes を代わりに作ります。
+フレームワークアダプターはリクエストスコープを代わりに作ります。
 
 ## Singleton depends on scoped dependency
 
-Singleton は request-specific state を捕まえるべきではありません。Validation が lifetime violation
-を報告した場合は、その dependency を scoped または transient lifetime に移すか、singleton
-が request-local data に依存しないよう design を変えてください。
+Singleton はリクエスト固有の状態を保持すべきではありません。検証がライフタイム違反を報告した場合は、その依存関係を scoped または transient ライフタイムに移すか、singleton がリクエストローカルなデータに依存しないよう設計を変えてください。
 
 ## Decorator metadata is not being read
 
@@ -57,13 +55,11 @@ class GetUserUseCase {
 
 ## Request state leaks between users
 
-Lifetimes を確認してください。Authenticated user context、DataLoader instances、transactions、
-request-local caches などの request-specific objects は通常 `scoped` にすべきです。
+ライフタイムを確認してください。認証済みユーザーのコンテキスト、DataLoader インスタンス、トランザクション、リクエストローカルなキャッシュなどのリクエスト固有のオブジェクトは通常 `scoped` にすべきです。
 
 ## Graph validation fails in CI
 
-Validation failures は wiring errors として扱います。Issue message を読み、provider registration、
-dependency token、lifetime relationship を確認してください。
+検証の失敗は依存の組み立てエラーとして扱います。エラーメッセージを読み、プロバイダーの登録、依存トークン、ライフタイムの関係を確認してください。
 
 ```ts
 const result = container.validate();

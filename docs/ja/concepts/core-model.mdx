@@ -8,29 +8,28 @@ providers、containers、scopes、lifetimes の 5 つです。
 
 ## Tokens
 
-Token は TypeScript type を持つ runtime key です。
+トークンは TypeScript の型を持つ実行時のキーです。
 
 ```ts
 const UserRepositoryToken = token<UserRepository>("UserRepository");
 ```
 
-Interface や abstract capability には token を使います。Class 自体が dependency key
-になる場合は、class constructor を直接登録することもできます。
+インターフェースや抽象的な機能にはトークンを使います。クラス自体が依存のキーになる場合は、クラスのコンストラクタを直接登録することもできます。
 
 ## Providers
 
-Provider は、dependency をどのように作成または返すかを container に伝えます。
+プロバイダーは、依存関係をどのように作成または返すかをコンテナに伝えます。
 
-Wyrly は次を support します。
+Wyrly は以下に対応しています。
 
-- class-backed dependencies 向けの `useClass`
-- constants と test doubles 向けの `useValue`
-- custom construction が必要な dependencies 向けの `useFactory`
-- aliases 向けの `useExisting`
+- クラスで実装された依存関係向けの `useClass`
+- 定数やテストダブル向けの `useValue`
+- カスタム生成が必要な依存関係向けの `useFactory`
+- エイリアス向けの `useExisting`
 
 ## Containers
 
-Root container は application-wide registrations を所有します。
+ルートコンテナはアプリケーション全体の登録を管理します。
 
 ```ts
 const container = createContainer();
@@ -40,13 +39,11 @@ container.register(UserRepositoryToken, {
 });
 ```
 
-Root container は composition root として扱います。Domain や use case code の中ではなく、
-そこで具体的な infrastructure を登録してください。
+ルートコンテナは composition root として扱います。ドメインや use case のコードの中ではなく、そこに具体的なインフラ実装を登録してください。
 
 ## Scopes
 
-Scope は child resolution context です。Web apps では、adapters が通常 1 request につき
-1 scope を作ります。
+スコープは子の依存解決コンテキストです。Web アプリでは、アダプターが通常 1 リクエストにつき 1 スコープを作ります。
 
 ```ts
 const scope = container.createScope();
@@ -57,8 +54,7 @@ try {
 }
 ```
 
-Scoped dependencies は同じ scope 内で再利用され、scope が dispose されると一緒に dispose
-されます。
+スコープ付きの依存関係は同じスコープ内で再利用され、スコープが破棄されると一緒に破棄されます。
 
 ## Lifetimes
 
@@ -68,15 +64,15 @@ Scoped dependencies は同じ scope 内で再利用され、scope が dispose �
 | `scoped` | scope につき 1 instance |
 | `transient` | resolution ごとに新しい instance |
 
-Dependency の state と resource ownership に合う、もっとも狭い lifetime を選んでください。
+Dependency の state と resource ownership に合う、最も狭い lifetime を選んでください。
 
 ## Validation
 
-Production 前に graph problems を検出するには、`container.validate()` を使います。
+本番環境に出す前に依存グラフの問題を検出するには、`container.validate()` を使います。
 
 - missing providers
 - circular dependencies
 - invalid provider shapes
 - lifetime violations
 
-Validation は dependency wiring を checkable artifact にできるため、CI で特に有用です。
+検証は依存の組み立てを検査可能な成果物にできるため、CI で特に有用です。

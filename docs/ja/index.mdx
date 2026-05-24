@@ -3,8 +3,7 @@ title: "Wyrly DI"
 description: "モダン TypeScript アプリケーション向けの型安全な依存性注入。"
 ---
 
-Wyrly DI は、明示的で解析しやすく、型安全なアプリケーションアーキテクチャのための
-依存性注入ツールキットです。
+Wyrly DI は、依存関係を明示的に管理し、依存グラフを解析・検証できる、型安全な DI ツールキットです。
 
 レガシーな decorator metadata、自動的な runtime type guessing、framework lock-in
 なしで、モダン TypeScript アプリに DI を導入したいときに使います。
@@ -31,7 +30,7 @@ Wyrly は、明確な composition root、明示的な依存関係、framework �
 code を重視する TypeScript アプリケーション向けに設計されています。
 
 特に DDD や Clean Architecture と相性がよく、use case は port に依存し、外側の layer
-で typed token を通じて具体的な infrastructure を wiring します。
+で typed token を通じて具体的な infrastructure を組み合わせます。
 
 ## 中核となる考え方
 
@@ -42,7 +41,7 @@ code を重視する TypeScript アプリケーション向けに設計されて
 - 明示的な依存定義
 - Singleton、scoped、transient lifetimes
 - Web framework 向け request scopes
-- inspection と validation が可能な dependency graph
+- 検査・検証できる依存グラフ
 
 ## Packages
 
@@ -62,7 +61,7 @@ code を重視する TypeScript アプリケーション向けに設計されて
 
 <CardGroup cols={2}>
   <Card title="Core quickstart" icon="play" href="/ja/getting-started/quickstart">
-    Repository implementation を登録し、scope から use case を resolve します。
+    プロバイダーを登録し、スコープから use case を解決します。
   </Card>
   <Card title="Examples" icon="folder-open" href="/ja/guides/examples">
     DDD、provider patterns、graph validation、web frameworks 向けの実行可能な examples

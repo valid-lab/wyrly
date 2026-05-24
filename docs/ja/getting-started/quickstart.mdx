@@ -1,14 +1,13 @@
 ---
 title: "Quickstart"
-description: "typed token を作り、providers を登録し、scope から use case を resolve します。"
+description: "型付きトークンを作成し、プロバイダーを登録して、スコープから use case を解決します。"
 ---
 
-この guide では、Wyrly の最小構成を示します。typed port、concrete implementation、use
-case、request-like scope を使います。
+この guide では、Wyrly の最小構成を示します。typed port、concrete implementation、use case、request-like scope の 4 要素を使います。
 
 ## Token を作る
 
-Token は interface-based dependencies を runtime でも type-safe に保つために使います。
+トークンは、インターフェースベースの依存関係を実行時でも型安全に保つために使います。
 
 ```ts
 import { createContainer, Injectable, token } from "@wyrly/core";
@@ -26,8 +25,7 @@ const UserRepositoryToken = token<UserRepository>("UserRepository");
 
 ## Use case を定義する
 
-`@Injectable` は依存関係を明示的に宣言します。Wyrly は constructor parameter types を runtime
-で読みません。
+`@Injectable` は依存関係を明示的に宣言します。Wyrly はコンストラクタのパラメーター型を実行時に読み取りません。
 
 ```ts
 @Injectable({
@@ -45,7 +43,7 @@ class GetUserUseCase {
 
 ## Providers を登録する
 
-具体的な implementation は composition root で登録します。
+具体的な実装は composition root で登録します。
 
 ```ts
 class InMemoryUserRepository implements UserRepository {
@@ -66,7 +64,7 @@ container.register(GetUserUseCase);
 
 ## Scope から resolve する
 
-request-level の作業には scope を作り、request が終わったら dispose します。
+リクエスト単位の処理では scope を作り、リクエストが終わったら破棄します。
 
 ```ts
 const scope = container.createScope();
@@ -82,7 +80,7 @@ try {
 
 ## Graph を validate する
 
-tests や CI で validation を実行すると、missing providers や lifetime problems を早期に検出できます。
+テストや CI で検証を実行すると、プロバイダーの不足やライフタイムの問題を早期に検出できます。
 
 ```ts
 const result = container.validate();

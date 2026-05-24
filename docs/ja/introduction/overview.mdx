@@ -6,9 +6,9 @@ description: "Wyrly DI とは何か、どんなときに使うべきか。"
 Wyrly DI は、モダン TypeScript アプリケーション向けの小さな dependency injection
 ツールキットです。
 
-runtime type guessing ではなく、明示的な wiring を重視します。アプリケーションは必要な
-依存関係を宣言し、composition root で具体的な provider を登録し、container または
-request scope から use case を resolve します。
+実行時の型推測ではなく、明示的な依存の組み立てを重視します。アプリケーションは必要な
+依存関係を宣言し、composition root で具体的なプロバイダーを登録し、コンテナまたは
+リクエストスコープから use case を解決します。
 
 ## Wyrly を選ぶとき
 
@@ -17,8 +17,8 @@ request scope から use case を resolve します。
 - Standard decorators で動く TypeScript DI
 - Interface-based dependencies のための typed tokens
 - Web applications 向け request scopes
-- Framework-independent な core package
-- CI 向けの dependency graph inspection と validation
+- フレームワークに依存しない core パッケージ
+- CI 向けの依存グラフ検査と検証
 - DDD や Clean Architecture と相性のよい設計スタイル
 
 ## Wyrly を選ばないとき
@@ -34,7 +34,7 @@ Wyrly は full application framework や NestJS clone を目指していませ�
 - auto-scan や glob registration
 - core package における framework coupling
 
-## Architecture fit
+## アーキテクチャとの相性
 
 Wyrly は domain と application code を framework details から独立させます。
 
@@ -47,7 +47,7 @@ const UserRepositoryToken = token<UserRepository>("UserRepository");
 ```
 
 Domain 側の contract は application layer に残し、具体的な implementation は infrastructure
-code に置いて、アプリの外側で wiring できます。
+code に置いて、アプリの外側で組み合わせられます。
 
 ## 次のステップ
 
