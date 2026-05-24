@@ -12,7 +12,7 @@ Japanese: [README.ja.md](./README.ja.md)
 
 Links:
 
-- Documentation: [docs.wyrly.dev](https://docs.wyrly.dev/)
+- Documentation: [docs.wyrly.dev](https://docs.wyrly.dev/?utm_source=github&utm_medium=readme&utm_campaign=launch&utm_content=root_en)
 - API: [API.md](./API.md)
 - Changelog: [CHANGELOG.md](./CHANGELOG.md)
 - Publishing: [PUBLISHING.md](./PUBLISHING.md)

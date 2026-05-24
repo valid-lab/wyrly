@@ -47,7 +47,7 @@ app.use(diMiddleware(container, {
 
 ## Documentation
 
-- [Official docs](https://docs.wyrly.dev/)
+- [Official docs](https://docs.wyrly.dev/?utm_source=github&utm_medium=package_readme&utm_campaign=launch&utm_content=express_en)
 - [@wyrly/core](../core/README.md)
 - [API reference](https://github.com/valid-lab/wyrly/blob/main/API.md)
 - [Monorepo README](https://github.com/valid-lab/wyrly/blob/main/README.md)

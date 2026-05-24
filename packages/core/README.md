@@ -102,7 +102,7 @@ try {
 
 ## Documentation
 
-- [Official docs](https://docs.wyrly.dev/)
+- [Official docs](https://docs.wyrly.dev/?utm_source=github&utm_medium=package_readme&utm_campaign=launch&utm_content=core_en)
 - [API reference](https://github.com/valid-lab/wyrly/blob/main/API.md)
 - [Monorepo README](https://github.com/valid-lab/wyrly/blob/main/README.md)
 - [Comparison guide](https://github.com/valid-lab/wyrly/blob/main/guides/COMPARE.md)

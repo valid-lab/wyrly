@@ -47,7 +47,7 @@ app.use(diMiddleware(container, {
 
 ## ドキュメント
 
-- [公式ドキュメント](https://docs.wyrly.dev/)
+- [公式ドキュメント](https://docs.wyrly.dev/?utm_source=github&utm_medium=package_readme&utm_campaign=launch&utm_content=express_ja)
 - [@wyrly/core](../core/README.ja.md)
 - [API](https://github.com/valid-lab/wyrly/blob/main/API.ja.md)
 - [リポジトリ README](https://github.com/valid-lab/wyrly/blob/main/README.ja.md)
