@@ -31,6 +31,7 @@ const context = async ({ req, res }: { req: Request; res: Response }) =>
 
 ## ドキュメント
 
+- [公式ドキュメント](https://docs.wyrly.dev/)
 - [@wyrly/core](../core/README.ja.md)
 - [API](https://github.com/valid-lab/wyrly/blob/main/API.ja.md)
 

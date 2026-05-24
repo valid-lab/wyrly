@@ -8,9 +8,17 @@
 > モダン TypeScript 向けの型安全な DI。`reflect-metadata` 不要。標準デコレーター対応。 Web
 > アプリのリクエストスコープまで扱える。
 
-English: [README.md](README.md) · [API（日本語）](API.ja.md) · [変更履歴（日本語）](CHANGELOG.ja.md)
-· [公開手順（日本語）](PUBLISHING.ja.md) · [コントリビューション](CONTRIBUTING.ja.md) ·
-[セキュリティ](SECURITY.ja.md) · [Examples（日本語）](examples/README.ja.md)
+英語版: [README.md](./README.md)
+
+リンク:
+
+- 公式ドキュメント: [docs.wyrly.dev](https://docs.wyrly.dev/)
+- API: [API.ja.md](./API.ja.md)
+- 変更履歴: [CHANGELOG.ja.md](./CHANGELOG.ja.md)
+- 公開手順: [PUBLISHING.ja.md](./PUBLISHING.ja.md)
+- コントリビューション: [CONTRIBUTING.ja.md](./CONTRIBUTING.ja.md)
+- セキュリティ: [SECURITY.ja.md](./SECURITY.ja.md)
+- Examples: [examples/README.ja.md](./examples/README.ja.md)
 
 Wyrly DI
 は、明示的で解析しやすく型安全なアプリケーション構成のための依存性注入（DI）ツールキットです。

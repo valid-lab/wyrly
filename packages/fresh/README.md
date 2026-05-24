@@ -41,6 +41,7 @@ the monorepo.
 
 ## Documentation
 
+- [Official docs](https://docs.wyrly.dev/)
 - [@wyrly/core](../core/README.md) (JSR)
 - [API reference](https://github.com/valid-lab/wyrly/blob/main/API.md)
 - [Publishing](https://github.com/valid-lab/wyrly/blob/main/PUBLISHING.md)

@@ -37,6 +37,7 @@ const container = createContainer();
 
 ## ドキュメント
 
+- [公式ドキュメント](https://docs.wyrly.dev/)
 - [@wyrly/core](../core/README.ja.md)
 - [API](https://github.com/valid-lab/wyrly/blob/main/API.ja.md)
 - [公開手順](https://github.com/valid-lab/wyrly/blob/main/PUBLISHING.ja.md)
