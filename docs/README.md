@@ -34,8 +34,7 @@ npx --yes mint broken-links --check-anchors --check-external
 In the Mintlify dashboard:
 
 1. Connect the `valid-lab/wyrly` GitHub repository.
-2. Set the docs directory to `oss/docs` if connecting from the monorepo root, or `docs` if the
-   Mintlify integration is scoped directly to the `oss` repository.
+2. Set the docs directory to `docs`.
 3. Set the production branch to `main`.
 4. Enable preview deployments for pull requests.
 5. Configure the public domain when ready.
