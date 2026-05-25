@@ -47,3 +47,55 @@ Deno.test("validate ok for healthy container", () => {
   const r = c.validate();
   assertEquals(r.ok, true);
 });
+
+Deno.test("validate detects transitive_singleton_depends_on_scoped", () => {
+  const c = createContainer();
+  const S = token<string>("S");
+  c.register(S, { useValue: "v", lifetime: "singleton" });
+  @Injectable({ lifetime: "scoped", deps: [S] })
+  class ScopedSvc {
+    constructor(_s: string) {}
+  }
+  c.register(ScopedSvc, { useClass: ScopedSvc, lifetime: "scoped" });
+  @Injectable({ lifetime: "singleton", deps: [ScopedSvc] })
+  class Mid {
+    constructor(_x: ScopedSvc) {}
+  }
+  c.register(Mid, { useClass: Mid, lifetime: "singleton" });
+  @Injectable({ lifetime: "singleton", deps: [Mid] })
+  class Root {
+    constructor(_m: Mid) {}
+  }
+  c.register(Root, { useClass: Root, lifetime: "singleton" });
+  const r = c.validate();
+  assert(!r.ok);
+  assert(r.issues.some((i) => i.code === "transitive_singleton_depends_on_scoped"));
+});
+
+Deno.test("validate warns injectable_deps_mismatch", () => {
+  const c = createContainer();
+  const A = token<string>("A");
+  const B = token<string>("B");
+  c.register(A, { useValue: "a", lifetime: "singleton" });
+  c.register(B, { useValue: "b", lifetime: "singleton" });
+  @Injectable({ deps: [A], lifetime: "singleton" })
+  class Svc {
+    constructor(_a: string) {}
+  }
+  c.register(Svc, { useClass: Svc, deps: [B], lifetime: "singleton" });
+  const r = c.validate();
+  assert(r.issues.some((i) => i.code === "injectable_deps_mismatch"));
+});
+
+Deno.test("validate warns injectable_lifetime_mismatch", () => {
+  const c = createContainer();
+  const S = token<string>("S");
+  c.register(S, { useValue: "v", lifetime: "singleton" });
+  @Injectable({ deps: [S], lifetime: "scoped" })
+  class Svc {
+    constructor(_s: string) {}
+  }
+  c.register(Svc, { useClass: Svc, lifetime: "singleton" });
+  const r = c.validate();
+  assert(r.issues.some((i) => i.code === "injectable_lifetime_mismatch"));
+});

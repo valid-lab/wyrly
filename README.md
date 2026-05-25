@@ -44,6 +44,8 @@ Choose your framework:
 | Next.js App Router        | [`examples/next-ddd`](./examples/next-ddd/)                 | Route Handlers, Server Actions, and Server Components can share request-scoped DI |
 | Hono / Cloudflare Workers | [`examples/hono-api`](./examples/hono-api/)                 | Edge-friendly middleware can create one DI scope per request                      |
 | GraphQL / DataLoader      | [`examples/graphql-request`](./examples/graphql-request/)   | One GraphQL request can own scoped loaders and dispose them cleanly               |
+| GraphQL Yoga              | [`examples/yoga-graphql`](./examples/yoga-graphql/)           | Yoga + `createGraphQLDIContext` + plugin disposal (see [GRAPHQL_DISPOSE](./guides/GRAPHQL_DISPOSE.md)) |
+| Apollo Server             | [`examples/apollo-graphql`](./examples/apollo-graphql/)       | Apollo 4 + scoped DI context + `willSendResponse` disposal                        |
 | DDD / Clean Architecture  | [`examples/basic-ddd`](./examples/basic-ddd/)               | Ports, use cases, and infrastructure can be wired explicitly                      |
 | CI validation             | [`examples/dependency-graph`](./examples/dependency-graph/) | `inspect()` / `validate()` can catch graph and lifetime issues                    |
 
@@ -463,7 +465,8 @@ export const GET = withDI(appContainer, async (req, { di, params }) => {
 ```
 
 For **Server Components** (`createServerDI`, `getDI()`, request scope via `cache()` and `after()`),
-see [guides/SERVER_COMPONENTS.md](./guides/SERVER_COMPONENTS.md).
+see [guides/SERVER_COMPONENTS.md](./guides/SERVER_COMPONENTS.md). For GraphQL request scopes and
+disposal, see [guides/GRAPHQL_DISPOSE.md](./guides/GRAPHQL_DISPOSE.md).
 
 ## DDD-friendly Structure
 

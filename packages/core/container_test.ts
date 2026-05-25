@@ -8,6 +8,7 @@ import {
   LifetimeViolationError,
   ProviderNotFoundError,
   ScopeDisposedError,
+  ScopeHasActiveChildrenError,
   token,
 } from "./mod.ts";
 
@@ -183,4 +184,75 @@ Deno.test("dispose calls disposers in reverse creation order", async () => {
   scope.resolve(A);
   await scope.dispose();
   assertEquals(log, [1, 2]);
+});
+
+Deno.test("child scope reads parent scoped instance", async () => {
+  const c = createContainer();
+  const S = token<string>("S");
+  c.register(S, { useValue: "parent", lifetime: "singleton" });
+  @Injectable({ lifetime: "scoped", deps: [S] })
+  class ScopedSvc {
+    constructor(public s: string) {}
+  }
+  c.register(ScopedSvc, { useClass: ScopedSvc, lifetime: "scoped" });
+
+  const parent = c.createScope();
+  const parentInst = parent.resolve(ScopedSvc);
+  const child = parent.createChildScope();
+  const childInst = child.resolve(ScopedSvc);
+  assert(parentInst === childInst);
+  await child.dispose();
+  assertEquals(parent.resolve(ScopedSvc), parentInst);
+  await parent.dispose();
+});
+
+Deno.test("child scope set overrides parent local value", async () => {
+  const c = createContainer();
+  const T = token<number>("T");
+  const parent = c.createScope();
+  parent.set(T, 1);
+  const child = parent.createChildScope();
+  child.set(T, 2);
+  assertEquals(child.resolve(T), 2);
+  assertEquals(parent.resolve(T), 1);
+  await child.dispose();
+  await parent.dispose();
+});
+
+Deno.test("parent dispose with active child throws", async () => {
+  const c = createContainer();
+  const parent = c.createScope();
+  const child = parent.createChildScope();
+  let thrown: unknown;
+  try {
+    await parent.dispose();
+  } catch (e) {
+    thrown = e;
+  }
+  assert(thrown instanceof ScopeHasActiveChildrenError);
+  await child.dispose();
+  await parent.dispose();
+});
+
+Deno.test("dispose onError is called when disposer fails", async () => {
+  const c = createContainer();
+  const log: string[] = [];
+  const T = token<{ dispose(): void }>("T");
+  c.register(T, {
+    deps: [],
+    useFactory: () => ({
+      dispose() {
+        throw new Error("boom");
+      },
+    }),
+    lifetime: "scoped",
+  });
+  const scope = c.createScope();
+  scope.resolve(T);
+  await scope.dispose({
+    onError: () => {
+      log.push("err");
+    },
+  });
+  assertEquals(log, ["err"]);
 });

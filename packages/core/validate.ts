@@ -1,3 +1,4 @@
+import type { ClassToken } from "./token.ts";
 import type { InjectionToken } from "./token.ts";
 import type { Lifetime } from "./lifetime.ts";
 import type { NormalizedProvider } from "./provider.ts";
@@ -82,6 +83,65 @@ function issue(
   };
 }
 
+function depIdSet(deps: readonly InjectionToken<unknown>[]): Set<string> {
+  return new Set(deps.map((d) => graphNodeId(d)));
+}
+
+function sameDepSet(
+  a: readonly InjectionToken<unknown>[],
+  b: readonly InjectionToken<unknown>[],
+): boolean {
+  const sa = depIdSet(a);
+  const sb = depIdSet(b);
+  if (sa.size !== sb.size) return false;
+  for (const id of sa) {
+    if (!sb.has(id)) return false;
+  }
+  return true;
+}
+
+function lifetimeForNode(
+  id: string,
+  byId: Map<string, NormalizedProvider<unknown>>,
+): Lifetime | undefined {
+  const hit = byId.get(id);
+  if (hit) return hit.lifetime;
+  return undefined;
+}
+
+function reachableScopedDependency(
+  startId: string,
+  _fromLt: Lifetime,
+  byId: Map<string, NormalizedProvider<unknown>>,
+  adj: Map<string, string[]>,
+): { depId: string } | null {
+  const visiting = new Set<string>();
+  const visit = (id: string): { depId: string } | null => {
+    if (visiting.has(id)) return null;
+    visiting.add(id);
+    const lt = lifetimeForNode(id, byId);
+    if (lt === "scoped" && id !== startId) {
+      return { depId: id };
+    }
+    for (const to of adj.get(id) ?? []) {
+      const hit = visit(to);
+      if (hit) return hit;
+    }
+    visiting.delete(id);
+    return null;
+  };
+
+  for (const to of adj.get(startId) ?? []) {
+    const toLt = lifetimeForNode(to, byId);
+    if (toLt === "scoped") {
+      return { depId: to };
+    }
+    const nested = visit(to);
+    if (nested) return nested;
+  }
+  return null;
+}
+
 /**
  * Build a graph from registered providers and check cycles, lifetimes, and orphans.
  */
@@ -93,6 +153,55 @@ export function validateNormalizedProviders(
   const issues: ValidationIssue[] = [];
   const graph = buildGraph(providers);
   const byId = providerMap(providers);
+
+  for (const p of providers) {
+    if (p.providerType === "class" && p.useClass) {
+      const meta = getInjectableMetadata(p.useClass as ClassToken<unknown>);
+      if (meta?.deps !== undefined && !sameDepSet(p.deps, meta.deps)) {
+        issues.push(
+          issue("warning", "injectable_deps_mismatch", {
+            fromId: graphNodeId(p.token),
+            depId: "",
+          }, locale),
+        );
+      }
+      if (
+        meta?.lifetime !== undefined &&
+        meta.lifetime !== p.lifetime
+      ) {
+        issues.push(
+          issue("warning", "injectable_lifetime_mismatch", {
+            fromId: graphNodeId(p.token),
+            depId: "",
+            registeredLt: p.lifetime,
+            decoratorLt: meta.lifetime,
+          }, locale),
+        );
+      }
+    }
+  }
+
+  const adj = new Map<string, string[]>();
+  for (const e of graph.edges) {
+    if (!adj.has(e.from)) adj.set(e.from, []);
+    adj.get(e.from)!.push(e.to);
+  }
+
+  for (const p of providers) {
+    const fromLt = p.lifetime;
+    if (fromLt !== "singleton" && fromLt !== "transient") continue;
+    const fromId = graphNodeId(p.token);
+    const transitive = reachableScopedDependency(fromId, fromLt, byId, adj);
+    if (transitive) {
+      issues.push(
+        issue("error", "transitive_singleton_depends_on_scoped", {
+          fromId,
+          depId: transitive.depId,
+          fromLt,
+        }, locale),
+      );
+    }
+  }
 
   for (const p of providers) {
     const fromLt = p.lifetime;
@@ -126,12 +235,6 @@ export function validateNormalizedProviders(
         );
       }
     }
-  }
-
-  const adj = new Map<string, string[]>();
-  for (const e of graph.edges) {
-    if (!adj.has(e.from)) adj.set(e.from, []);
-    adj.get(e.from)!.push(e.to);
   }
 
   const visiting = new Set<string>();

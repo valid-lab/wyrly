@@ -71,9 +71,31 @@ try {
 
 対応しているフレームワークでは、アダプターがこれを自動で行います。
 
+## 子スコープ（v2.1+）
+
+`scope.createChildScope()` で、1 リクエスト内のネストした単位（GraphQL subscription の operation など）を表現できます。
+
+```ts
+const requestScope = container.createScope();
+const operationScope = requestScope.createChildScope();
+
+try {
+  requestScope.resolve(RequestDbToken);
+  operationScope.resolve(OperationContextToken);
+} finally {
+  await operationScope.dispose();
+  await requestScope.dispose();
+}
+```
+
+- **子を先に dispose** しないと親の dispose は `ScopeHasActiveChildrenError` になります。
+- 子は親の `set()` 値と scoped インスタンスを参照できます。
+- 新しい scoped インスタンスは、resolve したスコープにのみ格納されます。
+
 ## Lifetime validation
 
-Wyrly はライフタイムの関係を検証できます。たとえば singleton は scoped な依存関係に依存すべきではありません。プロセス全体で共有されるインスタンスにリクエスト固有の状態が保持されてしまうためです。
+Wyrly はライフタイムの関係を検証できます。singleton が scoped に**直接または間接的に**依存していないか、
+`register()` が `@Injectable` の `deps` / `lifetime` と矛盾していないかを確認します。
 
 テストや CI の一部として検証を実行してください。
 

@@ -4,7 +4,7 @@ import type { Lifetime } from "./lifetime.ts";
 import type { Provider } from "./provider.ts";
 import type { NormalizedProvider } from "./provider.ts";
 import { normalizeProvider, syntheticClassProvider } from "./provider.ts";
-import type { Scope } from "./scope.ts";
+import type { Scope, ScopeDisposeOptions } from "./scope.ts";
 import { getInjectableMetadata } from "./metadata.ts";
 import { graphNodeId, type RegistryKey, registryKey } from "./internal_keys.ts";
 import {
@@ -14,6 +14,7 @@ import {
   LifetimeViolationError,
   ProviderNotFoundError,
   ScopeDisposedError,
+  ScopeHasActiveChildrenError,
 } from "./errors.ts";
 import {
   augmentGraphWithInjectableClasses,
@@ -78,6 +79,8 @@ function maybeTrackDisposable(scope: ScopeImpl, instance: unknown): void {
 export class ScopeImpl implements Scope {
   readonly #container: ContainerImpl;
   readonly #allowsScoped: boolean;
+  readonly #parent: ScopeImpl | undefined;
+  readonly #children = new Set<ScopeImpl>();
   readonly #localValues = new Map<RegistryKey, unknown>();
   readonly #localProviders = new Map<RegistryKey, NormalizedProvider<unknown>>();
   readonly #scopedCache = new Map<RegistryKey, unknown>();
@@ -85,9 +88,16 @@ export class ScopeImpl implements Scope {
   disposers: Disposer[] = [];
   #disposed = false;
 
-  constructor(container: ContainerImpl, options: { allowsScoped: boolean }) {
+  constructor(
+    container: ContainerImpl,
+    options: { allowsScoped: boolean; parent?: ScopeImpl },
+  ) {
     this.#container = container;
     this.#allowsScoped = options.allowsScoped;
+    this.#parent = options.parent;
+    if (this.#parent) {
+      this.#parent.#children.add(this);
+    }
   }
 
   getAllowsScoped(): boolean {
@@ -117,11 +127,30 @@ export class ScopeImpl implements Scope {
     this.#localValues.set(registryKey(token), value);
   }
 
-  async dispose(): Promise<void> {
+  createChildScope(): Scope {
+    if (this.#disposed) throw new ScopeDisposedError();
+    if (!this.#allowsScoped) {
+      throw new InvalidProviderError("InvalidProvider_child_scope_not_allowed");
+    }
+    return new ScopeImpl(this.#container, { allowsScoped: true, parent: this });
+  }
+
+  async dispose(options?: ScopeDisposeOptions): Promise<void> {
     if (this.#disposed) return;
+    if (this.#children.size > 0) {
+      throw new ScopeHasActiveChildrenError();
+    }
     this.#disposed = true;
+    if (this.#parent) {
+      this.#parent.#children.delete(this);
+    }
+    const onError = options?.onError;
     for (let i = this.disposers.length - 1; i >= 0; i--) {
-      await this.disposers[i]!();
+      try {
+        await this.disposers[i]!();
+      } catch (error) {
+        onError?.(error);
+      }
     }
     this.disposers.length = 0;
     this.#scopedCache.clear();
@@ -129,16 +158,35 @@ export class ScopeImpl implements Scope {
     this.#localValues.clear();
   }
 
+  findLocalValue(key: RegistryKey): unknown | undefined {
+    if (this.#localValues.has(key)) {
+      return this.#localValues.get(key);
+    }
+    return this.#parent?.findLocalValue(key);
+  }
+
   hasLocalValue(key: RegistryKey): boolean {
-    return this.#localValues.has(key);
+    return this.findLocalValue(key) !== undefined;
   }
 
   getLocalValue(key: RegistryKey): unknown {
     return this.#localValues.get(key);
   }
 
+  findLocalProvider(key: RegistryKey): NormalizedProvider<unknown> | undefined {
+    const local = this.#localProviders.get(key);
+    if (local !== undefined) return local;
+    return this.#parent?.findLocalProvider(key);
+  }
+
   getLocalProvider(key: RegistryKey): NormalizedProvider<unknown> | undefined {
     return this.#localProviders.get(key);
+  }
+
+  getScopedInChain(key: RegistryKey): unknown | undefined {
+    const hit = this.#scopedCache.get(key);
+    if (hit !== undefined) return hit;
+    return this.#parent?.getScopedInChain(key);
   }
 
   getScoped(key: RegistryKey): unknown {
@@ -244,11 +292,12 @@ class ContainerImpl implements Container {
     const key = registryKey(token);
     const pathIds = [...path, graphNodeId(token)];
 
-    if (scope.hasLocalValue(key)) {
-      return scope.getLocalValue(key) as T;
+    const localValue = scope.findLocalValue(key);
+    if (localValue !== undefined) {
+      return localValue as T;
     }
 
-    const localProv = scope.getLocalProvider(key);
+    const localProv = scope.findLocalProvider(key);
     const regProv = this.#registry.get(key);
     const np = localProv ??
       regProv ??
@@ -298,7 +347,7 @@ class ContainerImpl implements Container {
     }
 
     if (np.lifetime === "scoped") {
-      const hit = scope.getScoped(key);
+      const hit = scope.getScopedInChain(key);
       if (hit !== undefined) return hit as T;
       const created = this.#createInstance(scope, np, pathIds);
       scope.setScoped(key, created);

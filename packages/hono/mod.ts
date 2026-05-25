@@ -36,6 +36,7 @@ export type {
   Provider,
   ProviderType,
   Scope,
+  ScopeDisposeOptions,
   Token,
   ValidateOptions,
   ValidationIssue,

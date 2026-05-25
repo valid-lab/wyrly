@@ -73,10 +73,38 @@ try {
 
 Framework adapters do this for you where possible.
 
+## Child scopes
+
+v2.1+ adds `scope.createChildScope()` for nested units of work inside one request (for example a
+GraphQL subscription operation or a sub-task that should share parent scoped services).
+
+```ts
+const requestScope = container.createScope();
+const operationScope = requestScope.createChildScope();
+
+try {
+  const shared = requestScope.resolve(RequestDbToken);
+  const local = operationScope.resolve(OperationContextToken);
+  // operationScope reads parent scoped instances; new scoped instances stay on the child
+} finally {
+  await operationScope.dispose();
+  await requestScope.dispose();
+}
+```
+
+Rules:
+
+- Dispose **child scopes before** the parent (`ScopeHasActiveChildrenError` otherwise).
+- Child scopes can read parent `set()` values and parent scoped instances.
+- New scoped instances created in a child are stored on that child only.
+
 ## Lifetime validation
 
 Wyrly can validate lifetime relationships. For example, a singleton should not depend on a scoped
-dependency because that would capture request-specific state in a process-wide instance.
+dependency — **directly or transitively** — because that would capture request-specific state in a
+process-wide instance.
+
+Validation also warns when `register()` overrides `@Injectable` `deps` or `lifetime` metadata.
 
 Run validation as part of test or CI:
 

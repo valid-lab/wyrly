@@ -9,6 +9,24 @@ adheres to [Semantic Versioning](https://semver.org/) from **1.0.0**.
 
 ## [Unreleased]
 
+## [2.1.0] - 2026-05-25
+
+### Added
+
+- `@wyrly/core` `Scope.createChildScope()` for nested request units of work.
+- `@wyrly/core` `Scope.dispose({ onError })` for framework-agnostic disposal error hooks.
+- `@wyrly/core` `validate()` rules: `transitive_singleton_depends_on_scoped` (error),
+  `injectable_deps_mismatch` and `injectable_lifetime_mismatch` (warnings).
+- `ScopeHasActiveChildrenError` when disposing a parent scope before its children.
+- Guides: [guides/GRAPHQL_DISPOSE.md](./guides/GRAPHQL_DISPOSE.md) (en/ja).
+- Examples: `examples/yoga-graphql`, `examples/apollo-graphql`.
+
+### Changed
+
+- Child scopes resolve parent scoped instances and `set()` values; new scoped instances are created
+  on the resolving scope only.
+- `@wyrly/express` `diMiddleware` passes disposal errors to `scope.dispose({ onError })`.
+
 ## [2.0.0] - 2026-05-23
 
 ### Changed
@@ -145,6 +163,7 @@ adheres to [Semantic Versioning](https://semver.org/) from **1.0.0**.
 
 - No first-class `resolveAsync` (async factory results are not fully modeled as async DI)
 
+[2.1.0]: https://github.com/valid-lab/wyrly/releases/tag/v2.1.0
 [2.0.0]: https://github.com/valid-lab/wyrly/releases/tag/v2.0.0
 [1.0.6]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.6
 [1.0.5]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.5

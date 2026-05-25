@@ -44,6 +44,8 @@ TypeScript アプリ向けに設計されています。型付き token、明示
 | Next.js App Router           | [`examples/next-ddd`](./examples/next-ddd/)                 | Route Handler、Server Action、Server Components で request-scoped DI を共有できる |
 | Hono / Cloudflare Workers    | [`examples/hono-api`](./examples/hono-api/)                 | Edge 寄りの middleware でリクエストごとに DI scope を作れる                       |
 | GraphQL / DataLoader         | [`examples/graphql-request`](./examples/graphql-request/)   | GraphQL リクエストごとの scoped loader と破棄を扱える                             |
+| GraphQL Yoga                 | [`examples/yoga-graphql`](./examples/yoga-graphql/)           | Yoga + dispose plugin（[GRAPHQL_DISPOSE.ja.md](./guides/GRAPHQL_DISPOSE.ja.md)） |
+| Apollo Server                | [`examples/apollo-graphql`](./examples/apollo-graphql/)       | Apollo 4 + `willSendResponse` で dispose                                          |
 | DDD / クリーンアーキテクチャ | [`examples/basic-ddd`](./examples/basic-ddd/)               | port、use case、infrastructure を明示的に配線できる                               |
 | CI 検証                      | [`examples/dependency-graph`](./examples/dependency-graph/) | `inspect()` / `validate()` で依存グラフと lifetime 問題を検出できる               |
 

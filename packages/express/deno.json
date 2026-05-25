@@ -1,11 +1,11 @@
 {
   "name": "@wyrly/express",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "exports": {
     ".": "./mod.ts"
   },
   "imports": {
-    "@wyrly/core": "jsr:@wyrly/core@^2.0.0",
+    "@wyrly/core": "jsr:@wyrly/core@^2.1.0",
     "express": "npm:express@5",
     "@types/express": "npm:@types/express@5"
   },

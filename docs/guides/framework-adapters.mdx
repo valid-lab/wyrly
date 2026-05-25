@@ -67,10 +67,36 @@ deno add jsr:@wyrly/fresh
 
 ## GraphQL
 
-Use the GraphQL adapter when each GraphQL request should own a DI scope and request-local loaders.
+Use `@wyrly/graphql` when each GraphQL request should own a DI scope and request-local loaders.
+
+```ts
+import { createGraphQLDIContext } from "@wyrly/graphql";
+
+const ctx = await createGraphQLDIContext(container, {
+  request,
+  configureScope(scope) {
+    scope.set(CurrentUserToken, { id: userId });
+  },
+});
+
+try {
+  return await runResolvers(ctx.di);
+} finally {
+  await ctx.dispose();
+}
+```
 
 This is useful for DataLoader instances, request context, authentication state, and disposable
 resources.
+
+### GraphQL Yoga and Apollo Server
+
+Until dedicated packages ship in v2.2.0, wire disposal in server plugins:
+
+| Server | Example | Guide |
+| ------ | ------- | ----- |
+| GraphQL Yoga 5 | [`examples/yoga-graphql`](https://github.com/valid-lab/wyrly/tree/main/examples/yoga-graphql) | [GRAPHQL_DISPOSE](https://github.com/valid-lab/wyrly/blob/main/guides/GRAPHQL_DISPOSE.md) |
+| Apollo Server 4+ | [`examples/apollo-graphql`](https://github.com/valid-lab/wyrly/tree/main/examples/apollo-graphql) | same |
 
 ## Pick the adapter at the edge
 

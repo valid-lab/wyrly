@@ -8,6 +8,23 @@ English: [CHANGELOG.md](./CHANGELOG.md)
 
 ## [Unreleased]
 
+## [2.1.0] - 2026-05-25
+
+### 追加
+
+- `@wyrly/core` に `Scope.createChildScope()`（リクエスト内のネスト単位）。
+- `@wyrly/core` に `Scope.dispose({ onError })`（dispose 失敗のフック）。
+- `validate()` に `transitive_singleton_depends_on_scoped`（error）、
+  `injectable_deps_mismatch` / `injectable_lifetime_mismatch`（warning）。
+- `ScopeHasActiveChildrenError`（子 scope が残っている親の dispose）。
+- ガイド [guides/GRAPHQL_DISPOSE.ja.md](./guides/GRAPHQL_DISPOSE.ja.md)。
+- 例: `examples/yoga-graphql`、`examples/apollo-graphql`。
+
+### 変更
+
+- 子 scope は親の scoped インスタンスと `set()` 値を参照可能。新しい scoped は解決した scope にのみ格納。
+- `@wyrly/express` の `diMiddleware` が `scope.dispose({ onError })` に委譲。
+
 ## [2.0.0] - 2026-05-23
 
 ### 変更
@@ -116,6 +133,7 @@ English: [CHANGELOG.md](./CHANGELOG.md)
 
 - 第一級の `resolveAsync` なし（非同期 factory の DI モデルは限定的）
 
+[2.1.0]: https://github.com/valid-lab/wyrly/releases/tag/v2.1.0
 [2.0.0]: https://github.com/valid-lab/wyrly/releases/tag/v2.0.0
 [1.0.6]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.6
 [1.0.5]: https://github.com/valid-lab/wyrly/releases/tag/v1.0.5

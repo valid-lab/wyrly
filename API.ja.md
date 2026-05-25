@@ -50,6 +50,7 @@ Wyrly DI **v2.0.0** の **安定公開 export** 一覧です。ここに載っ�
 | `DependencyGraph`, `DependencyNode`, `DependencyEdge` | inspect API のグラフ型 |
 | `GraphToJsonOptions` | `graphToJson` のオプション |
 | `ValidateOptions`, `ValidationResult`, `ValidationIssue` | validate API の型 |
+| `ScopeDisposeOptions` | `Scope.dispose()` のオプション |
 | `Locale`, `ValidationMessageCode`, `ErrorMessageKind` | i18n 関連の型 |
 | `DEFAULT_LOCALE` | デフォルトロケール定数 |
 
@@ -61,6 +62,7 @@ Wyrly DI **v2.0.0** の **安定公開 export** 一覧です。ここに載っ�
 | `CircularDependencyError` |
 | `InvalidProviderError` |
 | `ScopeDisposedError` |
+| `ScopeHasActiveChildrenError` |
 | `LifetimeViolationError` |
 | `DuplicateProviderError` |
 
@@ -82,7 +84,8 @@ Wyrly DI **v2.0.0** の **安定公開 export** 一覧です。ここに載っ�
 | `resolve` | スコープ内で解決 |
 | `register` | スコープローカルな provider |
 | `set` | スコープローカルな値 |
-| `dispose` | スコープ内インスタンスの破棄 |
+| `createChildScope` | ネストスコープ（親 scoped を参照。子を先に dispose） |
+| `dispose` | スコープ内インスタンスの破棄（`options.onError` 任意） |
 | `isDisposed` | dispose 済みか |
 
 ### `FactoryProvider` の補足

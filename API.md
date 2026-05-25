@@ -51,6 +51,7 @@ Entry: [`packages/core/mod.ts`](./packages/core/mod.ts)
 | `DependencyGraph`, `DependencyNode`, `DependencyEdge` | Inspect API graph types |
 | `GraphToJsonOptions` | Options for `graphToJson` |
 | `ValidateOptions`, `ValidationResult`, `ValidationIssue` | Validate API types |
+| `ScopeDisposeOptions` | Options for `Scope.dispose()` |
 | `Locale`, `ValidationMessageCode`, `ErrorMessageKind` | i18n types |
 | `DEFAULT_LOCALE` | Default locale constant |
 
@@ -62,6 +63,7 @@ Entry: [`packages/core/mod.ts`](./packages/core/mod.ts)
 | `CircularDependencyError` |
 | `InvalidProviderError` |
 | `ScopeDisposedError` |
+| `ScopeHasActiveChildrenError` |
 | `LifetimeViolationError` |
 | `DuplicateProviderError` |
 
@@ -83,7 +85,8 @@ Entry: [`packages/core/mod.ts`](./packages/core/mod.ts)
 | `resolve` | Resolve within scope |
 | `register` | Scope-local provider |
 | `set` | Scope-local value |
-| `dispose` | Dispose scoped instances |
+| `createChildScope` | Nested scope (reads parent scoped/local; dispose children first) |
+| `dispose` | Dispose scoped instances (`options.onError` optional) |
 | `isDisposed` | Whether scope was disposed |
 
 ### `FactoryProvider` note

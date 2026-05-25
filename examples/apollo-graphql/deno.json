@@ -1,0 +1,14 @@
+{
+  "name": "@wyrly-examples/apollo-graphql",
+  "version": "0.0.0",
+  "exports": {
+    ".": "./main.ts"
+  },
+  "imports": {
+    "graphql": "npm:graphql@16",
+    "@apollo/server": "npm:@apollo/server@4"
+  },
+  "tasks": {
+    "start": "deno run -A main.ts"
+  }
+}

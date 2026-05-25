@@ -65,9 +65,33 @@ deno add jsr:@wyrly/fresh
 
 ## GraphQL
 
-各 GraphQL リクエストが DI スコープとリクエストローカルなローダーを所有すべき場合は、GraphQL アダプターを使います。
+`@wyrly/graphql` で各 GraphQL リクエストに DI スコープを割り当てます。
 
-DataLoader インスタンス、リクエストコンテキスト、認証状態、破棄が必要なリソースに有用です。
+```ts
+import { createGraphQLDIContext } from "@wyrly/graphql";
+
+const ctx = await createGraphQLDIContext(container, {
+  request,
+  configureScope(scope) {
+    scope.set(CurrentUserToken, { id: userId });
+  },
+});
+
+try {
+  return await runResolvers(ctx.di);
+} finally {
+  await ctx.dispose();
+}
+```
+
+### GraphQL Yoga / Apollo Server
+
+v2.2.0 で専用パッケージ予定。それまでは plugin で dispose します。
+
+| サーバー | 例 | ガイド |
+| -------- | -- | ------ |
+| GraphQL Yoga 5 | [`examples/yoga-graphql`](https://github.com/valid-lab/wyrly/tree/main/examples/yoga-graphql) | [GRAPHQL_DISPOSE.ja.md](https://github.com/valid-lab/wyrly/blob/main/guides/GRAPHQL_DISPOSE.ja.md) |
+| Apollo Server 4+ | [`examples/apollo-graphql`](https://github.com/valid-lab/wyrly/tree/main/examples/apollo-graphql) | 同上 |
 
 ## Adapter はアプリの外側の層に置く
 

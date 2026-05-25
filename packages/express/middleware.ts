@@ -21,11 +21,13 @@ export function diMiddleware(container: Container, options: ExpressDIOptions = {
     const disposeScope = () => {
       if (disposeStarted) return;
       disposeStarted = true;
-      void scope.dispose().catch((error) => {
-        if (!options.onDisposeError) return;
-        void Promise.resolve(options.onDisposeError(error, req, res)).catch(() => {
-          // Disposal happens after the response lifecycle; avoid unhandled rejections here.
-        });
+      void scope.dispose({
+        onError: (error) => {
+          if (!options.onDisposeError) return;
+          void Promise.resolve(options.onDisposeError(error, req, res)).catch(() => {
+            // Disposal happens after the response lifecycle; avoid unhandled rejections here.
+          });
+        },
       });
     };
     res.once("finish", disposeScope);

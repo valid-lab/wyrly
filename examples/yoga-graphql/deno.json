@@ -1,0 +1,14 @@
+{
+  "name": "@wyrly-examples/yoga-graphql",
+  "version": "0.0.0",
+  "exports": {
+    ".": "./main.ts"
+  },
+  "imports": {
+    "graphql": "npm:graphql@16",
+    "graphql-yoga": "npm:graphql-yoga@5"
+  },
+  "tasks": {
+    "start": "deno run -A main.ts"
+  }
+}

@@ -9,6 +9,9 @@ export type ValidationMessageCode =
   | "unresolved_dependency"
   | "singleton_depends_on_scoped"
   | "transient_depends_on_scoped"
+  | "transitive_singleton_depends_on_scoped"
+  | "injectable_deps_mismatch"
+  | "injectable_lifetime_mismatch"
   | "circular_dependency"
   | "unused_provider";
 
@@ -22,7 +25,9 @@ export type ErrorMessageKind =
   | "InvalidProvider_class_token_only"
   | "InvalidProvider_scoped_from_root"
   | "InvalidProvider_unsupported_provider_type"
-  | "InvalidProvider_custom";
+  | "InvalidProvider_custom"
+  | "ScopeHasActiveChildren"
+  | "InvalidProvider_child_scope_not_allowed";
 
 /** Normalize BCP 47 / POSIX locale tags to supported `en` | `ja`. */
 export function normalizeLocaleTag(tag: string): Locale {
@@ -99,6 +104,18 @@ export function validationMessage(
       return locale === "ja"
         ? `${fromId} (transient) が scoped の依存 ${depId} に依存しています。実行コンテキストに注意してください。`
         : `${fromId} (transient) depends on scoped dependency ${depId}. Mind the execution context.`;
+    case "transitive_singleton_depends_on_scoped":
+      return locale === "ja"
+        ? `${fromId} (${params.fromLt}) が scoped の依存 ${depId} に間接的に依存しています。`
+        : `${fromId} (${params.fromLt}) transitively depends on scoped dependency ${depId}.`;
+    case "injectable_deps_mismatch":
+      return locale === "ja"
+        ? `${fromId} の register() deps と @Injectable deps が一致しません。`
+        : `${fromId} register() deps do not match @Injectable deps.`;
+    case "injectable_lifetime_mismatch":
+      return locale === "ja"
+        ? `${fromId} の register() lifetime (${params.registeredLt}) と @Injectable lifetime (${params.decoratorLt}) が一致しません。`
+        : `${fromId} register() lifetime (${params.registeredLt}) does not match @Injectable lifetime (${params.decoratorLt}).`;
     case "circular_dependency":
       return locale === "ja" ? `循環依存: ${cycle ?? ""}` : `Circular dependency: ${cycle ?? ""}`;
     case "unused_provider":
@@ -155,6 +172,14 @@ export function errorMessage(
       return locale === "ja"
         ? `InvalidProviderError: 未対応の providerType: ${providerType}`
         : `InvalidProviderError: Unsupported providerType: ${providerType}`;
+    case "ScopeHasActiveChildren":
+      return locale === "ja"
+        ? "ScopeHasActiveChildrenError: 未 dispose の子スコープがあります。子を先に dispose() してください。"
+        : "ScopeHasActiveChildrenError: Active child scopes exist. Dispose child scopes first.";
+    case "InvalidProvider_child_scope_not_allowed":
+      return locale === "ja"
+        ? "InvalidProviderError: 子スコープは createScope() で作成したリクエストスコープからのみ作成できます。"
+        : "InvalidProviderError: Child scopes can only be created from a request scope (createScope()).";
     case "InvalidProvider_custom":
       return `InvalidProviderError: ${detail}`;
   }

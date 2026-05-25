@@ -35,7 +35,7 @@ export { Injectable } from "./decorators.ts";
 export type { InjectableMetadata } from "./metadata.ts";
 export type { ClassDecoratorContext } from "./types_decorator.ts";
 export { type Container, createContainer } from "./container.ts";
-export type { Scope } from "./scope.ts";
+export type { Scope, ScopeDisposeOptions } from "./scope.ts";
 export type {
   ClassProvider,
   ExistingProvider,
@@ -71,4 +71,5 @@ export {
   ProviderNotFoundError,
   type ResolutionPath,
   ScopeDisposedError,
+  ScopeHasActiveChildrenError,
 } from "./errors.ts";

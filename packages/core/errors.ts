@@ -88,6 +88,7 @@ export class InvalidProviderError extends Error {
         | "InvalidProvider_class_token_only"
         | "InvalidProvider_scoped_from_root"
         | "InvalidProvider_unsupported_provider_type"
+        | "InvalidProvider_child_scope_not_allowed"
       >,
     params?: Record<string, string> & ErrorLocaleOptions,
   ) {
@@ -148,6 +149,19 @@ export class LifetimeViolationError extends Error {
     this.fromLifetime = fromLifetime;
     this.toLifetime = toLifetime;
     this.path = path;
+  }
+}
+
+/** Thrown when disposing a scope that still has undisposed child scopes. */
+export class ScopeHasActiveChildrenError extends Error {
+  /**
+   * Creates a scope-has-active-children error.
+   * @param options Optional locale.
+   */
+  constructor(options?: ErrorLocaleOptions) {
+    const locale = resolveLocale(options);
+    super(errorMessage("ScopeHasActiveChildren", {}, locale));
+    this.name = "ScopeHasActiveChildrenError";
   }
 }
 
