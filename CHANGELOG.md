@@ -9,6 +9,13 @@ adheres to [Semantic Versioning](https://semver.org/) from **1.0.0**.
 
 ## [Unreleased]
 
+## [2.2.1] - 2026-05-25
+
+### Fixed
+
+- **`@wyrly/fastify`**: call `done()` in the synchronous `onRequest` hook so the request pipeline
+  continues (fixes hung requests and HTTP 408 Client Timeout).
+
 ## [2.2.0] - 2026-05-25
 
 ### Added

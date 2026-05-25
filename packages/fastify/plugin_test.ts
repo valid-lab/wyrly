@@ -8,7 +8,11 @@ import { registerDiHooks } from "./plugin.ts";
 const PingToken = token<string>("Ping");
 
 type HookName = "onRequest";
-type OnRequestHook = (request: FastifyRequest, reply: FastifyReply) => void;
+type OnRequestHook = (
+  request: FastifyRequest,
+  reply: FastifyReply,
+  done: () => void,
+) => void;
 
 function createMockFastify(): FastifyInstance & { onRequestHooks: OnRequestHook[] } {
   const onRequestHooks: OnRequestHook[] = [];
@@ -18,6 +22,14 @@ function createMockFastify(): FastifyInstance & { onRequestHooks: OnRequestHook[
       if (name === "onRequest") onRequestHooks.push(hook);
     },
   } as FastifyInstance & { onRequestHooks: OnRequestHook[] };
+}
+
+function runOnRequestHooks(
+  hooks: OnRequestHook[],
+  request: FastifyRequest,
+  reply: FastifyReply,
+): void {
+  for (const hook of hooks) hook(request, reply, () => {});
 }
 
 function createReply(): FastifyReply {
@@ -38,7 +50,7 @@ Deno.test("registerDiHooks attaches request.di and resolves tokens", () => {
 
   const request = {} as FastifyRequest;
   const reply = createReply();
-  for (const hook of fastify.onRequestHooks) hook(request, reply);
+  runOnRequestHooks(fastify.onRequestHooks, request, reply);
 
   const di = getDI(request);
   assertEquals(di.resolve(PingToken), "pong");
@@ -62,7 +74,7 @@ Deno.test("registerDiHooks disposes scope on response finish", async () => {
 
   const request = {} as FastifyRequest;
   const reply = createReply();
-  for (const hook of fastify.onRequestHooks) hook(request, reply);
+  runOnRequestHooks(fastify.onRequestHooks, request, reply);
 
   getDI(request).resolve(ScopedSvc);
   assertEquals(getDI(request).isDisposed(), false);
@@ -90,7 +102,7 @@ Deno.test("registerDiHooks double dispose on finish and close is safe", async ()
 
   const request = {} as FastifyRequest;
   const reply = createReply();
-  for (const hook of fastify.onRequestHooks) hook(request, reply);
+  runOnRequestHooks(fastify.onRequestHooks, request, reply);
 
   getDI(request).resolve(Counted);
   reply.raw.emit("finish");
@@ -121,7 +133,7 @@ Deno.test("registerDiHooks reports async dispose errors", async () => {
 
   const request = {} as FastifyRequest;
   const reply = createReply();
-  for (const hook of fastify.onRequestHooks) hook(request, reply);
+  runOnRequestHooks(fastify.onRequestHooks, request, reply);
 
   getDI(request).resolve(FailingDisposable);
   reply.raw.emit("finish");

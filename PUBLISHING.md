@@ -30,54 +30,54 @@ under a git tag `vX.Y.Z`.
 
 **GitHub Actions does not use long-lived tokens.** CI authenticates via
 [JSR OIDC](https://jsr.io/docs/publishing-packages#publishing-from-github-actions) and
-[npm Trusted Publishing](https://docs.npmjs.com/trusted-publishers/). Complete the one-time registry
-setup below before the first tagged release.
+[npm Trusted Publishing](https://docs.npmjs.com/trusted-publishers/). Use the checklist below when
+adding a **new** package or rotating CI access.
 
-## One-time registry setup (before first CI publish)
+## Registry setup
 
-Replace `OWNER/REPO` with this repository (for example `your-org/wyrly-oss`).
+Repository: **`valid-lab/wyrly`**. Publish workflow:
+[`.github/workflows/publish.yml`](./.github/workflows/publish.yml) (filename `publish.yml`).
 
-### JSR — link GitHub repository (9 packages)
+### JSR — GitHub repository link (9 packages)
 
-For each package, create it at [jsr.io/new](https://jsr.io/new) if needed, then open **Settings →
-GitHub repository**, enter `OWNER/REPO`, and click **Link**:
+Each package exists on [jsr.io/@wyrly](https://jsr.io/@wyrly) and is linked to `valid-lab/wyrly`:
 
-- [ ] `@wyrly/core`
-- [ ] `@wyrly/express`
-- [ ] `@wyrly/hono`
-- [ ] `@wyrly/fresh`
-- [ ] `@wyrly/graphql`
-- [ ] `@wyrly/yoga`
-- [ ] `@wyrly/apollo`
-- [ ] `@wyrly/fastify`
-- [ ] `@wyrly/next`
+- [x] `@wyrly/core`
+- [x] `@wyrly/express`
+- [x] `@wyrly/hono`
+- [x] `@wyrly/fresh`
+- [x] `@wyrly/graphql`
+- [x] `@wyrly/yoga`
+- [x] `@wyrly/apollo`
+- [x] `@wyrly/fastify`
+- [x] `@wyrly/next`
 
-The publish workflow must be [`.github/workflows/publish.yml`](./.github/workflows/publish.yml)
-(filename `publish.yml`).
+**New package:** create at [jsr.io/new](https://jsr.io/new), then **Settings → GitHub repository →
+Link** with `valid-lab/wyrly`.
 
 ### npm — Trusted Publisher (8 packages)
 
-Under the **`wyrly`** org, register **Trusted Publisher → GitHub Actions** for each npm package (or
-from org settings when the package does not exist yet):
+Each package exists on [npm `@wyrly/*`](https://www.npmjs.com/settings/wyrly/packages):
 
-| Field             | Value                                               |
-| ----------------- | --------------------------------------------------- |
-| Repository        | `OWNER/REPO`                                        |
-| Workflow filename | `publish.yml`                                       |
-| Environment       | _(leave empty unless you use a GitHub Environment)_ |
+| Field             | Value             |
+| ----------------- | ----------------- |
+| Repository        | `valid-lab/wyrly` |
+| Workflow filename | `publish.yml`     |
+| Environment       | _(empty)_         |
 
-Packages:
-
-- [ ] `@wyrly/core`
-- [ ] `@wyrly/express`
-- [ ] `@wyrly/hono`
-- [ ] `@wyrly/graphql`
-- [ ] `@wyrly/yoga`
-- [ ] `@wyrly/apollo`
-- [ ] `@wyrly/fastify`
-- [ ] `@wyrly/next`
+- [x] `@wyrly/core`
+- [x] `@wyrly/express`
+- [x] `@wyrly/hono`
+- [x] `@wyrly/graphql`
+- [x] `@wyrly/yoga`
+- [x] `@wyrly/apollo`
+- [x] `@wyrly/fastify`
+- [x] `@wyrly/next`
 
 (`@wyrly/fresh` is not published to npm.)
+
+**New npm package:** add **Trusted publishing → GitHub Actions** with the same fields, then run the
+first `npm publish --access public` locally if CI returns `404` before the package record exists.
 
 ### JSR Score (manual, per package Settings)
 
@@ -100,6 +100,9 @@ compatibility** for each package and apply:
 | `@wyrly/hono`    | Supported | Supported   | Supported | Supported          |
 | `@wyrly/express` | Supported | Supported   | Supported | Unknown            |
 | `@wyrly/graphql` | Supported | Supported   | Supported | Unknown            |
+| `@wyrly/yoga`    | Supported | Supported   | Supported | Unknown            |
+| `@wyrly/apollo`  | Supported | Supported   | Supported | Unknown            |
+| `@wyrly/fastify` | Supported | Supported   | Supported | Unknown            |
 | `@wyrly/next`    | Supported | Supported   | Supported | Unknown            |
 | `@wyrly/fresh`   | Supported | Unsupported | Unknown   | Unknown            |
 
@@ -122,7 +125,7 @@ locally, use **`deno task ci:deno`**.
 ```jsonc
 {
   "imports": {
-    "@wyrly/core": "jsr:@wyrly/core@^2.0.0"
+    "@wyrly/core": "jsr:@wyrly/core@^2.2.0"
   }
 }
 ```
@@ -177,7 +180,7 @@ deno task ci          # full gate: ci:deno + JSR dry-run + test:compat + npm dry
 
 Prefer **tag push → GitHub Actions** for production releases. For local publishes:
 
-1. Bump `version` in all six `packages/*/deno.json` files.
+1. Bump `version` in all nine `packages/*/deno.json` files.
 2. Update [CHANGELOG.md](./CHANGELOG.md).
 3. `deno task ci` (requires Node 20+ and Bun).
 4. Apply the [JSR Runtime checklist](#jsr-runtime-checklist) on jsr.io if runtime support changed.
@@ -213,17 +216,17 @@ The workflow sets `permissions: id-token: write` for OIDC and uses Node **24.x**
 
 ## Troubleshooting
 
-| Issue                                                                             | Action                                                                                                                                                     |
-| --------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Adapter dnt build fails on `@wyrly/core`                                          | Run `deno task build:npm:core` first                                                                                                                       |
-| npm 404 for `@fresh/core` or `@wyrly/fresh`                                       | Expected; Fresh stack uses JSR (`jsr:@wyrly/fresh`)                                                                                                        |
-| JSR publish fails in Actions with auth error                                      | Link `OWNER/REPO` on each package’s JSR Settings page                                                                                                      |
-| JSR `globalTypeAugmentation` / `modifying global types`                           | Do not use `declare global` or `declare module` in published sources; use exported types (`ExpressRequestWithDI`, `HonoDIVariables`, `FreshDIState`, etc.) |
-| npm publish `404` / “not in this registry” in Actions (provenance may still sign) | Use **Node 24.x** in CI so **npm ≥ 11.5.1** (Node 22 → npm 10.x gives a misleading 404). Re-run after fixing `publish.yml`                                 |
-| npm publish `403` in Actions                                                      | Check Trusted Publisher: repo `valid-lab/wyrly`, workflow `publish.yml`, **Allow npm publish**; Node 24+ / npm 11.5.1+                                     |
-| `Automatic provenance generation not supported for provider: null` (local)        | Use `deno task publish:npm` locally (no `--provenance`). Use `deno task publish:npm:ci` only in GitHub Actions with Trusted Publishing                     |
-| npm provenance / trusted publish errors (CI)                                      | Check Trusted Publisher settings; workflow must run `publish:npm:ci`                                                                                       |
-| Low JSR Score (readme / examples / symbol docs)                                   | Add `@module` + `@example` in `packages/*/mod.ts`; run `deno task doc:lint`; document exports with JSDoc                                                   |
-| JSR Score “slow types” (0/5)                                                      | Run `deno lint --rules-include=no-slow-types packages/`; fix explicit types; publish without `--allow-slow-types`                                          |
-| JSR Score runtime / description (0/1 each)                                        | Set **Description** and **Runtime compatibility** in JSR package Settings (not in `deno.json`)                                                             |
-| `deno task test:compat` fails                                                     | Run `deno task build:npm:compat` first; ensure Node/npm and Bun are installed; see `compat/node`, `compat/bun`, and `compat/workers`                       |
+| Issue                                                                             | Action                                                                                                                                                         |
+| --------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Adapter dnt build fails on `@wyrly/core`                                          | Run `deno task build:npm:core` first                                                                                                                           |
+| npm 404 for `@fresh/core` or `@wyrly/fresh`                                       | Expected; Fresh stack uses JSR (`jsr:@wyrly/fresh`)                                                                                                            |
+| JSR publish fails in Actions with auth error                                      | Link `OWNER/REPO` on each package’s JSR Settings page                                                                                                          |
+| JSR `globalTypeAugmentation` / `modifying global types`                           | Do not use `declare global` or `declare module` in published sources; use exported types (`ExpressRequestWithDI`, `HonoDIVariables`, `FreshDIState`, etc.)     |
+| npm publish `404` / “not in this registry” in Actions (provenance may still sign) | **New package:** add Trusted Publisher and/or first local `npm publish --access public`. Otherwise use **Node 24.x** / npm ≥ 11.5.1 (Node 22 → misleading 404) |
+| npm publish `403` in Actions                                                      | Check Trusted Publisher: repo `valid-lab/wyrly`, workflow `publish.yml`, **Allow npm publish**; Node 24+ / npm 11.5.1+                                         |
+| `Automatic provenance generation not supported for provider: null` (local)        | Use `deno task publish:npm` locally (no `--provenance`). Use `deno task publish:npm:ci` only in GitHub Actions with Trusted Publishing                         |
+| npm provenance / trusted publish errors (CI)                                      | Check Trusted Publisher settings; workflow must run `publish:npm:ci`                                                                                           |
+| Low JSR Score (readme / examples / symbol docs)                                   | Add `@module` + `@example` in `packages/*/mod.ts`; run `deno task doc:lint`; document exports with JSDoc                                                       |
+| JSR Score “slow types” (0/5)                                                      | Run `deno lint --rules-include=no-slow-types packages/`; fix explicit types; publish without `--allow-slow-types`                                              |
+| JSR Score runtime / description (0/1 each)                                        | Set **Description** and **Runtime compatibility** in JSR package Settings (not in `deno.json`)                                                                 |
+| `deno task test:compat` fails                                                     | Run `deno task build:npm:compat` first; ensure Node/npm and Bun are installed; see `compat/node`, `compat/bun`, and `compat/workers`                           |

@@ -8,6 +8,13 @@ English: [CHANGELOG.md](./CHANGELOG.md)
 
 ## [Unreleased]
 
+## [2.2.1] - 2026-05-25
+
+### 修正
+
+- **`@wyrly/fastify`**: 同期 `onRequest` hook で `done()` を呼ぶよう修正（リクエストが進まず 408
+  Client Timeout になる問題を解消）。
+
 ## [2.2.0] - 2026-05-25
 
 ### Added

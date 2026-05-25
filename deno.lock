@@ -2333,8 +2333,8 @@
       },
       "packages/apollo": {
         "dependencies": [
-          "jsr:@wyrly/core@^2.2.0",
-          "jsr:@wyrly/graphql@^2.2.0",
+          "jsr:@wyrly/core@^2.2.1",
+          "jsr:@wyrly/graphql@^2.2.1",
           "npm:@apollo/server@4",
           "npm:graphql@16"
         ]
@@ -2346,14 +2346,14 @@
       },
       "packages/express": {
         "dependencies": [
-          "jsr:@wyrly/core@^2.2.0",
+          "jsr:@wyrly/core@^2.2.1",
           "npm:@types/express@5",
           "npm:express@5"
         ]
       },
       "packages/fastify": {
         "dependencies": [
-          "jsr:@wyrly/core@^2.2.0",
+          "jsr:@wyrly/core@^2.2.1",
           "npm:fastify-plugin@5",
           "npm:fastify@5"
         ]
@@ -2361,30 +2361,30 @@
       "packages/fresh": {
         "dependencies": [
           "jsr:@fresh/core@2",
-          "jsr:@wyrly/core@^2.2.0"
+          "jsr:@wyrly/core@^2.2.1"
         ]
       },
       "packages/graphql": {
         "dependencies": [
-          "jsr:@wyrly/core@^2.2.0"
+          "jsr:@wyrly/core@^2.2.1"
         ]
       },
       "packages/hono": {
         "dependencies": [
-          "jsr:@wyrly/core@^2.2.0",
+          "jsr:@wyrly/core@^2.2.1",
           "npm:hono@4"
         ]
       },
       "packages/next": {
         "dependencies": [
-          "jsr:@wyrly/core@^2.2.0",
+          "jsr:@wyrly/core@^2.2.1",
           "npm:react@19"
         ]
       },
       "packages/yoga": {
         "dependencies": [
-          "jsr:@wyrly/core@^2.2.0",
-          "jsr:@wyrly/graphql@^2.2.0",
+          "jsr:@wyrly/core@^2.2.1",
+          "jsr:@wyrly/graphql@^2.2.1",
           "npm:graphql-yoga@5"
         ]
       }

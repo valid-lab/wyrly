@@ -28,52 +28,53 @@ English: [PUBLISHING.md](./PUBLISHING.md)
 **GitHub Actions では長期トークンは使いません。**
 [JSR OIDC](https://jsr.io/docs/publishing-packages#publishing-from-github-actions) と
 [npm Trusted Publishing](https://docs.npmjs.com/trusted-publishers/)
-で認証します。初回リリース前に下のワンタイム設定を完了してください。
+で認証します。新規パッケージ追加時は下記を参照。
 
-## ワンタイム設定（初回 CI 公開の前）
+## Registry 設定
 
-`OWNER/REPO` はこのリポジトリ（例: `your-org/wyrly-oss`）に置き換えてください。
+リポジトリ: **`valid-lab/wyrly`**。ワークフロー:
+[`.github/workflows/publish.yml`](./.github/workflows/publish.yml)（`publish.yml`）。
 
 ### JSR — GitHub リポジトリのリンク（9 件）
 
-各パッケージを [jsr.io/new](https://jsr.io/new) で作成し、**Settings → GitHub repository** で
-`OWNER/REPO` を入力して **Link**:
+[jsr.io/@wyrly](https://jsr.io/@wyrly) に全件あり、`valid-lab/wyrly` とリンク済み:
 
-- [ ] `@wyrly/core`
-- [ ] `@wyrly/express`
-- [ ] `@wyrly/hono`
-- [ ] `@wyrly/fresh`
-- [ ] `@wyrly/graphql`
-- [ ] `@wyrly/yoga`
-- [ ] `@wyrly/apollo`
-- [ ] `@wyrly/fastify`
-- [ ] `@wyrly/next`
+- [x] `@wyrly/core`
+- [x] `@wyrly/express`
+- [x] `@wyrly/hono`
+- [x] `@wyrly/fresh`
+- [x] `@wyrly/graphql`
+- [x] `@wyrly/yoga`
+- [x] `@wyrly/apollo`
+- [x] `@wyrly/fastify`
+- [x] `@wyrly/next`
 
-ワークフローは [`.github/workflows/publish.yml`](./.github/workflows/publish.yml)（ファイル名
-`publish.yml`）であること。
+**新規パッケージ:** [jsr.io/new](https://jsr.io/new) で作成 → **Settings → GitHub repository** で
+`valid-lab/wyrly` を **Link**。
 
 ### npm — Trusted Publisher（8 件）
 
-org **`wyrly`** で、各パッケージに **Trusted Publisher → GitHub Actions** を登録:
+[npm `@wyrly/*`](https://www.npmjs.com/settings/wyrly/packages) に全件あり:
 
-| 項目              | 値                                                    |
-| ----------------- | ----------------------------------------------------- |
-| Repository        | `OWNER/REPO`                                          |
-| Workflow filename | `publish.yml`                                         |
-| Environment       | 空（GitHub Environment を使う場合のみ同じ名前を指定） |
+| 項目              | 値                |
+| ----------------- | ----------------- |
+| Repository        | `valid-lab/wyrly` |
+| Workflow filename | `publish.yml`     |
+| Environment       | 空                |
 
-対象:
-
-- [ ] `@wyrly/core`
-- [ ] `@wyrly/express`
-- [ ] `@wyrly/hono`
-- [ ] `@wyrly/graphql`
-- [ ] `@wyrly/yoga`
-- [ ] `@wyrly/apollo`
-- [ ] `@wyrly/fastify`
-- [ ] `@wyrly/next`
+- [x] `@wyrly/core`
+- [x] `@wyrly/express`
+- [x] `@wyrly/hono`
+- [x] `@wyrly/graphql`
+- [x] `@wyrly/yoga`
+- [x] `@wyrly/apollo`
+- [x] `@wyrly/fastify`
+- [x] `@wyrly/next`
 
 （`@wyrly/fresh` は npm 非公開）
+
+**新規 npm パッケージ:** 同じ値で **Trusted publishing → GitHub Actions** を追加。パッケージが無い
+状態で CI が `404` になる場合は、ローカルで 1 回 `npm publish --access public` して枠を作る。
 
 ### JSR Score（各パッケージ Settings で手動）
 
@@ -96,6 +97,9 @@ compatibility** を開き、次を設定:
 | `@wyrly/hono`    | Supported | Supported   | Supported | Supported          |
 | `@wyrly/express` | Supported | Supported   | Supported | Unknown            |
 | `@wyrly/graphql` | Supported | Supported   | Supported | Unknown            |
+| `@wyrly/yoga`    | Supported | Supported   | Supported | Unknown            |
+| `@wyrly/apollo`  | Supported | Supported   | Supported | Unknown            |
+| `@wyrly/fastify` | Supported | Supported   | Supported | Unknown            |
 | `@wyrly/next`    | Supported | Supported   | Supported | Unknown            |
 | `@wyrly/fresh`   | Supported | Unsupported | Unknown   | Unknown            |
 
@@ -115,7 +119,7 @@ compatibility** を開き、次を設定:
 ### Deno / JSR
 
 ```jsonc
-{ "imports": { "@wyrly/core": "jsr:@wyrly/core@^2.0.0" } }
+{ "imports": { "@wyrly/core": "jsr:@wyrly/core@^2.2.0" } }
 ```
 
 ### Node / npm
@@ -135,7 +139,7 @@ npm install @wyrly/core
 `README.md` を `packages/*/npm/` にコピーし、`package.json` にメタデータをマージします。
 
 ```sh
-deno task check:npm-readme  # 7 パッケージ分の README 存在確認
+deno task check:npm-readme  # 9 パッケージ分の README 存在確認
 deno task build:npm
 deno task build:npm:core   # core のみ
 ```
@@ -154,7 +158,7 @@ deno task ci          # フル: ci:deno + JSR dry-run + test:compat + npm dry-ru
 
 本番は **タグ push → GitHub Actions** を推奨します。ローカルから出す場合:
 
-1. 7 パッケージ（JSR）の version 更新（npm は 6 パッケージ、fresh を除く）
+1. 9 パッケージ（`packages/*/deno.json`）の version 更新
 2. CHANGELOG 更新
 3. `deno task ci`（Node 20+ と Bun が必要）
 4. ランタイム対応が変わったら [JSR Runtime チェックリスト](#jsr-runtime-チェックリスト) を jsr.io
@@ -173,8 +177,8 @@ deno task ci          # フル: ci:deno + JSR dry-run + test:compat + npm dry-ru
 `workflow_dispatch` → `deno task ci` → `build:npm` → JSR 公開 → `publish:npm:ci`（Trusted
 Publishing、Node 24.x）。
 
-**リポジトリシークレットは不要**（JSR リンクと npm Trusted Publisher
-設定済みの場合）。`id-token: write` で OIDC 認証します。
+**リポジトリシークレットは不要**（JSR リンクと npm Trusted Publisher 設定済みの場合）。
+`id-token: write` で OIDC 認証します。
 
 ## トラブルシュート
 
@@ -182,7 +186,7 @@ Publishing、Node 24.x）。
 | ---------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
 | Actions で JSR 認証失敗                                                            | 各パッケージの Settings で `OWNER/REPO` をリンク                                                                                             |
 | JSR `globalTypeAugmentation`                                                       | 公開コードに `declare global` / `declare module` を置かない。export 型（`ExpressRequestWithDI`、`HonoDIVariables`、`FreshDIState` 等）を使う |
-| Actions で npm `404` / “not in this registry”（provenance は成功している場合あり） | CI を **Node 24.x** に（Node 22 は npm 10.x で誤った 404 になりやすい）。`publish.yml` 修正後に再実行                                        |
+| Actions で npm `404` / “not in this registry”（provenance は成功している場合あり） | **新規パッケージ:** Trusted Publisher 追加またはローカル初回 `npm publish --access public`。それ以外は CI **Node 24.x** / npm 11.5.1+        |
 | Actions で npm `403`                                                               | Trusted Publisher: `valid-lab/wyrly`、`publish.yml`、**Allow npm publish**。CI は Node 24+ / npm 11.5.1+                                     |
 | ローカルで `provider: null`（provenance）                                          | ローカルは `deno task publish:npm`。`--provenance` は CI の `publish:npm:ci` のみ                                                            |
 | provenance / Trusted Publishing エラー（CI）                                       | Trusted Publisher 設定と `publish:npm:ci` を確認                                                                                             |

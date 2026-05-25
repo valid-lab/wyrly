@@ -36,7 +36,7 @@ export function registerDiHooks(
   container: Container,
   options: FastifyDIOptions = {},
 ): void {
-  fastify.addHook("onRequest", (request, reply) => {
+  fastify.addHook("onRequest", (request, reply, done) => {
     const scope = container.createScope();
     scope.set(FastifyRequestToken, request);
     scope.set(FastifyReplyToken, reply);
@@ -45,6 +45,7 @@ export function registerDiHooks(
     const disposeOnce = () => disposeScope(request, reply, options);
     reply.raw.once("finish", disposeOnce);
     reply.raw.once("close", disposeOnce);
+    done();
   });
 }
 
