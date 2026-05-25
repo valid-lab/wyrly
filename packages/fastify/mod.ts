@@ -1,8 +1,8 @@
 /**
- * Request-scoped dependency injection for Fastify 5 without `reflect-metadata`.
+ * Request-scoped dependency injection for Fastify 5 and TypeScript.
  *
  * Use `diPlugin()` and `getDI(request)` to create one explicit Wyrly DI scope per HTTP request
- * and dispose it when the response ends.
+ * without `reflect-metadata`. Disposes the scope on response `finish` / `close`.
  *
  * @example
  * ```ts

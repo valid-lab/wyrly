@@ -1,8 +1,8 @@
 /**
- * Request-scoped dependency injection for Apollo Server 4+ without `reflect-metadata`.
+ * Request-scoped dependency injection for Apollo Server 4+ and TypeScript.
  *
- * Use `apolloDIPlugin()` to create one explicit Wyrly DI scope per GraphQL operation and dispose it
- * in `willSendResponse`.
+ * Use `apolloDIPlugin()` to create one explicit Wyrly DI scope per GraphQL operation without
+ * `reflect-metadata`. Disposes the scope in `willSendResponse`.
  *
  * @example
  * ```ts

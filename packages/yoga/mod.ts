@@ -1,8 +1,8 @@
 /**
- * Request-scoped dependency injection for GraphQL Yoga 5 without `reflect-metadata`.
+ * Request-scoped dependency injection for GraphQL Yoga 5 and TypeScript.
  *
  * Use `yogaDIPlugin()` and `yogaContext()` to create one explicit Wyrly DI scope per GraphQL
- * request and dispose it when the response ends.
+ * request without `reflect-metadata`. Disposes the scope when the response ends.
  *
  * @example
  * ```ts
