@@ -169,6 +169,30 @@ Entry: [`packages/graphql/mod.ts`](./packages/graphql/mod.ts)
 
 ---
 
+## `@wyrly/yoga`
+
+Entry: [`packages/yoga/mod.ts`](./packages/yoga/mod.ts)
+
+| Export | Description |
+|--------|-------------|
+| `createYogaDIContext` | Build Yoga context with `di` scope (delegates to `@wyrly/graphql`) |
+| `yogaDIPlugin` | Envelop plugin: scope per request + auto dispose |
+| `YogaDIPlugin` | Public plugin return type for `plugins` arrays |
+| `yogaContext` | Read `di` from Yoga server context |
+| `GraphQLRequestToken` | Re-export from `@wyrly/graphql` |
+| `GraphQLResponseToken` | Re-export from `@wyrly/graphql` |
+
+### Types
+
+| Export |
+|--------|
+| `YogaDIContext` |
+| `CreateYogaDIContextOptions` |
+| `YogaDIPluginOptions` |
+| `YogaServerContext` |
+
+---
+
 ## `@wyrly/next`
 
 Entry: [`packages/next/mod.ts`](./packages/next/mod.ts)

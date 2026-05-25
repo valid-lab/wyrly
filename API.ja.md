@@ -168,6 +168,30 @@ JSR 公開パッケージでは `declare global` が使えないため、グロ�
 
 ---
 
+## `@wyrly/yoga`
+
+エントリ: [`packages/yoga/mod.ts`](./packages/yoga/mod.ts)
+
+| Export | 説明 |
+|--------|------|
+| `createYogaDIContext` | Yoga コンテキストと `di` scope の構築（`@wyrly/graphql` に委譲） |
+| `yogaDIPlugin` | Envelop plugin: リクエストごとに scope 作成 + 自動 dispose |
+| `YogaDIPlugin` | `plugins` 配列向けの公開 plugin 型 |
+| `yogaContext` | Yoga server context から `di` を取得 |
+| `GraphQLRequestToken` | `@wyrly/graphql` からの re-export |
+| `GraphQLResponseToken` | `@wyrly/graphql` からの re-export |
+
+### 型
+
+| Export |
+|--------|
+| `YogaDIContext` |
+| `CreateYogaDIContextOptions` |
+| `YogaDIPluginOptions` |
+| `YogaServerContext` |
+
+---
+
 ## `@wyrly/next`
 
 エントリ: [`packages/next/mod.ts`](./packages/next/mod.ts)

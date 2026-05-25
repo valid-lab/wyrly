@@ -2,7 +2,7 @@
 
 English: [PUBLISHING.md](./PUBLISHING.md)
 
-**JSR** に 6 パッケージ、**npm** に 5 パッケージを公開します。`@wyrly/fresh` は Fresh 2.x が npm
+**JSR** に 7 パッケージ、**npm** に 6 パッケージを公開します。`@wyrly/fresh` は Fresh 2.x が npm
 非対応のため **JSR のみ**です。
 
 | パッケージ       | JSR                  | npm（registry.npmjs.org） |
@@ -12,6 +12,7 @@ English: [PUBLISHING.md](./PUBLISHING.md)
 | `@wyrly/hono`    | `jsr:@wyrly/hono`    | `@wyrly/hono`             |
 | `@wyrly/fresh`   | `jsr:@wyrly/fresh`   | —（JSR のみ）             |
 | `@wyrly/graphql` | `jsr:@wyrly/graphql` | `@wyrly/graphql`          |
+| `@wyrly/yoga`    | `jsr:@wyrly/yoga`    | `@wyrly/yoga`             |
 | `@wyrly/next`    | `jsr:@wyrly/next`    | `@wyrly/next`             |
 
 `packages/*/deno.json` の version を揃え、タグ `vX.Y.Z` でまとめてリリースします。
@@ -31,7 +32,7 @@ English: [PUBLISHING.md](./PUBLISHING.md)
 
 `OWNER/REPO` はこのリポジトリ（例: `your-org/wyrly-oss`）に置き換えてください。
 
-### JSR — GitHub リポジトリのリンク（6 件）
+### JSR — GitHub リポジトリのリンク（7 件）
 
 各パッケージを [jsr.io/new](https://jsr.io/new) で作成し、**Settings → GitHub repository** で
 `OWNER/REPO` を入力して **Link**:
@@ -41,12 +42,13 @@ English: [PUBLISHING.md](./PUBLISHING.md)
 - [ ] `@wyrly/hono`
 - [ ] `@wyrly/fresh`
 - [ ] `@wyrly/graphql`
+- [ ] `@wyrly/yoga`
 - [ ] `@wyrly/next`
 
 ワークフローは [`.github/workflows/publish.yml`](./.github/workflows/publish.yml)（ファイル名
 `publish.yml`）であること。
 
-### npm — Trusted Publisher（5 件）
+### npm — Trusted Publisher（6 件）
 
 org **`wyrly`** で、各パッケージに **Trusted Publisher → GitHub Actions** を登録:
 
@@ -62,6 +64,7 @@ org **`wyrly`** で、各パッケージに **Trusted Publisher → GitHub Actio
 - [ ] `@wyrly/express`
 - [ ] `@wyrly/hono`
 - [ ] `@wyrly/graphql`
+- [ ] `@wyrly/yoga`
 - [ ] `@wyrly/next`
 
 （`@wyrly/fresh` は npm 非公開）
@@ -126,7 +129,7 @@ npm install @wyrly/core
 `README.md` を `packages/*/npm/` にコピーし、`package.json` にメタデータをマージします。
 
 ```sh
-deno task check:npm-readme  # 6 パッケージ分の README 存在確認
+deno task check:npm-readme  # 7 パッケージ分の README 存在確認
 deno task build:npm
 deno task build:npm:core   # core のみ
 ```
@@ -145,7 +148,7 @@ deno task ci          # フル: ci:deno + JSR dry-run + test:compat + npm dry-ru
 
 本番は **タグ push → GitHub Actions** を推奨します。ローカルから出す場合:
 
-1. 6 パッケージ（JSR）の version 更新（npm は 5 パッケージ、fresh を除く）
+1. 7 パッケージ（JSR）の version 更新（npm は 6 パッケージ、fresh を除く）
 2. CHANGELOG 更新
 3. `deno task ci`（Node 20+ と Bun が必要）
 4. ランタイム対応が変わったら [JSR Runtime チェックリスト](#jsr-runtime-チェックリスト) を jsr.io

@@ -2,7 +2,7 @@
 
 Japanese: [PUBLISHING.ja.md](./PUBLISHING.ja.md)
 
-This repository publishes **six packages to JSR** (Deno) and **five to npm** (Node / bundlers).
+This repository publishes **seven packages to JSR** (Deno) and **six to npm** (Node / bundlers).
 `@wyrly/fresh` is **JSR-only** because Fresh 2.x has no npm distribution (`jsr:@fresh/core`).
 
 | Package          | JSR                  | npm (registry.npmjs.org) |
@@ -12,6 +12,7 @@ This repository publishes **six packages to JSR** (Deno) and **five to npm** (No
 | `@wyrly/hono`    | `jsr:@wyrly/hono`    | `@wyrly/hono`            |
 | `@wyrly/fresh`   | `jsr:@wyrly/fresh`   | — (JSR only)             |
 | `@wyrly/graphql` | `jsr:@wyrly/graphql` | `@wyrly/graphql`         |
+| `@wyrly/yoga`    | `jsr:@wyrly/yoga`    | `@wyrly/yoga`            |
 | `@wyrly/next`    | `jsr:@wyrly/next`    | `@wyrly/next`            |
 
 All packages share the same **semver** in each `packages/*/deno.json` and are released together
@@ -34,7 +35,7 @@ setup below before the first tagged release.
 
 Replace `OWNER/REPO` with this repository (for example `your-org/wyrly-oss`).
 
-### JSR — link GitHub repository (6 packages)
+### JSR — link GitHub repository (7 packages)
 
 For each package, create it at [jsr.io/new](https://jsr.io/new) if needed, then open **Settings →
 GitHub repository**, enter `OWNER/REPO`, and click **Link**:
@@ -44,12 +45,13 @@ GitHub repository**, enter `OWNER/REPO`, and click **Link**:
 - [ ] `@wyrly/hono`
 - [ ] `@wyrly/fresh`
 - [ ] `@wyrly/graphql`
+- [ ] `@wyrly/yoga`
 - [ ] `@wyrly/next`
 
 The publish workflow must be [`.github/workflows/publish.yml`](./.github/workflows/publish.yml)
 (filename `publish.yml`).
 
-### npm — Trusted Publisher (5 packages)
+### npm — Trusted Publisher (6 packages)
 
 Under the **`wyrly`** org, register **Trusted Publisher → GitHub Actions** for each npm package (or
 from org settings when the package does not exist yet):
@@ -66,6 +68,7 @@ Packages:
 - [ ] `@wyrly/express`
 - [ ] `@wyrly/hono`
 - [ ] `@wyrly/graphql`
+- [ ] `@wyrly/yoga`
 - [ ] `@wyrly/next`
 
 (`@wyrly/fresh` is not published to npm.)
@@ -149,8 +152,8 @@ lives in [`scripts/dnt/package-metadata.ts`](scripts/dnt/package-metadata.ts). `
 copies `README.md` into each `packages/*/npm/` and merges metadata into `package.json`.
 
 ```sh
-deno task check:npm-readme   # verify all six packages have README.md + README.ja.md
-deno task build:npm          # five npm packages (core first, then adapters; fresh excluded)
+deno task check:npm-readme   # verify all seven packages have README.md + README.ja.md
+deno task build:npm          # six npm packages (core first, then adapters; fresh excluded)
 deno task build:npm:core     # core only
 ```
 

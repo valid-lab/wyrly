@@ -9,6 +9,15 @@ adheres to [Semantic Versioning](https://semver.org/) from **1.0.0**.
 
 ## [Unreleased]
 
+## [2.2.0] - 2026-05-25
+
+### Added
+
+- **`@wyrly/yoga`** — GraphQL Yoga 5 inbound adapter: `yogaDIPlugin`, `yogaContext`,
+  `createYogaDIContext` (delegates to `@wyrly/graphql`), re-exported GraphQL tokens.
+- Example `examples/yoga-graphql` migrated to `@wyrly/yoga`.
+- [guides/GRAPHQL_DISPOSE.md](./guides/GRAPHQL_DISPOSE.md): official Yoga plugin section.
+
 ## [2.1.0] - 2026-05-25
 
 ### Added

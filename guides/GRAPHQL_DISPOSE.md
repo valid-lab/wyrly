@@ -44,32 +44,40 @@ Reference: [`packages/graphql/context.ts`](../packages/graphql/context.ts),
 [`examples/graphql-request`](../examples/graphql-request/).
 
 
-## GraphQL Yoga (manual plugin)
+## GraphQL Yoga (`@wyrly/yoga`)
 
-Until `@wyrly/yoga` ships (planned v2.2.0), attach disposal in a Yoga / Envelop plugin:
+Use the official Envelop plugin and `yogaContext` (v2.2.0+):
 
 ```ts
-import { createGraphQLDIContext } from "@wyrly/graphql";
+import { GraphQLRequestToken, yogaContext, yogaDIPlugin } from "@wyrly/yoga";
 
-const wyrlyPlugin = {
-  async onRequest({ request, fetchAPI }) {
-    const ctx = await createGraphQLDIContext(container, { request });
-    // Store ctx on a WeakMap keyed by request, or merge into Yoga context in onContextBuilding
-    requestToCtx.set(request, ctx);
-  },
-  async onResponse({ request }) {
-    const ctx = requestToCtx.get(request);
-    if (ctx) await ctx.dispose();
-  },
-};
+createYoga({
+  plugins: [
+    yogaDIPlugin(container, {
+      configureScope(scope) {
+        const request = scope.resolve(GraphQLRequestToken);
+        scope.set(CurrentUserToken, { id: userIdFrom(request) });
+      },
+      onDisposeError: (error, request) => console.error(error, request.url),
+    }),
+  ],
+  context: yogaContext,
+});
 ```
 
-See [`examples/yoga-graphql`](../examples/yoga-graphql/) for a runnable sample.
+Resolvers use `ctx.wyrly.di.resolve(...)`. Disposal runs on `onResponse`.
+
+See [`packages/yoga`](../packages/yoga/) and [`examples/yoga-graphql`](../examples/yoga-graphql/).
+
+### Yoga (manual plugin)
+
+If you cannot use `@wyrly/yoga`, attach disposal in a Yoga / Envelop plugin with
+`createGraphQLDIContext` and a `WeakMap<Request, GraphQLDIContext>` (same lifecycle as above).
 
 
 ## Apollo Server 4+ (manual plugin)
 
-Until `@wyrly/apollo` ships (planned v2.2.0), dispose in `requestDidStart` → `willSendResponse`:
+Until a dedicated `@wyrly/apollo` package ships, dispose in `requestDidStart` → `willSendResponse`:
 
 ```ts
 import { createGraphQLDIContext } from "@wyrly/graphql";

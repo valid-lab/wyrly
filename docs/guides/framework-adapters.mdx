@@ -89,14 +89,25 @@ try {
 This is useful for DataLoader instances, request context, authentication state, and disposable
 resources.
 
-### GraphQL Yoga and Apollo Server
+### GraphQL Yoga
 
-Until dedicated packages ship in v2.2.0, wire disposal in server plugins:
+`@wyrly/yoga` provides `yogaDIPlugin` and `yogaContext` for GraphQL Yoga 5 (one scope per
+request, auto dispose on `onResponse`). Peer: `graphql-yoga` ^5.
+
+| Resource | Link |
+| -------- | ---- |
+| Package | [`packages/yoga`](https://github.com/valid-lab/wyrly/tree/main/packages/yoga) |
+| Example | [`examples/yoga-graphql`](https://github.com/valid-lab/wyrly/tree/main/examples/yoga-graphql) |
+| Guide | [GRAPHQL_DISPOSE](https://github.com/valid-lab/wyrly/blob/main/guides/GRAPHQL_DISPOSE.md) |
+
+### Apollo Server
+
+Apollo has no dedicated adapter yet; wire `createGraphQLDIContext` in `requestDidStart` →
+`willSendResponse` (see guide).
 
 | Server | Example | Guide |
 | ------ | ------- | ----- |
-| GraphQL Yoga 5 | [`examples/yoga-graphql`](https://github.com/valid-lab/wyrly/tree/main/examples/yoga-graphql) | [GRAPHQL_DISPOSE](https://github.com/valid-lab/wyrly/blob/main/guides/GRAPHQL_DISPOSE.md) |
-| Apollo Server 4+ | [`examples/apollo-graphql`](https://github.com/valid-lab/wyrly/tree/main/examples/apollo-graphql) | same |
+| Apollo Server 4+ | [`examples/apollo-graphql`](https://github.com/valid-lab/wyrly/tree/main/examples/apollo-graphql) | [GRAPHQL_DISPOSE](https://github.com/valid-lab/wyrly/blob/main/guides/GRAPHQL_DISPOSE.md) |
 
 ## Pick the adapter at the edge
 

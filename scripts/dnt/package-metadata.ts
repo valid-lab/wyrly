@@ -1,5 +1,5 @@
 /** Package ids in the monorepo (fresh is JSR-only, not published to npm). */
-export type PackageId = "core" | "express" | "hono" | "graphql" | "next" | "fresh";
+export type PackageId = "core" | "express" | "hono" | "graphql" | "yoga" | "next" | "fresh";
 
 const REPO = "https://github.com/valid-lab/wyrly";
 const BUGS = `${REPO}/issues`;
@@ -104,6 +104,23 @@ export const PACKAGE_METADATA: Record<PackageId, PackageMetadata> = {
     bugs: BUGS,
     npm: true,
   },
+  yoga: {
+    id: "yoga",
+    npmName: "@wyrly/yoga",
+    description: "Request-scoped dependency injection adapter for GraphQL Yoga 5 and TypeScript",
+    keywords: [
+      ...COMMON_KEYWORDS,
+      "graphql",
+      "graphql-yoga",
+      "yoga",
+      "envelop",
+      "dataloader",
+      "resolvers",
+    ],
+    homepage: homepage("yoga"),
+    bugs: BUGS,
+    npm: true,
+  },
   next: {
     id: "next",
     npmName: "@wyrly/next",
@@ -142,6 +159,7 @@ export const ALL_PACKAGE_IDS: PackageId[] = [
   "express",
   "hono",
   "graphql",
+  "yoga",
   "next",
   "fresh",
 ];

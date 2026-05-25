@@ -44,29 +44,38 @@ try {
 [`examples/graphql-request`](../examples/graphql-request/)。
 
 
-## GraphQL Yoga（手動 plugin）
+## GraphQL Yoga（`@wyrly/yoga`）
 
-`@wyrly/yoga`（v2.2.0 予定）までは、Yoga / Envelop plugin で dispose します。
+公式 Envelop plugin と `yogaContext`（v2.2.0+）:
 
 ```ts
-const wyrlyPlugin = {
-  async onRequest({ request }) {
-    const ctx = await createGraphQLDIContext(container, { request });
-    requestToCtx.set(request, ctx);
-  },
-  async onResponse({ request }) {
-    const ctx = requestToCtx.get(request);
-    if (ctx) await ctx.dispose();
-  },
-};
+import { GraphQLRequestToken, yogaContext, yogaDIPlugin } from "@wyrly/yoga";
+
+createYoga({
+  plugins: [
+    yogaDIPlugin(container, {
+      configureScope(scope) {
+        const request = scope.resolve(GraphQLRequestToken);
+        scope.set(CurrentUserToken, { id: userIdFrom(request) });
+      },
+    }),
+  ],
+  context: yogaContext,
+});
 ```
 
-実行例: [`examples/yoga-graphql`](../examples/yoga-graphql/)。
+resolver は `ctx.wyrly.di.resolve(...)`。dispose は `onResponse` で実行。
+
+参照: [`packages/yoga`](../packages/yoga/)、[`examples/yoga-graphql`](../examples/yoga-graphql/)。
+
+### Yoga（手動 plugin）
+
+`@wyrly/yoga` が使えない場合は `createGraphQLDIContext` と `WeakMap<Request, …>` で同じライフサイクルを実装します。
 
 
 ## Apollo Server 4+（手動 plugin）
 
-`@wyrly/apollo`（v2.2.0 予定）までは `requestDidStart` → `willSendResponse` で dispose します。
+専用 `@wyrly/apollo` パッケージが出るまでは `requestDidStart` → `willSendResponse` で dispose します。
 
 ```ts
 const wyrlyPlugin = {

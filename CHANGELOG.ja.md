@@ -8,6 +8,15 @@ English: [CHANGELOG.md](./CHANGELOG.md)
 
 ## [Unreleased]
 
+## [2.2.0] - 2026-05-25
+
+### Added
+
+- **`@wyrly/yoga`** — GraphQL Yoga 5 向け Inbound Adapter: `yogaDIPlugin`、`yogaContext`、
+  `createYogaDIContext`（`@wyrly/graphql` に委譲）、GraphQL token の re-export。
+- `examples/yoga-graphql` を `@wyrly/yoga` に移行。
+- [guides/GRAPHQL_DISPOSE.ja.md](./guides/GRAPHQL_DISPOSE.ja.md): 公式 Yoga plugin 節を追加。
+
 ## [2.1.0] - 2026-05-25
 
 ### 追加

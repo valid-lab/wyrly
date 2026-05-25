@@ -12,6 +12,7 @@ export const NPM_PACKAGE_ORDER: NpmPackageId[] = [
   "express",
   "hono",
   "graphql",
+  "yoga",
   "next",
 ];
 
@@ -43,6 +44,12 @@ function buildConfig(id: NpmPackageId): PackageBuildConfig {
       ? { dntConfigFile: "pkg.hono.json", peerDependencies: { hono: "^4.0.0" } }
       : {}),
     ...(id === "graphql" ? { dntConfigFile: "pkg.graphql.json" } : {}),
+    ...(id === "yoga"
+      ? {
+        dntConfigFile: "pkg.yoga.json",
+        peerDependencies: { "graphql-yoga": "^5.0.0" },
+      }
+      : {}),
     ...(id === "next"
       ? {
         dntConfigFile: "pkg.next.json",
@@ -64,6 +71,7 @@ export const PACKAGE_CONFIGS: Record<NpmPackageId, PackageBuildConfig> = {
   express: buildConfig("express"),
   hono: buildConfig("hono"),
   graphql: buildConfig("graphql"),
+  yoga: buildConfig("yoga"),
   next: buildConfig("next"),
 };
 
@@ -82,6 +90,7 @@ export async function buildNpmPackage(config: PackageBuildConfig): Promise<void>
   const dir = packageDir(config.id);
   const outDir = path.join(dir, "npm");
   const coreDir = packageDir("core");
+  const graphqlDir = packageDir("graphql");
   const readmeSrc = path.join(dir, "README.md");
 
   try {
@@ -117,6 +126,17 @@ export async function buildNpmPackage(config: PackageBuildConfig): Promise<void>
       );
     }
     importMap.imports["@wyrly/core"] = path.toFileUrl(path.join(coreDir, "mod.ts")).href;
+  }
+  if (config.id === "yoga") {
+    const graphqlNpm = path.join(graphqlDir, "npm");
+    try {
+      await Deno.stat(path.join(graphqlNpm, "package.json"));
+    } catch {
+      throw new Error(
+        `Build @wyrly/graphql npm first (missing ${graphqlNpm}). Run: deno run -A scripts/dnt/build.ts graphql`,
+      );
+    }
+    importMap.imports["@wyrly/graphql"] = path.toFileUrl(path.join(graphqlDir, "mod.ts")).href;
   }
   await Deno.writeTextFile(importMapPath, JSON.stringify(importMap, null, 2) + "\n");
 
@@ -158,6 +178,11 @@ export async function buildNpmPackage(config: PackageBuildConfig): Promise<void>
           ? {
             dependencies: {
               "@wyrly/core": `file:${path.relative(dir, path.join(coreDir, "npm"))}`,
+              ...(config.id === "yoga"
+                ? {
+                  "@wyrly/graphql": `file:${path.relative(dir, path.join(graphqlDir, "npm"))}`,
+                }
+                : {}),
             },
           }
           : {}),
@@ -178,6 +203,9 @@ export async function buildNpmPackage(config: PackageBuildConfig): Promise<void>
         };
         if (pkg.dependencies?.["@wyrly/core"]?.startsWith("file:")) {
           pkg.dependencies["@wyrly/core"] = `^${version}`;
+        }
+        if (pkg.dependencies?.["@wyrly/graphql"]?.startsWith("file:")) {
+          pkg.dependencies["@wyrly/graphql"] = `^${version}`;
         }
         pkg.keywords = config.keywords;
         pkg.homepage = config.homepage;

@@ -1,13 +1,13 @@
 {
-  "name": "@wyrly/express",
+  "name": "@wyrly/yoga",
   "version": "2.2.0",
   "exports": {
     ".": "./mod.ts"
   },
   "imports": {
     "@wyrly/core": "jsr:@wyrly/core@^2.2.0",
-    "express": "npm:express@5",
-    "@types/express": "npm:@types/express@5"
+    "@wyrly/graphql": "jsr:@wyrly/graphql@^2.2.0",
+    "graphql-yoga": "npm:graphql-yoga@5"
   },
   "publish": {
     "exclude": ["**/*_test.ts"]

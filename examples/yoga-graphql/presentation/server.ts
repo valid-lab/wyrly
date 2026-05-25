@@ -1,6 +1,11 @@
 import type { Container } from "@wyrly/core";
-import { createGraphQLDIContext, type GraphQLDIContext } from "@wyrly/graphql";
-import { createSchema, createYoga, type Plugin } from "graphql-yoga";
+import {
+  GraphQLRequestToken,
+  yogaContext,
+  yogaDIPlugin,
+  type YogaServerContext,
+} from "@wyrly/yoga";
+import { createSchema, createYoga } from "graphql-yoga";
 import { CurrentUserToken } from "../composition/tokens.ts";
 import { UserLoaderToken } from "../infrastructure/user_loader.ts";
 
@@ -15,38 +20,13 @@ const typeDefs = /* GraphQL */ `
   }
 `;
 
-type YogaContext = {
-  wyrly: GraphQLDIContext;
-};
-
-const requestContexts = new WeakMap<Request, GraphQLDIContext>();
-
-function wyrlyDIPlugin(container: Container): Plugin {
-  return {
-    async onRequest({ request }) {
-      const wyrly = await createGraphQLDIContext(container, {
-        request,
-        configureScope(scope) {
-          const userId = request.headers.get("x-user-id") ?? "anonymous";
-          scope.set(CurrentUserToken, { id: userId });
-        },
-      });
-      requestContexts.set(request, wyrly);
-    },
-    async onResponse({ request }) {
-      const wyrly = requestContexts.get(request);
-      if (wyrly) await wyrly.dispose();
-    },
-  };
-}
-
 export function createYogaServer(container: Container) {
   const resolvers = {
     Query: {
       user: async (
         _parent: unknown,
         args: { id: string },
-        ctx: YogaContext,
+        ctx: YogaServerContext,
       ) => {
         const loader = ctx.wyrly.di.resolve(UserLoaderToken);
         return await loader.load(args.id);
@@ -54,7 +34,7 @@ export function createYogaServer(container: Container) {
       users: async (
         _parent: unknown,
         args: { ids: string[] },
-        ctx: YogaContext,
+        ctx: YogaServerContext,
       ) => {
         const loader = ctx.wyrly.di.resolve(UserLoaderToken);
         return await Promise.all(args.ids.map((id) => loader.load(id)));
@@ -62,15 +42,17 @@ export function createYogaServer(container: Container) {
     },
   };
 
-  return createYoga<YogaContext>({
+  return createYoga<YogaServerContext>({
     schema: createSchema({ typeDefs, resolvers }),
-    plugins: [wyrlyDIPlugin(container)],
-    context: ({ request }) => {
-      const wyrly = requestContexts.get(request);
-      if (!wyrly) {
-        throw new Error("Wyrly DI context missing — ensure wyrlyDIPlugin is registered");
-      }
-      return { wyrly };
-    },
+    plugins: [
+      yogaDIPlugin(container, {
+        configureScope(scope) {
+          const request = scope.resolve(GraphQLRequestToken);
+          const userId = request.headers.get("x-user-id") ?? "anonymous";
+          scope.set(CurrentUserToken, { id: userId });
+        },
+      }),
+    ],
+    context: yogaContext,
   });
 }

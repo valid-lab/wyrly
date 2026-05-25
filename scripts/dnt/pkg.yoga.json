@@ -1,0 +1,5 @@
+{
+  "imports": {
+    "graphql-yoga": "npm:graphql-yoga@5"
+  }
+}
