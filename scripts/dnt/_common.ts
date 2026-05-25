@@ -13,6 +13,7 @@ export const NPM_PACKAGE_ORDER: NpmPackageId[] = [
   "hono",
   "graphql",
   "yoga",
+  "apollo",
   "next",
 ];
 
@@ -50,6 +51,15 @@ function buildConfig(id: NpmPackageId): PackageBuildConfig {
         peerDependencies: { "graphql-yoga": "^5.0.0" },
       }
       : {}),
+    ...(id === "apollo"
+      ? {
+        dntConfigFile: "pkg.apollo.json",
+        peerDependencies: {
+          "@apollo/server": "^4.0.0",
+          graphql: "^16.0.0",
+        },
+      }
+      : {}),
     ...(id === "next"
       ? {
         dntConfigFile: "pkg.next.json",
@@ -72,6 +82,7 @@ export const PACKAGE_CONFIGS: Record<NpmPackageId, PackageBuildConfig> = {
   hono: buildConfig("hono"),
   graphql: buildConfig("graphql"),
   yoga: buildConfig("yoga"),
+  apollo: buildConfig("apollo"),
   next: buildConfig("next"),
 };
 
@@ -127,7 +138,7 @@ export async function buildNpmPackage(config: PackageBuildConfig): Promise<void>
     }
     importMap.imports["@wyrly/core"] = path.toFileUrl(path.join(coreDir, "mod.ts")).href;
   }
-  if (config.id === "yoga") {
+  if (config.id === "yoga" || config.id === "apollo") {
     const graphqlNpm = path.join(graphqlDir, "npm");
     try {
       await Deno.stat(path.join(graphqlNpm, "package.json"));
@@ -178,7 +189,7 @@ export async function buildNpmPackage(config: PackageBuildConfig): Promise<void>
           ? {
             dependencies: {
               "@wyrly/core": `file:${path.relative(dir, path.join(coreDir, "npm"))}`,
-              ...(config.id === "yoga"
+              ...(config.id === "yoga" || config.id === "apollo"
                 ? {
                   "@wyrly/graphql": `file:${path.relative(dir, path.join(graphqlDir, "npm"))}`,
                 }

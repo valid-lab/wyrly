@@ -102,12 +102,15 @@ request, auto dispose on `onResponse`). Peer: `graphql-yoga` ^5.
 
 ### Apollo Server
 
-Apollo has no dedicated adapter yet; wire `createGraphQLDIContext` in `requestDidStart` →
-`willSendResponse` (see guide).
+`@wyrly/apollo` provides `apolloDIPlugin` for Apollo Server 4+ (one scope per operation, auto
+dispose in `willSendResponse`). Peers: `@apollo/server` ^4, `graphql` ^16.
 
-| Server | Example | Guide |
-| ------ | ------- | ----- |
-| Apollo Server 4+ | [`examples/apollo-graphql`](https://github.com/valid-lab/wyrly/tree/main/examples/apollo-graphql) | [GRAPHQL_DISPOSE](https://github.com/valid-lab/wyrly/blob/main/guides/GRAPHQL_DISPOSE.md) |
+| Resource | Link |
+| -------- | ---- |
+| Package | [`packages/apollo`](https://github.com/valid-lab/wyrly/tree/main/packages/apollo) |
+| Example | [`examples/apollo-graphql`](https://github.com/valid-lab/wyrly/tree/main/examples/apollo-graphql) |
+| Express + Apollo | [`examples/apollo-express-graphql`](https://github.com/valid-lab/wyrly/tree/main/examples/apollo-express-graphql) |
+| Guide | [GRAPHQL_DISPOSE](https://github.com/valid-lab/wyrly/blob/main/guides/GRAPHQL_DISPOSE.md) |
 
 ## Pick the adapter at the edge
 

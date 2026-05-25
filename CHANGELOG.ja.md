@@ -14,8 +14,12 @@ English: [CHANGELOG.md](./CHANGELOG.md)
 
 - **`@wyrly/yoga`** — GraphQL Yoga 5 向け Inbound Adapter: `yogaDIPlugin`、`yogaContext`、
   `createYogaDIContext`（`@wyrly/graphql` に委譲）、GraphQL token の re-export。
+- **`@wyrly/apollo`** — Apollo Server 4+ 向け Inbound Adapter: `apolloDIPlugin`、
+  `createApolloDIContext`、`toFetchRequest`、Apollo/GraphQL token。
 - `examples/yoga-graphql` を `@wyrly/yoga` に移行。
-- [guides/GRAPHQL_DISPOSE.ja.md](./guides/GRAPHQL_DISPOSE.ja.md): 公式 Yoga plugin 節を追加。
+- `examples/apollo-graphql` を `@wyrly/apollo` に移行。
+- `examples/apollo-express-graphql` を追加。
+- [guides/GRAPHQL_DISPOSE.ja.md](./guides/GRAPHQL_DISPOSE.ja.md): 公式 Yoga / Apollo plugin 節を追加。
 
 ## [2.1.0] - 2026-05-25
 

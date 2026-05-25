@@ -37,6 +37,7 @@
     "npm:@opentelemetry/api@^1.9.0": "1.9.1",
     "npm:@preact/signals@^2.5.1": "2.9.0_preact@10.29.1",
     "npm:@types/express@5": "5.0.6",
+    "npm:cors@2": "2.8.6",
     "npm:esbuild-wasm@~0.25.11": "0.25.12",
     "npm:esbuild@0.25.7": "0.25.7",
     "npm:esbuild@~0.25.5": "0.25.7",
@@ -2029,6 +2030,15 @@
       "npm:lefthook@2.1.6"
     ],
     "members": {
+      "examples/apollo-express-graphql": {
+        "dependencies": [
+          "npm:@apollo/server@4",
+          "npm:@types/express@5",
+          "npm:cors@2",
+          "npm:express@5",
+          "npm:graphql@16"
+        ]
+      },
       "examples/apollo-graphql": {
         "dependencies": [
           "npm:@apollo/server@4",
@@ -2065,6 +2075,14 @@
       "examples/yoga-graphql": {
         "dependencies": [
           "npm:graphql-yoga@5",
+          "npm:graphql@16"
+        ]
+      },
+      "packages/apollo": {
+        "dependencies": [
+          "jsr:@wyrly/core@^2.2.0",
+          "jsr:@wyrly/graphql@^2.2.0",
+          "npm:@apollo/server@4",
           "npm:graphql@16"
         ]
       },

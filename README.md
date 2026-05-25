@@ -45,7 +45,8 @@ Choose your framework:
 | Hono / Cloudflare Workers | [`examples/hono-api`](./examples/hono-api/)                 | Edge-friendly middleware can create one DI scope per request                      |
 | GraphQL / DataLoader      | [`examples/graphql-request`](./examples/graphql-request/)   | One GraphQL request can own scoped loaders and dispose them cleanly               |
 | GraphQL Yoga              | [`examples/yoga-graphql`](./examples/yoga-graphql/)           | `@wyrly/yoga` `yogaDIPlugin` + scoped loaders (see [GRAPHQL_DISPOSE](./guides/GRAPHQL_DISPOSE.md)) |
-| Apollo Server             | [`examples/apollo-graphql`](./examples/apollo-graphql/)       | Apollo 4 + scoped DI context + `willSendResponse` disposal                        |
+| Apollo Server             | [`examples/apollo-graphql`](./examples/apollo-graphql/)       | `@wyrly/apollo` `apolloDIPlugin` (see [GRAPHQL_DISPOSE](./guides/GRAPHQL_DISPOSE.md)) |
+| Apollo + Express          | [`examples/apollo-express-graphql`](./examples/apollo-express-graphql/) | `@wyrly/express` + `@wyrly/apollo` on `/graphql`                          |
 | DDD / Clean Architecture  | [`examples/basic-ddd`](./examples/basic-ddd/)               | Ports, use cases, and infrastructure can be wired explicitly                      |
 | CI validation             | [`examples/dependency-graph`](./examples/dependency-graph/) | `inspect()` / `validate()` can catch graph and lifetime issues                    |
 
@@ -116,6 +117,7 @@ It intentionally avoids:
 @wyrly/fresh
 @wyrly/graphql
 @wyrly/yoga
+@wyrly/apollo
 ```
 
 See [API.md](./API.md) for the frozen **v2.0** public export surface.

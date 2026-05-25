@@ -1,0 +1,6 @@
+{
+  "imports": {
+    "@apollo/server": "npm:@apollo/server@4",
+    "graphql": "npm:graphql@16"
+  }
+}

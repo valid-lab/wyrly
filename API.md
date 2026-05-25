@@ -193,6 +193,35 @@ Entry: [`packages/yoga/mod.ts`](./packages/yoga/mod.ts)
 
 ---
 
+## `@wyrly/apollo`
+
+Entry: [`packages/apollo/mod.ts`](./packages/apollo/mod.ts)
+
+| Export | Description |
+|--------|-------------|
+| `createApolloDIContext` | Build Apollo context with `di` scope (delegates to `@wyrly/graphql`) |
+| `apolloDIPlugin` | Apollo Server plugin: scope per operation + auto dispose |
+| `toFetchRequest` | Node HTTP `req` → Web `Request` |
+| `requestFromApolloGraphQLRequest` | Apollo HTTP metadata → Web `Request` |
+| `GraphQLRequestToken` | Re-export from `@wyrly/graphql` |
+| `GraphQLResponseToken` | Re-export from `@wyrly/graphql` |
+| `ApolloRequestToken` | Node HTTP request (composition root only) |
+| `ApolloResponseToken` | Node HTTP response (composition root only) |
+
+### Types
+
+| Export |
+|--------|
+| `ApolloDIContext` |
+| `CreateApolloDIContextOptions` |
+| `ApolloDIPluginOptions` |
+| `ApolloDIServerPlugin` |
+| `ApolloServerContext` |
+| `ApolloHTTPRequestLike` |
+| `ApolloHTTPResponseLike` |
+
+---
+
 ## `@wyrly/next`
 
 Entry: [`packages/next/mod.ts`](./packages/next/mod.ts)

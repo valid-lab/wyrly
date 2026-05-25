@@ -2,7 +2,7 @@
 
 English: [PUBLISHING.md](./PUBLISHING.md)
 
-**JSR** に 7 パッケージ、**npm** に 6 パッケージを公開します。`@wyrly/fresh` は Fresh 2.x が npm
+**JSR** に 8 パッケージ、**npm** に 7 パッケージを公開します。`@wyrly/fresh` は Fresh 2.x が npm
 非対応のため **JSR のみ**です。
 
 | パッケージ       | JSR                  | npm（registry.npmjs.org） |
@@ -13,6 +13,7 @@ English: [PUBLISHING.md](./PUBLISHING.md)
 | `@wyrly/fresh`   | `jsr:@wyrly/fresh`   | —（JSR のみ）             |
 | `@wyrly/graphql` | `jsr:@wyrly/graphql` | `@wyrly/graphql`          |
 | `@wyrly/yoga`    | `jsr:@wyrly/yoga`    | `@wyrly/yoga`             |
+| `@wyrly/apollo`  | `jsr:@wyrly/apollo`  | `@wyrly/apollo`           |
 | `@wyrly/next`    | `jsr:@wyrly/next`    | `@wyrly/next`             |
 
 `packages/*/deno.json` の version を揃え、タグ `vX.Y.Z` でまとめてリリースします。
@@ -32,7 +33,7 @@ English: [PUBLISHING.md](./PUBLISHING.md)
 
 `OWNER/REPO` はこのリポジトリ（例: `your-org/wyrly-oss`）に置き換えてください。
 
-### JSR — GitHub リポジトリのリンク（7 件）
+### JSR — GitHub リポジトリのリンク（8 件）
 
 各パッケージを [jsr.io/new](https://jsr.io/new) で作成し、**Settings → GitHub repository** で
 `OWNER/REPO` を入力して **Link**:
@@ -43,12 +44,13 @@ English: [PUBLISHING.md](./PUBLISHING.md)
 - [ ] `@wyrly/fresh`
 - [ ] `@wyrly/graphql`
 - [ ] `@wyrly/yoga`
+- [ ] `@wyrly/apollo`
 - [ ] `@wyrly/next`
 
 ワークフローは [`.github/workflows/publish.yml`](./.github/workflows/publish.yml)（ファイル名
 `publish.yml`）であること。
 
-### npm — Trusted Publisher（6 件）
+### npm — Trusted Publisher（7 件）
 
 org **`wyrly`** で、各パッケージに **Trusted Publisher → GitHub Actions** を登録:
 
@@ -65,6 +67,7 @@ org **`wyrly`** で、各パッケージに **Trusted Publisher → GitHub Actio
 - [ ] `@wyrly/hono`
 - [ ] `@wyrly/graphql`
 - [ ] `@wyrly/yoga`
+- [ ] `@wyrly/apollo`
 - [ ] `@wyrly/next`
 
 （`@wyrly/fresh` は npm 非公開）

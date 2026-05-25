@@ -73,24 +73,36 @@ resolver は `ctx.wyrly.di.resolve(...)`。dispose は `onResponse` で実行。
 `@wyrly/yoga` が使えない場合は `createGraphQLDIContext` と `WeakMap<Request, …>` で同じライフサイクルを実装します。
 
 
-## Apollo Server 4+（手動 plugin）
+## Apollo Server 4+（`@wyrly/apollo`）
 
-専用 `@wyrly/apollo` パッケージが出るまでは `requestDidStart` → `willSendResponse` で dispose します。
+公式 plugin（v2.2.0+）:
 
 ```ts
-const wyrlyPlugin = {
-  async requestDidStart() {
-    const ctx = await createGraphQLDIContext(container, { request, response });
-    return {
-      async willSendResponse() {
-        await ctx.dispose();
+import { ApolloServer } from "@apollo/server";
+import { apolloDIPlugin, GraphQLRequestToken, type ApolloServerContext } from "@wyrly/apollo";
+
+const server = new ApolloServer<ApolloServerContext>({
+  typeDefs,
+  resolvers,
+  plugins: [
+    apolloDIPlugin(container, {
+      configureScope(scope) {
+        const request = scope.resolve(GraphQLRequestToken);
+        scope.set(CurrentUserToken, { id: userIdFrom(request) });
       },
-    };
-  },
-};
+    }),
+  ],
+});
 ```
 
-実行例: [`examples/apollo-graphql`](../examples/apollo-graphql/)。
+Express では Apollo の `context: ({ req, res }) => ({ req, res })` を渡すと Node HTTP token が登録されます。
+
+参照: [`packages/apollo`](../packages/apollo/)、[`examples/apollo-graphql`](../examples/apollo-graphql/)、
+[`examples/apollo-express-graphql`](../examples/apollo-express-graphql/)。
+
+### Apollo（手動 plugin）
+
+`@wyrly/apollo` が使えない場合は `createGraphQLDIContext` と `requestDidStart` → `willSendResponse` で同じライフサイクルを実装します。
 
 
 ## composition root: HTTP → port token

@@ -51,12 +51,12 @@ Resolvers use `ctx.wyrly.di.resolve(...)`. The plugin disposes the scope on `onR
 
 ## Related packages
 
-| Package          | npm  | Description           |
-| ---------------- | ---- | --------------------- |
-| `@wyrly/core`    | yes  | Core DI               |
-| `@wyrly/graphql` | yes  | GraphQL context       |
-| `@wyrly/yoga`    | yes  | This package          |
-| `@wyrly/apollo`  | soon | Apollo Server adapter |
+| Package          | npm | Description           |
+| ---------------- | --- | --------------------- |
+| `@wyrly/core`    | yes | Core DI               |
+| `@wyrly/graphql` | yes | GraphQL context       |
+| `@wyrly/yoga`    | yes | This package          |
+| `@wyrly/apollo`  | yes | Apollo Server adapter |
 
 ## License
 

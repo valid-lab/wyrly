@@ -75,26 +75,39 @@ If you cannot use `@wyrly/yoga`, attach disposal in a Yoga / Envelop plugin with
 `createGraphQLDIContext` and a `WeakMap<Request, GraphQLDIContext>` (same lifecycle as above).
 
 
-## Apollo Server 4+ (manual plugin)
+## Apollo Server 4+ (`@wyrly/apollo`)
 
-Until a dedicated `@wyrly/apollo` package ships, dispose in `requestDidStart` → `willSendResponse`:
+Use the official Apollo Server plugin (v2.2.0+):
 
 ```ts
-import { createGraphQLDIContext } from "@wyrly/graphql";
+import { ApolloServer } from "@apollo/server";
+import { apolloDIPlugin, type ApolloServerContext } from "@wyrly/apollo";
 
-const wyrlyPlugin = {
-  async requestDidStart() {
-    const ctx = await createGraphQLDIContext(container, { request, response });
-    return {
-      async willSendResponse() {
-        await ctx.dispose();
+const server = new ApolloServer<ApolloServerContext>({
+  typeDefs,
+  resolvers,
+  plugins: [
+    apolloDIPlugin(container, {
+      configureScope(scope) {
+        const request = scope.resolve(GraphQLRequestToken);
+        scope.set(CurrentUserToken, { id: userIdFrom(request) });
       },
-    };
-  },
-};
+      onDisposeError: (error, request) => console.error(error, request.url),
+    }),
+  ],
+});
 ```
 
-See [`examples/apollo-graphql`](../examples/apollo-graphql/).
+With Express, pass `req` / `res` from Apollo's `context` callback; the plugin registers
+`ApolloRequestToken` for composition-root mapping only.
+
+See [`packages/apollo`](../packages/apollo/), [`examples/apollo-graphql`](../examples/apollo-graphql/),
+and [`examples/apollo-express-graphql`](../examples/apollo-express-graphql/).
+
+### Apollo (manual plugin)
+
+If you cannot use `@wyrly/apollo`, dispose in `requestDidStart` → `willSendResponse` with
+`createGraphQLDIContext` (same lifecycle as above).
 
 
 ## Composition root: map HTTP to port tokens

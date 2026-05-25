@@ -192,6 +192,35 @@ JSR 公開パッケージでは `declare global` が使えないため、グロ�
 
 ---
 
+## `@wyrly/apollo`
+
+エントリ: [`packages/apollo/mod.ts`](./packages/apollo/mod.ts)
+
+| Export | 説明 |
+|--------|------|
+| `createApolloDIContext` | Apollo コンテキストと `di` scope の構築（`@wyrly/graphql` に委譲） |
+| `apolloDIPlugin` | Apollo Server plugin: 操作ごとに scope 作成 + 自動 dispose |
+| `toFetchRequest` | Node HTTP `req` → Web `Request` |
+| `requestFromApolloGraphQLRequest` | Apollo HTTP メタデータ → Web `Request` |
+| `GraphQLRequestToken` | `@wyrly/graphql` からの re-export |
+| `GraphQLResponseToken` | `@wyrly/graphql` からの re-export |
+| `ApolloRequestToken` | Node HTTP request（composition root のみ） |
+| `ApolloResponseToken` | Node HTTP response（composition root のみ） |
+
+### 型
+
+| Export |
+|--------|
+| `ApolloDIContext` |
+| `CreateApolloDIContextOptions` |
+| `ApolloDIPluginOptions` |
+| `ApolloDIServerPlugin` |
+| `ApolloServerContext` |
+| `ApolloHTTPRequestLike` |
+| `ApolloHTTPResponseLike` |
+
+---
+
 ## `@wyrly/next`
 
 エントリ: [`packages/next/mod.ts`](./packages/next/mod.ts)

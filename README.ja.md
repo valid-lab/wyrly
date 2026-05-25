@@ -45,7 +45,8 @@ TypeScript アプリ向けに設計されています。型付き token、明示
 | Hono / Cloudflare Workers    | [`examples/hono-api`](./examples/hono-api/)                 | Edge 寄りの middleware でリクエストごとに DI scope を作れる                       |
 | GraphQL / DataLoader         | [`examples/graphql-request`](./examples/graphql-request/)   | GraphQL リクエストごとの scoped loader と破棄を扱える                             |
 | GraphQL Yoga                 | [`examples/yoga-graphql`](./examples/yoga-graphql/)           | `@wyrly/yoga` の `yogaDIPlugin`（[GRAPHQL_DISPOSE.ja.md](./guides/GRAPHQL_DISPOSE.ja.md)） |
-| Apollo Server                | [`examples/apollo-graphql`](./examples/apollo-graphql/)       | Apollo 4 + `willSendResponse` で dispose                                          |
+| Apollo Server                | [`examples/apollo-graphql`](./examples/apollo-graphql/)       | `@wyrly/apollo` の `apolloDIPlugin`（[GRAPHQL_DISPOSE.ja.md](./guides/GRAPHQL_DISPOSE.ja.md)） |
+| Apollo + Express             | [`examples/apollo-express-graphql`](./examples/apollo-express-graphql/) | `@wyrly/express` + `@wyrly/apollo` on `/graphql`                          |
 | DDD / クリーンアーキテクチャ | [`examples/basic-ddd`](./examples/basic-ddd/)               | port、use case、infrastructure を明示的に配線できる                               |
 | CI 検証                      | [`examples/dependency-graph`](./examples/dependency-graph/) | `inspect()` / `validate()` で依存グラフと lifetime 問題を検出できる               |
 
@@ -117,6 +118,7 @@ Wyrly DI は NestJS のクローンにはなりません。
 @wyrly/fresh
 @wyrly/graphql
 @wyrly/yoga
+@wyrly/apollo
 ```
 
 凍結された **v2.0** の公開 API 一覧は [API.ja.md](./API.ja.md) を参照してください。

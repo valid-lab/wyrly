@@ -15,8 +15,12 @@ adheres to [Semantic Versioning](https://semver.org/) from **1.0.0**.
 
 - **`@wyrly/yoga`** — GraphQL Yoga 5 inbound adapter: `yogaDIPlugin`, `yogaContext`,
   `createYogaDIContext` (delegates to `@wyrly/graphql`), re-exported GraphQL tokens.
+- **`@wyrly/apollo`** — Apollo Server 4+ inbound adapter: `apolloDIPlugin`,
+  `createApolloDIContext`, `toFetchRequest`, Apollo/GraphQL tokens.
 - Example `examples/yoga-graphql` migrated to `@wyrly/yoga`.
-- [guides/GRAPHQL_DISPOSE.md](./guides/GRAPHQL_DISPOSE.md): official Yoga plugin section.
+- Example `examples/apollo-graphql` migrated to `@wyrly/apollo`.
+- Example `examples/apollo-express-graphql` — Express + Apollo + scoped DI.
+- [guides/GRAPHQL_DISPOSE.md](./guides/GRAPHQL_DISPOSE.md): official Yoga and Apollo plugin sections.
 
 ## [2.1.0] - 2026-05-25
 

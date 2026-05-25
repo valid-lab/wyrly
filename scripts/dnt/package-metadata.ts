@@ -1,5 +1,13 @@
 /** Package ids in the monorepo (fresh is JSR-only, not published to npm). */
-export type PackageId = "core" | "express" | "hono" | "graphql" | "yoga" | "next" | "fresh";
+export type PackageId =
+  | "core"
+  | "express"
+  | "hono"
+  | "graphql"
+  | "yoga"
+  | "apollo"
+  | "next"
+  | "fresh";
 
 const REPO = "https://github.com/valid-lab/wyrly";
 const BUGS = `${REPO}/issues`;
@@ -121,6 +129,22 @@ export const PACKAGE_METADATA: Record<PackageId, PackageMetadata> = {
     bugs: BUGS,
     npm: true,
   },
+  apollo: {
+    id: "apollo",
+    npmName: "@wyrly/apollo",
+    description: "Request-scoped dependency injection adapter for Apollo Server 4+ and TypeScript",
+    keywords: [
+      ...COMMON_KEYWORDS,
+      "graphql",
+      "apollo",
+      "apollo-server",
+      "dataloader",
+      "resolvers",
+    ],
+    homepage: homepage("apollo"),
+    bugs: BUGS,
+    npm: true,
+  },
   next: {
     id: "next",
     npmName: "@wyrly/next",
@@ -160,6 +184,7 @@ export const ALL_PACKAGE_IDS: PackageId[] = [
   "hono",
   "graphql",
   "yoga",
+  "apollo",
   "next",
   "fresh",
 ];
