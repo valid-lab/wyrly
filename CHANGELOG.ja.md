@@ -16,6 +16,9 @@ English: [CHANGELOG.md](./CHANGELOG.md)
   `createYogaDIContext`（`@wyrly/graphql` に委譲）、GraphQL token の re-export。
 - **`@wyrly/apollo`** — Apollo Server 4+ 向け Inbound Adapter: `apolloDIPlugin`、
   `createApolloDIContext`、`toFetchRequest`、Apollo/GraphQL token。
+- **`@wyrly/fastify`** — Fastify 5 向け Inbound Adapter: `diPlugin`、`getDI`、request/reply token
+  （ルートレベル hook のため `fastify-plugin` を使用）。
+- `examples/fastify-api` を追加。
 - `examples/yoga-graphql` を `@wyrly/yoga` に移行。
 - `examples/apollo-graphql` を `@wyrly/apollo` に移行。
 - `examples/apollo-express-graphql` を追加。

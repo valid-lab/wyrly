@@ -128,6 +128,27 @@ Entry: [`packages/hono/mod.ts`](./packages/hono/mod.ts)
 
 ---
 
+## `@wyrly/fastify`
+
+Entry: [`packages/fastify/mod.ts`](./packages/fastify/mod.ts)
+
+| Export | Description |
+|--------|-------------|
+| `diPlugin` | Fastify plugin: scope per request + auto dispose on `finish` / `close` |
+| `getDI` | Read `request` scope (after `diPlugin` is registered) |
+| `asFastifyRequestWithDI` | Narrow `request` to `{ di: Scope }` |
+| `FastifyRequestToken` | Typed token for `FastifyRequest` |
+| `FastifyReplyToken` | Typed token for `FastifyReply` |
+
+### Types
+
+| Export |
+|--------|
+| `FastifyDIOptions` |
+| `FastifyRequestWithDI` |
+
+---
+
 ## `@wyrly/fresh`
 
 Entry: [`packages/fresh/mod.ts`](./packages/fresh/mod.ts)

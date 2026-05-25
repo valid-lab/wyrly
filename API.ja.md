@@ -127,6 +127,27 @@ JSR 公開パッケージでは `declare global` が使えないため、グロ�
 
 ---
 
+## `@wyrly/fastify`
+
+エントリ: [`packages/fastify/mod.ts`](./packages/fastify/mod.ts)
+
+| Export | 説明 |
+|--------|------|
+| `diPlugin` | Fastify プラグイン: リクエストごとに scope を作成し、`finish` / `close` で自動 dispose |
+| `getDI` | `request` から scope を取得（`diPlugin` 登録後） |
+| `asFastifyRequestWithDI` | `request` を `{ di: Scope }` に絞り込む |
+| `FastifyRequestToken` | `FastifyRequest` 用 token |
+| `FastifyReplyToken` | `FastifyReply` 用 token |
+
+### 型
+
+| Export |
+|--------|
+| `FastifyDIOptions` |
+| `FastifyRequestWithDI` |
+
+---
+
 ## `@wyrly/fresh`
 
 エントリ: [`packages/fresh/mod.ts`](./packages/fresh/mod.ts)

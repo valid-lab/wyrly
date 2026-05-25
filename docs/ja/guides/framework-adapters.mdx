@@ -55,6 +55,32 @@ app.get("/users/:id", async (c) => {
 });
 ```
 
+## Fastify
+
+`@wyrly/fastify` は Fastify 5 向けの `diPlugin` を提供します（リクエストごとに 1 scope、レスポンスの
+`finish` / `close` で自動 dispose）。peer: `fastify` ^5。`fastify-plugin` によりルートインスタンス全体に
+hook が適用されます。
+
+| リソース | リンク |
+| -------- | ------ |
+| パッケージ | [`packages/fastify`](https://github.com/valid-lab/wyrly/tree/main/packages/fastify) |
+| 例 | [`examples/fastify-api`](https://github.com/valid-lab/wyrly/tree/main/examples/fastify-api) |
+
+```ts
+import Fastify from "fastify";
+import { diPlugin, getDI } from "@wyrly/fastify";
+
+const app = Fastify();
+await app.register(diPlugin(container));
+
+app.get("/users/:id", async (request) => {
+  const useCase = getDI(request).resolve(GetUserUseCase);
+  return { id: await useCase.execute(request.params.id) };
+});
+```
+
+Fastify 上で GraphQL を使う場合は [`@wyrly/apollo`](https://github.com/valid-lab/wyrly/tree/main/packages/apollo) や [`@wyrly/yoga`](https://github.com/valid-lab/wyrly/tree/main/packages/yoga) と組み合わせます。
+
 ## Fresh
 
 Fresh 2.x アプリケーションでは `@wyrly/fresh` を使います。このパッケージは JSR で公開されています。

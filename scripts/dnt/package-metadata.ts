@@ -6,6 +6,7 @@ export type PackageId =
   | "graphql"
   | "yoga"
   | "apollo"
+  | "fastify"
   | "next"
   | "fresh";
 
@@ -145,6 +146,21 @@ export const PACKAGE_METADATA: Record<PackageId, PackageMetadata> = {
     bugs: BUGS,
     npm: true,
   },
+  fastify: {
+    id: "fastify",
+    npmName: "@wyrly/fastify",
+    description: "Request-scoped dependency injection adapter for Fastify 5 and TypeScript",
+    keywords: [
+      ...COMMON_KEYWORDS,
+      "fastify",
+      "http",
+      "plugin",
+      "middleware",
+    ],
+    homepage: homepage("fastify"),
+    bugs: BUGS,
+    npm: true,
+  },
   next: {
     id: "next",
     npmName: "@wyrly/next",
@@ -185,6 +201,7 @@ export const ALL_PACKAGE_IDS: PackageId[] = [
   "graphql",
   "yoga",
   "apollo",
+  "fastify",
   "next",
   "fresh",
 ];

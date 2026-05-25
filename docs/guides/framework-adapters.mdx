@@ -57,6 +57,32 @@ app.get("/users/:id", async (c) => {
 });
 ```
 
+## Fastify
+
+`@wyrly/fastify` provides `diPlugin` for Fastify 5 (one scope per request, auto dispose on response
+`finish` / `close`). Peer: `fastify` ^5. The plugin uses `fastify-plugin` so hooks apply to routes
+on the root instance.
+
+| Resource | Link |
+| -------- | ---- |
+| Package | [`packages/fastify`](https://github.com/valid-lab/wyrly/tree/main/packages/fastify) |
+| Example | [`examples/fastify-api`](https://github.com/valid-lab/wyrly/tree/main/examples/fastify-api) |
+
+```ts
+import Fastify from "fastify";
+import { diPlugin, getDI } from "@wyrly/fastify";
+
+const app = Fastify();
+await app.register(diPlugin(container));
+
+app.get("/users/:id", async (request) => {
+  const useCase = getDI(request).resolve(GetUserUseCase);
+  return { id: await useCase.execute(request.params.id) };
+});
+```
+
+For GraphQL on Fastify, combine with [`@wyrly/apollo`](https://github.com/valid-lab/wyrly/tree/main/packages/apollo) or [`@wyrly/yoga`](https://github.com/valid-lab/wyrly/tree/main/packages/yoga).
+
 ## Fresh
 
 Use `@wyrly/fresh` for Fresh 2.x applications. The package is published on JSR.

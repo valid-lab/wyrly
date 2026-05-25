@@ -1,0 +1,20 @@
+{
+  "name": "@wyrly/fastify",
+  "version": "2.2.0",
+  "exports": {
+    ".": "./mod.ts"
+  },
+  "imports": {
+    "@wyrly/core": "jsr:@wyrly/core@^2.2.0",
+    "fastify": "npm:fastify@5",
+    "fastify-plugin": "npm:fastify-plugin@5"
+  },
+  "publish": {
+    "exclude": ["**/*_test.ts"]
+  },
+  "test": {
+    "permissions": {
+      "net": false
+    }
+  }
+}

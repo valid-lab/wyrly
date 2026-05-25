@@ -1,0 +1,13 @@
+{
+  "name": "@wyrly-examples/fastify-api",
+  "version": "0.0.0",
+  "exports": {
+    ".": "./main.ts"
+  },
+  "imports": {
+    "fastify": "npm:fastify@5"
+  },
+  "tasks": {
+    "start": "deno run -A main.ts"
+  }
+}

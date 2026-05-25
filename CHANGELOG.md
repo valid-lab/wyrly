@@ -17,6 +17,9 @@ adheres to [Semantic Versioning](https://semver.org/) from **1.0.0**.
   `createYogaDIContext` (delegates to `@wyrly/graphql`), re-exported GraphQL tokens.
 - **`@wyrly/apollo`** — Apollo Server 4+ inbound adapter: `apolloDIPlugin`,
   `createApolloDIContext`, `toFetchRequest`, Apollo/GraphQL tokens.
+- **`@wyrly/fastify`** — Fastify 5 inbound adapter: `diPlugin`, `getDI`, request/reply tokens
+  (uses `fastify-plugin` for root-level hooks).
+- Example `examples/fastify-api`.
 - Example `examples/yoga-graphql` migrated to `@wyrly/yoga`.
 - Example `examples/apollo-graphql` migrated to `@wyrly/apollo`.
 - Example `examples/apollo-express-graphql` — Express + Apollo + scoped DI.

@@ -14,6 +14,7 @@ export const NPM_PACKAGE_ORDER: NpmPackageId[] = [
   "graphql",
   "yoga",
   "apollo",
+  "fastify",
   "next",
 ];
 
@@ -60,6 +61,12 @@ function buildConfig(id: NpmPackageId): PackageBuildConfig {
         },
       }
       : {}),
+    ...(id === "fastify"
+      ? {
+        dntConfigFile: "pkg.fastify.json",
+        peerDependencies: { fastify: "^5.0.0" },
+      }
+      : {}),
     ...(id === "next"
       ? {
         dntConfigFile: "pkg.next.json",
@@ -83,6 +90,7 @@ export const PACKAGE_CONFIGS: Record<NpmPackageId, PackageBuildConfig> = {
   graphql: buildConfig("graphql"),
   yoga: buildConfig("yoga"),
   apollo: buildConfig("apollo"),
+  fastify: buildConfig("fastify"),
   next: buildConfig("next"),
 };
 

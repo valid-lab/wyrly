@@ -43,6 +43,7 @@ Choose your framework:
 | ------------------------- | ----------------------------------------------------------- | --------------------------------------------------------------------------------- |
 | Next.js App Router        | [`examples/next-ddd`](./examples/next-ddd/)                 | Route Handlers, Server Actions, and Server Components can share request-scoped DI |
 | Hono / Cloudflare Workers | [`examples/hono-api`](./examples/hono-api/)                 | Edge-friendly middleware can create one DI scope per request                      |
+| Fastify                   | [`examples/fastify-api`](./examples/fastify-api/)           | `diPlugin` + `getDI(request)` per HTTP request                                      |
 | GraphQL / DataLoader      | [`examples/graphql-request`](./examples/graphql-request/)   | One GraphQL request can own scoped loaders and dispose them cleanly               |
 | GraphQL Yoga              | [`examples/yoga-graphql`](./examples/yoga-graphql/)           | `@wyrly/yoga` `yogaDIPlugin` + scoped loaders (see [GRAPHQL_DISPOSE](./guides/GRAPHQL_DISPOSE.md)) |
 | Apollo Server             | [`examples/apollo-graphql`](./examples/apollo-graphql/)       | `@wyrly/apollo` `apolloDIPlugin` (see [GRAPHQL_DISPOSE](./guides/GRAPHQL_DISPOSE.md)) |
@@ -90,7 +91,7 @@ Inspectable dependency graph.
 - Support constructor injection with explicit dependencies
 - Support singleton / scoped / transient lifetimes
 - Support request scope for web apps
-- Provide adapters for Next.js, Express, Hono, Fresh, and GraphQL
+- Provide adapters for Next.js, Express, Hono, Fastify, Fresh, and GraphQL
 - Support DDD / Clean Architecture
 - Provide inspectable dependency graph for CLI / CI / AI tools
 
@@ -118,6 +119,7 @@ It intentionally avoids:
 @wyrly/graphql
 @wyrly/yoga
 @wyrly/apollo
+@wyrly/fastify
 ```
 
 See [API.md](./API.md) for the frozen **v2.0** public export surface.

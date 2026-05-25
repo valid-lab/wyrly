@@ -43,6 +43,7 @@ TypeScript アプリ向けに設計されています。型付き token、明示
 | ---------------------------- | ----------------------------------------------------------- | --------------------------------------------------------------------------------- |
 | Next.js App Router           | [`examples/next-ddd`](./examples/next-ddd/)                 | Route Handler、Server Action、Server Components で request-scoped DI を共有できる |
 | Hono / Cloudflare Workers    | [`examples/hono-api`](./examples/hono-api/)                 | Edge 寄りの middleware でリクエストごとに DI scope を作れる                       |
+| Fastify                      | [`examples/fastify-api`](./examples/fastify-api/)           | `diPlugin` + `getDI(request)` で HTTP リクエストごとに scope                      |
 | GraphQL / DataLoader         | [`examples/graphql-request`](./examples/graphql-request/)   | GraphQL リクエストごとの scoped loader と破棄を扱える                             |
 | GraphQL Yoga                 | [`examples/yoga-graphql`](./examples/yoga-graphql/)           | `@wyrly/yoga` の `yogaDIPlugin`（[GRAPHQL_DISPOSE.ja.md](./guides/GRAPHQL_DISPOSE.ja.md)） |
 | Apollo Server                | [`examples/apollo-graphql`](./examples/apollo-graphql/)       | `@wyrly/apollo` の `apolloDIPlugin`（[GRAPHQL_DISPOSE.ja.md](./guides/GRAPHQL_DISPOSE.ja.md)） |
@@ -91,7 +92,7 @@ parameter decorators 不要
 - 明示的な `deps` によるコンストラクタ注入をサポートする
 - singleton / scoped / transient ライフタイムをサポートする
 - Web アプリ向けリクエストスコープをサポートする
-- Next.js、Express、Hono、Fresh、GraphQL 用 adapter を提供する
+- Next.js、Express、Hono、Fastify、Fresh、GraphQL 用 adapter を提供する
 - DDD / クリーンアーキテクチャをサポートする
 - CLI / CI / AI ツール向けに解析可能な依存グラフを提供する
 
@@ -119,6 +120,7 @@ Wyrly DI は NestJS のクローンにはなりません。
 @wyrly/graphql
 @wyrly/yoga
 @wyrly/apollo
+@wyrly/fastify
 ```
 
 凍結された **v2.0** の公開 API 一覧は [API.ja.md](./API.ja.md) を参照してください。
