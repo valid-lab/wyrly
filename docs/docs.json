@@ -2,7 +2,14 @@
   "$schema": "https://mintlify.com/docs.json",
   "theme": "maple",
   "name": "Wyrly DI",
-  "description": "Type-safe dependency injection for modern TypeScript. No reflect-metadata. Standard decorators. Request scopes for web apps.",
+  "description": "Type-safe dependency injection for Deno, Node.js, and Bun. No reflect-metadata. Adapters for Next.js, Hono, Express, Fastify, GraphQL Yoga, and Apollo Server.",
+  "seo": {
+    "indexing": "navigable",
+    "metatags": {
+      "og:site_name": "Wyrly DI",
+      "twitter:card": "summary_large_image"
+    }
+  },
   "colors": {
     "primary": "#2563EB",
     "light": "#3B82F6",

@@ -7,7 +7,10 @@ directory is the public documentation site source that Mintlify syncs from GitHu
 
 ## Public site
 
+- Homepage: https://wyrly.dev/
 - Documentation: https://docs.wyrly.dev/?utm_source=github&utm_medium=docs_readme&utm_campaign=launch
+
+Homepage source: private repo `valid-lab/wyrly-website` (Cloudflare Workers Static Assets / Workers Builds).
 
 ## Local preview
 
