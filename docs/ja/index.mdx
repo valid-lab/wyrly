@@ -16,10 +16,10 @@ Wyrly DI は、依存関係を明示的に管理し、依存グラフを解析�
     Wyrly が型付きトークン、明示的な依存定義、標準デコレーターを使う理由を学びます。
   </Card>
   <Card title="Framework adapters" icon="plug" href="/ja/guides/framework-adapters">
-    Next.js、Express、Hono、Fresh、GraphQL に request-scoped DI を追加します。
+    Next.js、Express、Hono、Fresh、Fastify、GraphQL（Yoga / Apollo）に request-scoped DI を追加します。
   </Card>
   <Card title="API reference" icon="code" href="/ja/reference/public-api">
-    Wyrly DI v2.0 の安定した public exports を確認します。
+    Wyrly DI v2.2 の安定した public exports を確認します。
   </Card>
 </CardGroup>
 
@@ -51,6 +51,9 @@ code を重視する TypeScript アプリケーション向けに設計されて
 | `@wyrly/hono` | エッジ向けの DI スコープを作る Hono ミドルウェア |
 | `@wyrly/fresh` | Fresh 2.x ミドルウェアとルートヘルパー |
 | `@wyrly/graphql` | GraphQL リクエストコンテキスト連携 |
+| `@wyrly/fastify` | 1 request につき 1 DI scope の Fastify 5 プラグイン |
+| `@wyrly/yoga` | GraphQL Yoga 5 向けインバウンドアダプター |
+| `@wyrly/apollo` | Apollo Server 4+ 向けインバウンドアダプター |
 
 ## まず example から始める
 

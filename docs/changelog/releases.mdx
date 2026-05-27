@@ -13,11 +13,29 @@ Wyrly packages follow Semantic Versioning from `1.0.0`.
 
 The stable public API surface is documented in [Public API](/reference/public-api).
 
+## v2.2.1
+
+Patch release (2026-05-25):
+
+- **`@wyrly/fastify`**: call `done()` in the synchronous `onRequest` hook so the request pipeline
+  continues (fixes hung requests and HTTP 408 Client Timeout).
+
+## v2.2.0
+
+Minor release (2026-05-25):
+
+- **`@wyrly/yoga`** — GraphQL Yoga 5: `yogaDIPlugin`, `yogaContext`, `createYogaDIContext`
+- **`@wyrly/apollo`** — Apollo Server 4+: `apolloDIPlugin`, `createApolloDIContext`, `toFetchRequest`
+- **`@wyrly/fastify`** — Fastify 5: `diPlugin`, `getDI`, request/reply tokens
+- Examples: `fastify-api`, `yoga-graphql`, `apollo-graphql`, `apollo-express-graphql`
+- Guide: [GRAPHQL_DISPOSE.md](https://github.com/valid-lab/wyrly/blob/main/guides/GRAPHQL_DISPOSE.md)
+  (Yoga and Apollo plugin sections)
+
+Wyrly DI **v2.2.x** is the current stable release line.
+
 ## v2.0.0
 
-Wyrly DI v2.0.0 is the current stable release line.
-
-Highlights:
+Initial v2 stable line:
 
 - standard-decorator-first DI model
 - typed tokens

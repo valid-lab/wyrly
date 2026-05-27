@@ -36,8 +36,12 @@ deno task examples:core
 | `examples/express-graphql` | Express and GraphQL | `deno task example:express-graphql` |
 | `examples/fresh-routes` | `@wyrly/fresh` | `deno task example:fresh-routes` |
 | `examples/next-ddd` | `@wyrly/next` | `deno task example:next-ddd` |
+| `examples/fastify-api` | `@wyrly/fastify` | `deno task example:fastify-api` |
+| `examples/yoga-graphql` | `@wyrly/yoga` | `deno task example:yoga-graphql` |
+| `examples/apollo-graphql` | `@wyrly/apollo` | `deno task example:apollo-graphql` |
+| `examples/apollo-express-graphql` | `@wyrly/express` + `@wyrly/apollo` | `deno task example:apollo-express-graphql` |
 
-すべてのアダプターサンプルを実行する:
+すべてのアダプターサンプルを実行する（上記を含む）:
 
 ```sh
 deno task examples:adapters
@@ -49,7 +53,7 @@ deno task examples:adapters
 deno task examples
 ```
 
-Express サンプルには `net` パーミッションが必要です。
+Express、Fastify、Apollo のサンプルには `net` パーミッションが必要です。
 
 ## サンプルを composition root の参考にする
 

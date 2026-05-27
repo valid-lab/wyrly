@@ -13,11 +13,28 @@ Wyrly packages は `1.0.0` から Semantic Versioning に従います。
 
 Stable public API surface は [Public API](/ja/reference/public-api) に記載しています。
 
+## v2.2.1
+
+パッチリリース（2026-05-25）:
+
+- **`@wyrly/fastify`**: 同期 `onRequest` フックで `done()` を呼び出し、リクエストパイプラインが進むように修正（ハングと HTTP 408 Client Timeout を解消）。
+
+## v2.2.0
+
+マイナーリリース（2026-05-25）:
+
+- **`@wyrly/yoga`** — GraphQL Yoga 5: `yogaDIPlugin`、`yogaContext`、`createYogaDIContext`
+- **`@wyrly/apollo`** — Apollo Server 4+: `apolloDIPlugin`、`createApolloDIContext`、`toFetchRequest`
+- **`@wyrly/fastify`** — Fastify 5: `diPlugin`、`getDI`、request/reply トークン
+- サンプル: `fastify-api`、`yoga-graphql`、`apollo-graphql`、`apollo-express-graphql`
+- ガイド: [GRAPHQL_DISPOSE.md](https://github.com/valid-lab/wyrly/blob/main/guides/GRAPHQL_DISPOSE.ja.md)
+  （Yoga / Apollo プラグイン節）
+
+Wyrly DI **v2.2.x** が現在の安定リリースラインです。
+
 ## v2.0.0
 
-Wyrly DI v2.0.0 は現在の安定リリースです。
-
-主な内容:
+v2 安定版の初期ライン:
 
 - 標準デコレーターを中心とした DI モデル
 - 型付きトークン

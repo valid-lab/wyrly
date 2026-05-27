@@ -15,6 +15,9 @@ Wyrly is published as a small set of focused packages.
 | `@wyrly/graphql` | yes | yes | GraphQL request scope |
 | `@wyrly/next` | yes | yes | Next.js App Router helpers |
 | `@wyrly/fresh` | yes | no | Fresh 2.x helpers |
+| `@wyrly/fastify` | yes | yes | Fastify 5 `diPlugin` (request scope + auto dispose) |
+| `@wyrly/yoga` | yes | yes | GraphQL Yoga 5 `yogaDIPlugin` |
+| `@wyrly/apollo` | yes | yes | Apollo Server 4+ `apolloDIPlugin` |
 
 ## Core package
 
@@ -48,6 +51,42 @@ For an Express application:
 
 ```sh
 npm install @wyrly/express @wyrly/core
+```
+
+For a Fastify application:
+
+```sh
+npm install @wyrly/fastify @wyrly/core
+```
+
+or:
+
+```sh
+deno add jsr:@wyrly/fastify jsr:@wyrly/core
+```
+
+For GraphQL Yoga:
+
+```sh
+npm install @wyrly/yoga @wyrly/core
+```
+
+or:
+
+```sh
+deno add jsr:@wyrly/yoga jsr:@wyrly/core
+```
+
+For Apollo Server (peers: `@apollo/server`, `graphql` — see [Framework adapters](/guides/framework-adapters)):
+
+```sh
+npm install @wyrly/apollo @wyrly/core
+```
+
+or:
+
+```sh
+deno add jsr:@wyrly/apollo jsr:@wyrly/core
 ```
 
 ## Registry links

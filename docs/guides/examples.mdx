@@ -37,8 +37,12 @@ deno task examples:core
 | `examples/express-graphql` | Express and GraphQL | `deno task example:express-graphql` |
 | `examples/fresh-routes` | `@wyrly/fresh` | `deno task example:fresh-routes` |
 | `examples/next-ddd` | `@wyrly/next` | `deno task example:next-ddd` |
+| `examples/fastify-api` | `@wyrly/fastify` | `deno task example:fastify-api` |
+| `examples/yoga-graphql` | `@wyrly/yoga` | `deno task example:yoga-graphql` |
+| `examples/apollo-graphql` | `@wyrly/apollo` | `deno task example:apollo-graphql` |
+| `examples/apollo-express-graphql` | `@wyrly/express` + `@wyrly/apollo` | `deno task example:apollo-express-graphql` |
 
-Run all adapter examples:
+Run all adapter examples (includes the rows above):
 
 ```sh
 deno task examples:adapters
@@ -50,7 +54,7 @@ deno task examples:adapters
 deno task examples
 ```
 
-Express examples require `net` permission.
+Express, Fastify, and Apollo examples require `net` permission.
 
 ## Use examples as composition-root references
 

@@ -53,7 +53,13 @@ import { createContainer, Injectable, token } from "@wyrly/core";
 | Express | `@wyrly/express` |
 | Hono | `@wyrly/hono` |
 | Fresh 2.x | `@wyrly/fresh` |
-| GraphQL request context | `@wyrly/graphql` |
+| GraphQL request context（低レベル） | `@wyrly/graphql` |
+| Fastify 5 | `@wyrly/fastify` |
+| GraphQL Yoga 5 | `@wyrly/yoga` |
+| Apollo Server 4+ | `@wyrly/apollo` |
+
+GraphQL コンテキストを自分で組み立てる場合は `@wyrly/graphql` を使います。Yoga や Apollo Server
+との統合には `@wyrly/yoga` または `@wyrly/apollo` をインストールしてください — [Framework adapters](/ja/guides/framework-adapters) を参照。
 
 たとえば Next.js adapter は次のようにインストールします。
 

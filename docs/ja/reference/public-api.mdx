@@ -1,9 +1,9 @@
 ---
 title: "Public API"
-description: "Wyrly DI v2.0 の安定した public exports。"
+description: "Wyrly DI v2.2 の安定した public exports。"
 ---
 
-このページでは、Wyrly DI v2.0 の安定した公開 API をまとめます。
+このページでは、Wyrly DI v2.2 の安定した公開 API をまとめます。
 
 リポジトリの `API.md` に記載されていないものは、内部モジュールやディープインポートを含め、セマンティックバージョニングの保証対象外です。
 
@@ -47,6 +47,9 @@ import { createContainer, Injectable, token } from "@wyrly/core";
 | `@wyrly/fresh` | `di`, `withDI`, `FreshContextToken`, `RequestToken` |
 | `@wyrly/graphql` | `createGraphQLDIContext`, `GraphQLRequestToken`, `GraphQLResponseToken` |
 | `@wyrly/next` | `withDI`, `withActionDI`, `createServerDI`, `NextRequestToken` |
+| `@wyrly/fastify` | `diPlugin`, `getDI`, `FastifyRequestToken`, `FastifyReplyToken` |
+| `@wyrly/yoga` | `yogaDIPlugin`, `yogaContext`, `createYogaDIContext` |
+| `@wyrly/apollo` | `apolloDIPlugin`, `createApolloDIContext`, `toFetchRequest` |
 
 ## Full API list
 

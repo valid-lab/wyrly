@@ -1,9 +1,9 @@
 ---
 title: "Public API"
-description: "Stable public exports for Wyrly DI v2.0."
+description: "Stable public exports for Wyrly DI v2.2."
 ---
 
-This page summarizes the stable public API surface for Wyrly DI v2.0.
+This page summarizes the stable public API surface for Wyrly DI v2.2.
 
 Anything not listed in the repository's `API.md` is not part of the semver guarantee, including
 internal modules and deep imports.
@@ -48,6 +48,9 @@ Core types include:
 | `@wyrly/fresh` | `di`, `withDI`, `FreshContextToken`, `RequestToken` |
 | `@wyrly/graphql` | `createGraphQLDIContext`, `GraphQLRequestToken`, `GraphQLResponseToken` |
 | `@wyrly/next` | `withDI`, `withActionDI`, `createServerDI`, `NextRequestToken` |
+| `@wyrly/fastify` | `diPlugin`, `getDI`, `FastifyRequestToken`, `FastifyReplyToken` |
+| `@wyrly/yoga` | `yogaDIPlugin`, `yogaContext`, `createYogaDIContext` |
+| `@wyrly/apollo` | `apolloDIPlugin`, `createApolloDIContext`, `toFetchRequest` |
 
 ## Full API list
 

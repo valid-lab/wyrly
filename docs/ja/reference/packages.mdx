@@ -15,6 +15,9 @@ Wyrly は、焦点を絞った小さなパッケージ群として公開され�
 | `@wyrly/graphql` | yes | yes | GraphQL request scope |
 | `@wyrly/next` | yes | yes | Next.js App Router helpers |
 | `@wyrly/fresh` | yes | no | Fresh 2.x helpers |
+| `@wyrly/fastify` | yes | yes | Fastify 5 `diPlugin`（request scope + auto dispose） |
+| `@wyrly/yoga` | yes | yes | GraphQL Yoga 5 `yogaDIPlugin` |
+| `@wyrly/apollo` | yes | yes | Apollo Server 4+ `apolloDIPlugin` |
 
 ## コアパッケージ
 
@@ -48,6 +51,42 @@ Express application の場合:
 
 ```sh
 npm install @wyrly/express @wyrly/core
+```
+
+Fastify application の場合:
+
+```sh
+npm install @wyrly/fastify @wyrly/core
+```
+
+または:
+
+```sh
+deno add jsr:@wyrly/fastify jsr:@wyrly/core
+```
+
+GraphQL Yoga の場合:
+
+```sh
+npm install @wyrly/yoga @wyrly/core
+```
+
+または:
+
+```sh
+deno add jsr:@wyrly/yoga jsr:@wyrly/core
+```
+
+Apollo Server の場合（peer: `@apollo/server`、`graphql` — [Framework adapters](/ja/guides/framework-adapters) を参照）:
+
+```sh
+npm install @wyrly/apollo @wyrly/core
+```
+
+または:
+
+```sh
+deno add jsr:@wyrly/apollo jsr:@wyrly/core
 ```
 
 ## レジストリリンク

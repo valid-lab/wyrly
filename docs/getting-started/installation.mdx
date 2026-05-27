@@ -53,7 +53,13 @@ Install the adapter that matches your runtime.
 | Express | `@wyrly/express` |
 | Hono | `@wyrly/hono` |
 | Fresh 2.x | `@wyrly/fresh` |
-| GraphQL request context | `@wyrly/graphql` |
+| GraphQL request context (low-level) | `@wyrly/graphql` |
+| Fastify 5 | `@wyrly/fastify` |
+| GraphQL Yoga 5 | `@wyrly/yoga` |
+| Apollo Server 4+ | `@wyrly/apollo` |
+
+Use `@wyrly/graphql` when you build GraphQL context yourself. For Yoga or Apollo Server integration,
+install `@wyrly/yoga` or `@wyrly/apollo` instead — see [Framework adapters](/guides/framework-adapters).
 
 For example, install the Next.js adapter with:
 

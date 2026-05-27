@@ -17,10 +17,10 @@ metadata, automatic runtime type guessing, or framework lock-in.
     Learn why Wyrly uses typed tokens, explicit dependencies, and standard decorators.
   </Card>
   <Card title="Framework adapters" icon="plug" href="/guides/framework-adapters">
-    Add request-scoped DI to Next.js, Express, Hono, Fresh, or GraphQL.
+    Add request-scoped DI to Next.js, Express, Hono, Fresh, Fastify, and GraphQL (Yoga / Apollo).
   </Card>
   <Card title="API reference" icon="code" href="/reference/public-api">
-    See the stable public exports for Wyrly DI v2.0.
+    See the stable public exports for Wyrly DI v2.2.
   </Card>
 </CardGroup>
 
@@ -53,6 +53,9 @@ outer layer wires concrete infrastructure through typed tokens.
 | `@wyrly/hono` | Hono middleware for edge-friendly DI scopes |
 | `@wyrly/fresh` | Fresh 2.x middleware and route helpers |
 | `@wyrly/graphql` | GraphQL request context integration |
+| `@wyrly/fastify` | Fastify 5 plugin for one DI scope per request |
+| `@wyrly/yoga` | GraphQL Yoga 5 inbound adapter |
+| `@wyrly/apollo` | Apollo Server 4+ inbound adapter |
 
 ## Start with an example
 
