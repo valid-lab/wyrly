@@ -5,8 +5,10 @@
     ".": "./main.ts"
   },
   "imports": {
-    "graphql": "npm:graphql@16",
-    "@apollo/server": "npm:@apollo/server@4"
+    "@apollo/server": "npm:@apollo/server@4",
+    "@wyrly/apollo": "jsr:@wyrly/apollo@^2.2.1",
+    "@wyrly/core": "jsr:@wyrly/core@^2.2.1",
+    "graphql": "npm:graphql@16"
   },
   "tasks": {
     "start": "deno run -A main.ts"

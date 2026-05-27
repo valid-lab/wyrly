@@ -1,6 +1,9 @@
 {
   "name": "@wyrly-examples/basic-ddd",
   "version": "0.0.0",
+  "imports": {
+    "@wyrly/core": "jsr:@wyrly/core@^2.2.1"
+  },
   "exports": {
     ".": "./main.ts"
   },

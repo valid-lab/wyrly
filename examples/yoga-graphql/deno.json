@@ -5,7 +5,8 @@
     ".": "./main.ts"
   },
   "imports": {
-    "graphql": "npm:graphql@16",
+    "@wyrly/core": "jsr:@wyrly/core@^2.2.1",
+    "@wyrly/yoga": "jsr:@wyrly/yoga@^2.2.1",
     "graphql-yoga": "npm:graphql-yoga@5"
   },
   "tasks": {

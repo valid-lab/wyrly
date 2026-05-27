@@ -5,6 +5,8 @@
     ".": "./main.ts"
   },
   "imports": {
+    "@wyrly/core": "jsr:@wyrly/core@^2.2.1",
+    "@wyrly/hono": "jsr:@wyrly/hono@^2.2.1",
     "hono": "npm:hono@4"
   },
   "tasks": {

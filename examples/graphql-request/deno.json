@@ -6,5 +6,9 @@
   },
   "tasks": {
     "start": "deno run -A main.ts"
+  },
+  "imports": {
+    "@wyrly/core": "jsr:@wyrly/core@^2.2.1",
+    "@wyrly/graphql": "jsr:@wyrly/graphql@^2.2.1"
   }
 }

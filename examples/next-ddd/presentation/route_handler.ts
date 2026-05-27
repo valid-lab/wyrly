@@ -1,4 +1,4 @@
-import type { NextRequest } from "npm:next@15/server.js";
+import type { NextRequest } from "next/server.js";
 import type { Container } from "@wyrly/core";
 import { withDI } from "@wyrly/next";
 import { GetUserUseCase } from "../application/get_user.ts";

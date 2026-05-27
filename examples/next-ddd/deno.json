@@ -5,7 +5,9 @@
     ".": "./main.ts"
   },
   "imports": {
-    "react": "npm:react@19"
+    "@wyrly/core": "jsr:@wyrly/core@^2.2.1",
+    "@wyrly/next": "jsr:@wyrly/next@^2.2.1",
+    "next": "npm:next@15"
   },
   "tasks": {
     "start": "deno run -A main.ts"
