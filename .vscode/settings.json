@@ -1,7 +1,7 @@
 {
   "deno.enable": true,
   "deno.config": "./deno.jsonc",
-  "deno.enablePaths": ["./packages"],
+  "deno.enablePaths": ["./packages", "./examples"],
   "[typescript]": {
     "editor.defaultFormatter": "denoland.vscode-deno"
   },
