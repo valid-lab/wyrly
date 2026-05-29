@@ -47,7 +47,7 @@ npm run bench -- --suite cold_start,request_scope --adapter wyrly,tsyringe,inver
 | `resolution` | Hot-path resolve only (container bootstrapped in `beforeAll`) |
 | `cold_start` | Bootstrap container / Nest application context per iteration |
 | `cold_start_resolution` | Bootstrap + one full graph resolve + teardown per iteration |
-| `request_scope` | One simulated request: create scope → resolve → dispose |
+| `request_scope` | One simulated request: **`createScope()` → resolve → dispose` on a pre-registered container** (Wyrly uses scoped registrations in `beforeAll`) |
 
 ## Dependency graph
 

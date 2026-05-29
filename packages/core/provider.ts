@@ -3,7 +3,7 @@ import type { ClassToken } from "./token.ts";
 import type { InjectionToken } from "./token.ts";
 import type { Lifetime } from "./lifetime.ts";
 import { getInjectableMetadata } from "./metadata.ts";
-import { graphNodeId, tokenLabel } from "./internal_keys.ts";
+import { graphNodeId, registryKey, tokenLabel } from "./internal_keys.ts";
 import { InvalidProviderError } from "./errors.ts";
 
 /** Registration shape accepted by {@link Container.register}. */
@@ -59,6 +59,8 @@ export type ProviderType = "class" | "value" | "factory" | "existing";
 export interface NormalizedProvider<T = unknown> {
   /** Token this provider satisfies. */
   readonly token: InjectionToken<T>;
+  /** Registry map key (computed once at registration). */
+  readonly key: symbol | ClassToken<unknown>;
   /** Provider kind after normalization. */
   readonly providerType: ProviderType;
   /** Declared dependency tokens. */
@@ -81,6 +83,8 @@ export function normalizeProvider<T>(
   token: InjectionToken<T>,
   provider: Provider<T>,
 ): NormalizedProvider<T> {
+  const key = registryKey(token);
+
   if ("useValue" in provider) {
     const lt = provider.lifetime ?? "singleton";
     if (lt !== "singleton") {
@@ -88,6 +92,7 @@ export function normalizeProvider<T>(
     }
     return {
       token,
+      key,
       providerType: "value",
       deps: [],
       lifetime: "singleton",
@@ -101,6 +106,7 @@ export function normalizeProvider<T>(
     const lifetime = provider.lifetime ?? "singleton";
     return {
       token,
+      key,
       providerType: "factory",
       deps,
       lifetime,
@@ -113,6 +119,7 @@ export function normalizeProvider<T>(
     const lifetime = provider.lifetime ?? "singleton";
     return {
       token,
+      key,
       providerType: "existing",
       deps: [provider.useExisting as InjectionToken<unknown>],
       lifetime,
@@ -127,6 +134,7 @@ export function normalizeProvider<T>(
     const lifetime = provider.lifetime ?? meta?.lifetime ?? "singleton";
     return {
       token,
+      key,
       providerType: "class",
       deps,
       lifetime,
@@ -146,6 +154,7 @@ export function syntheticClassProvider<T>(
   const lifetime = meta?.lifetime ?? "singleton";
   return {
     token,
+    key: registryKey(token),
     providerType: "class",
     deps,
     lifetime,

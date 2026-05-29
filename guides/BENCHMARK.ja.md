@@ -59,9 +59,11 @@ scan、フレームワーク初期化**を含みます。bare コンテナより
 
 ### request_scope
 
-Wyrly は `container.createScope()` → `resolve` → `scope.dispose()`。NestJS は `Scope.REQUEST` +
-`ContextIdFactory.create()` で 1 リクエストを模倣します。実 HTTP 1 件あたりの絶対コストは通常 **μs
-級**で、I/O に比べると無視できます。
+Wyrly は composition root を `beforeAll` で 1 回登録し、計測ループでは `container.createScope()` →
+`resolve` → `scope.dispose()` のみ実行します（本番 Web アプリの 1 リクエストに近い）。NestJS は
+`Scope.REQUEST` + `ContextIdFactory.create()` で 1 リクエストを模倣しますが、ApplicationContext
+の再作成も含むため数値は参考程度にしてください。実 HTTP 1 件あたりの絶対コストは通常 **μs 級**で、I/O
+に比べると無視できます。
 
 ### 過大解釈しない
 

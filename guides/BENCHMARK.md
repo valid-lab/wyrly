@@ -61,9 +61,11 @@ what is included in the measurement.
 
 ### Request scope
 
-Wyrly uses `container.createScope()` → `resolve` → `scope.dispose()`. NestJS uses `Scope.REQUEST`
-with `ContextIdFactory.create()` per simulated request. Absolute overhead per real HTTP request is
-usually **microseconds**, dwarfed by I/O.
+Wyrly registers the composition root once in `beforeAll`; the timed loop only runs
+`container.createScope()` → `resolve` → `scope.dispose()` (closer to one production HTTP request).
+NestJS simulates `Scope.REQUEST` with `ContextIdFactory.create()` but may recreate the application
+context, so treat its numbers as indicative only. Absolute overhead per real HTTP request is usually
+**microseconds**, dwarfed by I/O.
 
 ### Do not over-interpret
 

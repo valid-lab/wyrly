@@ -98,6 +98,12 @@ export function createWyrlySingletonContainer(): ReturnType<typeof createContain
   return container;
 }
 
+export function createWyrlyScopedContainer(): ReturnType<typeof createContainer> {
+  const container = createContainer();
+  registerGraph(container, "scoped");
+  return container;
+}
+
 export function createWyrlyRequestScope(): {
   scope: ReturnType<ReturnType<typeof createContainer>["createScope"]>;
   container: ReturnType<typeof createContainer>;

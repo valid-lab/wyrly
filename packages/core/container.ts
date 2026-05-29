@@ -76,6 +76,21 @@ function maybeTrackDisposable(scope: ScopeImpl, instance: unknown): void {
   }
 }
 
+function graphNodeIdFromKey(key: RegistryKey): string {
+  if (typeof key === "function") {
+    return graphNodeId(key as InjectionToken<unknown>);
+  }
+  return `symbol:${String(key)}`;
+}
+
+function pathIdsFromKeys(keys: readonly RegistryKey[]): string[] {
+  const out = new Array<string>(keys.length);
+  for (let i = 0; i < keys.length; i++) {
+    out[i] = graphNodeIdFromKey(keys[i]!);
+  }
+  return out;
+}
+
 export class ScopeImpl implements Scope {
   readonly #container: ContainerImpl;
   readonly #allowsScoped: boolean;
@@ -85,6 +100,7 @@ export class ScopeImpl implements Scope {
   readonly #localProviders = new Map<RegistryKey, NormalizedProvider<unknown>>();
   readonly #scopedCache = new Map<RegistryKey, unknown>();
   readonly #resolvingStack: RegistryKey[] = [];
+  readonly #resolvingKeys = new Set<RegistryKey>();
   disposers: Disposer[] = [];
   #disposed = false;
 
@@ -114,12 +130,11 @@ export class ScopeImpl implements Scope {
 
   register<T>(token: InjectionToken<T>, provider: Provider<T>): void {
     if (this.#disposed) throw new ScopeDisposedError();
-    const key = registryKey(token);
-    if (this.#localProviders.has(key)) {
+    const np = normalizeProvider(token, provider) as NormalizedProvider<unknown>;
+    if (this.#localProviders.has(np.key)) {
       throw new DuplicateProviderError(token);
     }
-    const np = normalizeProvider(token, provider) as NormalizedProvider<unknown>;
-    this.#localProviders.set(key, np);
+    this.#localProviders.set(np.key, np);
   }
 
   set<T>(token: InjectionToken<T>, value: T): void {
@@ -197,12 +212,20 @@ export class ScopeImpl implements Scope {
     this.#scopedCache.set(key, value);
   }
 
+  isResolving(key: RegistryKey): boolean {
+    return this.#resolvingKeys.has(key);
+  }
+
   pushResolving(key: RegistryKey): void {
     this.#resolvingStack.push(key);
+    this.#resolvingKeys.add(key);
   }
 
   popResolving(): void {
-    this.#resolvingStack.pop();
+    const key = this.#resolvingStack.pop();
+    if (key !== undefined) {
+      this.#resolvingKeys.delete(key);
+    }
   }
 
   getResolvingStack(): readonly RegistryKey[] {
@@ -233,19 +256,17 @@ class ContainerImpl implements Container {
       });
       return;
     }
-    const key = registryKey(token);
-    if (this.#registry.has(key)) {
+    const np = normalizeProvider(token, provider) as NormalizedProvider<unknown>;
+    if (this.#registry.has(np.key)) {
       throw new DuplicateProviderError(token);
     }
-    const np = normalizeProvider(token, provider) as NormalizedProvider<unknown>;
-    this.#registry.set(key, np);
+    this.#registry.set(np.key, np);
   }
 
   override<T>(token: InjectionToken<T>, provider: Provider<T>): void {
-    const key = registryKey(token);
     const np = normalizeProvider(token, provider) as NormalizedProvider<unknown>;
-    this.#registry.set(key, np);
-    this.#singletonCache.delete(key);
+    this.#registry.set(np.key, np);
+    this.#singletonCache.delete(np.key);
   }
 
   resolve<T>(token: InjectionToken<T>): T {
@@ -285,12 +306,11 @@ class ContainerImpl implements Container {
     scope: ScopeImpl,
     token: InjectionToken<T>,
     consumerLifetime: Lifetime | null,
-    path: string[],
+    resolvingPath: RegistryKey[],
   ): T {
     if (scope.isDisposed()) throw new ScopeDisposedError();
 
     const key = registryKey(token);
-    const pathIds = [...path, graphNodeId(token)];
 
     const localValue = scope.findLocalValue(key);
     if (localValue !== undefined) {
@@ -306,26 +326,38 @@ class ContainerImpl implements Container {
         : undefined);
 
     if (!np) {
-      throw new ProviderNotFoundError(token, pathIds);
+      throw new ProviderNotFoundError(token, pathIdsFromKeys([...resolvingPath, key]));
     }
 
     if (consumerLifetime === "singleton" && np.lifetime === "scoped") {
-      throw new LifetimeViolationError("singleton", "scoped", pathIds);
+      throw new LifetimeViolationError(
+        "singleton",
+        "scoped",
+        pathIdsFromKeys([...resolvingPath, key]),
+      );
     }
 
     if (!scope.getAllowsScoped() && np.lifetime === "scoped") {
       throw new InvalidProviderError("InvalidProvider_scoped_from_root");
     }
 
-    const stack = scope.getResolvingStack();
-    if (stack.includes(key)) {
-      const cyclePath = [...stack.map((k) => graphNodeIdFromKey(k)), graphNodeId(token)];
+    if (np.lifetime === "singleton") {
+      const hit = this.#singletonCache.get(np.key);
+      if (hit !== undefined) return hit as T;
+    } else if (np.lifetime === "scoped") {
+      const hit = scope.getScopedInChain(np.key);
+      if (hit !== undefined) return hit as T;
+    }
+
+    if (scope.isResolving(key)) {
+      const cyclePath = pathIdsFromKeys([...scope.getResolvingStack(), key]);
       throw new CircularDependencyError(cyclePath);
     }
 
+    const pathWithSelf = [...resolvingPath, key];
     scope.pushResolving(key);
     try {
-      return this.#materialize(scope, np as NormalizedProvider<T>, pathIds);
+      return this.#materialize(scope, np as NormalizedProvider<T>, pathWithSelf);
     } finally {
       scope.popResolving();
     }
@@ -334,22 +366,22 @@ class ContainerImpl implements Container {
   #materialize<T>(
     scope: ScopeImpl,
     np: NormalizedProvider<T>,
-    pathIds: string[],
+    resolvingPath: RegistryKey[],
   ): T {
-    const key = registryKey(np.token);
+    const key = np.key;
 
     if (np.lifetime === "singleton") {
-      const hit = this.getSingleton(key);
+      const hit = this.#singletonCache.get(key);
       if (hit !== undefined) return hit as T;
-      const created = this.#createInstance(scope, np, pathIds);
-      this.setSingleton(key, created);
+      const created = this.#createInstance(scope, np, resolvingPath);
+      this.#singletonCache.set(key, created);
       return created;
     }
 
     if (np.lifetime === "scoped") {
       const hit = scope.getScopedInChain(key);
       if (hit !== undefined) return hit as T;
-      const created = this.#createInstance(scope, np, pathIds);
+      const created = this.#createInstance(scope, np, resolvingPath);
       scope.setScoped(key, created);
       if (scope.getAllowsScoped()) {
         maybeTrackDisposable(scope, created);
@@ -357,7 +389,7 @@ class ContainerImpl implements Container {
       return created;
     }
 
-    const created = this.#createInstance(scope, np, pathIds);
+    const created = this.#createInstance(scope, np, resolvingPath);
     if (scope.getAllowsScoped()) {
       maybeTrackDisposable(scope, created);
     }
@@ -367,10 +399,10 @@ class ContainerImpl implements Container {
   #createInstance<T>(
     scope: ScopeImpl,
     np: NormalizedProvider<T>,
-    pathIds: string[],
+    resolvingPath: RegistryKey[],
   ): T {
     const resolveDep = (dep: InjectionToken<unknown>) =>
-      this.resolveFromScope(scope, dep, np.lifetime, pathIds);
+      this.resolveFromScope(scope, dep, np.lifetime, resolvingPath);
 
     switch (np.providerType) {
       case "value":
@@ -378,7 +410,7 @@ class ContainerImpl implements Container {
 
       case "existing": {
         const ex = np.useExisting!;
-        return this.resolveFromScope(scope, ex, np.lifetime, pathIds) as T;
+        return this.resolveFromScope(scope, ex, np.lifetime, resolvingPath) as T;
       }
 
       case "factory": {
@@ -399,11 +431,4 @@ class ContainerImpl implements Container {
         });
     }
   }
-}
-
-function graphNodeIdFromKey(key: RegistryKey): string {
-  if (typeof key === "function") {
-    return graphNodeId(key as InjectionToken<unknown>);
-  }
-  return `symbol:${String(key)}`;
 }

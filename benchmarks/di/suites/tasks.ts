@@ -14,7 +14,7 @@ import type { AdapterName } from "../adapters/types.ts";
 import { createTypedInjectInjector, TOKENS } from "../adapters/typed-inject.ts";
 import { vanillaAdapter } from "../adapters/vanilla.ts";
 import {
-  createWyrlyRequestScope,
+  createWyrlyScopedContainer,
   createWyrlySingletonContainer,
   RootServiceToken,
 } from "../adapters/wyrly.ts";
@@ -218,16 +218,26 @@ export function addRequestScopeTasks(bench: BenchAdd, adapterName: AdapterName):
         }
       });
       break;
-    case "wyrly":
-      bench.add(label, async () => {
-        const { scope } = createWyrlyRequestScope();
-        try {
-          scope.resolve(RootServiceToken).run();
-        } finally {
-          await scope.dispose();
-        }
-      });
+    case "wyrly": {
+      let container: Container;
+      bench.add(
+        label,
+        async () => {
+          const scope = container.createScope();
+          try {
+            scope.resolve(RootServiceToken).run();
+          } finally {
+            await scope.dispose();
+          }
+        },
+        {
+          beforeAll: () => {
+            container = createWyrlyScopedContainer();
+          },
+        },
+      );
       break;
+    }
     case "typed-inject":
       bench.add(label, () => {
         createTypedInjectInjector().resolve(TOKENS.RootService).run();
