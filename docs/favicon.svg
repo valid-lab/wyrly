@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">Valid Lab icon</title>
+  <desc id="desc">A geometric node structure symbol for Valid Lab.</desc>
+  <rect width="256" height="256" rx="56" fill="#1B1735"/>
+  <path d="M75 138 115 98 175 98" fill="none" stroke="#F59E4C" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M75 138 131 174" fill="none" stroke="#E85D75" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="75" cy="138" r="23" fill="#1B1735" stroke="#F59E4C" stroke-width="12"/>
+  <circle cx="115" cy="98" r="23" fill="#1B1735" stroke="#F59E4C" stroke-width="12"/>
+  <circle cx="131" cy="174" r="23" fill="#1B1735" stroke="#E85D75" stroke-width="12"/>
+  <circle cx="175" cy="98" r="30" fill="#1B1735" stroke="#F59E4C" stroke-width="12"/>
+  <path d="m161 98 10 10 21-24" fill="none" stroke="#FFF3E0" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

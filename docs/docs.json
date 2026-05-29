@@ -3,6 +3,7 @@
   "theme": "maple",
   "name": "Wyrly DI",
   "description": "Type-safe dependency injection for Deno, Node.js, and Bun. No reflect-metadata. Adapters for Next.js, Hono, Express, Fastify, GraphQL Yoga, and Apollo Server.",
+  "favicon": "/favicon.svg",
   "seo": {
     "indexing": "navigable",
     "metatags": {
