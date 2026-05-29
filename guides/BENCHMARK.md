@@ -52,6 +52,11 @@ Wyrly DI avoids `reflect-metadata` and runtime constructor introspection, so it 
 in the **lighter runtime container** group alongside typed-inject, often ahead of metadata-heavy
 tsyringe / Inversify setups.
 
+For cached singleton resolves with no scope-local bindings, Wyrly skips provider lookup via an
+ultra-fast cache path (the hot path for `container.resolve()`). Some gap vs typed-inject remains
+due to Wyrly’s per-resolve token-type safety checks; in real web apps (a few resolves per request)
+this is still **microseconds**.
+
 ### Cold start
 
 NestJS measures `NestFactory.createApplicationContext`, which includes **module compilation,

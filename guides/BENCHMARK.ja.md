@@ -51,6 +51,11 @@ Wyrly DI は `reflect-metadata` とコンストラクタの実行時 introspecti
 と同様 **軽量 runtime コンテナ**のグループに入り、metadata 依存の tsyringe / Inversify
 より有利に出ることが多いです。
 
+キャッシュ済み singleton の resolve では、scope-local binding が無い場合に provider lookup
+をスキップする ultra-fast path を通ります（`container.resolve()` の主要経路）。typed-inject
+との差の一部は、Wyrly が毎 resolve で token 型 DI の安全チェックを行う設計差として残りますが、実 Web
+アプリ（1 リクエストあたり数回の resolve）では μs 級です。
+
 ### cold_start
 
 NestJS は `NestFactory.createApplicationContext` を測定しており、**モジュール compile、provider

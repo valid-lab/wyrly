@@ -67,7 +67,7 @@ export interface NormalizedProvider<T = unknown> {
   readonly deps: readonly InjectionToken<unknown>[];
   /** Effective lifetime. */
   readonly lifetime: Lifetime;
-  /** Label used in graphs and errors. */
+  /** Label used in graphs and errors (computed lazily on first read). */
   readonly displayName: string;
   /** Set when `providerType` is `"class"`. */
   readonly useClass?: ClassToken<T>;
@@ -77,6 +77,27 @@ export interface NormalizedProvider<T = unknown> {
   readonly useFactory?: (scope: Scope, ...deps: unknown[]) => T;
   /** Set when `providerType` is `"existing"`. */
   readonly useExisting?: InjectionToken<T>;
+}
+
+const EMPTY_DEPS: readonly InjectionToken<unknown>[] = [];
+
+type NormalizedProviderDraft<T = unknown> = Omit<NormalizedProvider<T>, "displayName">;
+
+function lazyDisplayName(
+  np: NormalizedProviderDraft,
+  compute: () => string,
+): NormalizedProvider {
+  const provider = np as NormalizedProvider;
+  let cached: string | undefined;
+  Object.defineProperty(provider, "displayName", {
+    configurable: true,
+    enumerable: true,
+    get(): string {
+      if (cached === undefined) cached = compute();
+      return cached;
+    },
+  });
+  return provider;
 }
 
 export function normalizeProvider<T>(
@@ -90,57 +111,66 @@ export function normalizeProvider<T>(
     if (lt !== "singleton") {
       throw new InvalidProviderError("useValue lifetime must be singleton only.");
     }
-    return {
-      token,
-      key,
-      providerType: "value",
-      deps: [],
-      lifetime: "singleton",
-      displayName: tokenLabel(token),
-      useValue: provider.useValue,
-    };
+    return lazyDisplayName(
+      {
+        token,
+        key,
+        providerType: "value",
+        deps: EMPTY_DEPS,
+        lifetime: "singleton",
+        useValue: provider.useValue,
+      },
+      () => tokenLabel(token),
+    ) as NormalizedProvider<T>;
   }
 
   if ("useFactory" in provider) {
     const deps = provider.deps;
     const lifetime = provider.lifetime ?? "singleton";
-    return {
-      token,
-      key,
-      providerType: "factory",
-      deps,
-      lifetime,
-      displayName: tokenLabel(token),
-      useFactory: provider.useFactory,
-    };
+    return lazyDisplayName(
+      {
+        token,
+        key,
+        providerType: "factory",
+        deps,
+        lifetime,
+        useFactory: provider.useFactory,
+      },
+      () => tokenLabel(token),
+    ) as NormalizedProvider<T>;
   }
 
   if ("useExisting" in provider) {
     const lifetime = provider.lifetime ?? "singleton";
-    return {
-      token,
-      key,
-      providerType: "existing",
-      deps: [provider.useExisting as InjectionToken<unknown>],
-      lifetime,
-      displayName: tokenLabel(token),
-      useExisting: provider.useExisting,
-    };
+    return lazyDisplayName(
+      {
+        token,
+        key,
+        providerType: "existing",
+        deps: [provider.useExisting as InjectionToken<unknown>],
+        lifetime,
+        useExisting: provider.useExisting,
+      },
+      () => tokenLabel(token),
+    ) as NormalizedProvider<T>;
   }
 
   if ("useClass" in provider) {
     const meta = getInjectableMetadata(provider.useClass);
     const deps = provider.deps ?? meta?.deps ?? [];
     const lifetime = provider.lifetime ?? meta?.lifetime ?? "singleton";
-    return {
-      token,
-      key,
-      providerType: "class",
-      deps,
-      lifetime,
-      displayName: graphNodeId(provider.useClass as InjectionToken<unknown>),
-      useClass: provider.useClass,
-    };
+    const useClass = provider.useClass;
+    return lazyDisplayName(
+      {
+        token,
+        key,
+        providerType: "class",
+        deps,
+        lifetime,
+        useClass,
+      },
+      () => graphNodeId(useClass as InjectionToken<unknown>),
+    ) as NormalizedProvider<T>;
   }
 
   throw new InvalidProviderError("Unknown provider shape.");
@@ -152,13 +182,15 @@ export function syntheticClassProvider<T>(
   const meta = getInjectableMetadata(token);
   const deps = meta?.deps ?? [];
   const lifetime = meta?.lifetime ?? "singleton";
-  return {
-    token,
-    key: registryKey(token),
-    providerType: "class",
-    deps,
-    lifetime,
-    displayName: graphNodeId(token as InjectionToken<unknown>),
-    useClass: token,
-  };
+  return lazyDisplayName(
+    {
+      token,
+      key: registryKey(token),
+      providerType: "class",
+      deps,
+      lifetime,
+      useClass: token,
+    },
+    () => graphNodeId(token as InjectionToken<unknown>),
+  ) as NormalizedProvider<T>;
 }

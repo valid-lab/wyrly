@@ -10,6 +10,7 @@ import {
 } from "../adapters/nestjs.ts";
 import { createTsyringeScopedContainer, createTsyringeSingletonContainer } from "../adapters/tsyringe.ts";
 import { RootService as TsyringeRootService } from "../adapters/tsyringe.ts";
+import { getAdapter } from "../adapters/index.ts";
 import type { AdapterName } from "../adapters/types.ts";
 import { createTypedInjectInjector, TOKENS } from "../adapters/typed-inject.ts";
 import { vanillaAdapter } from "../adapters/vanilla.ts";
@@ -157,7 +158,6 @@ export function addColdStartTasks(bench: BenchAdd, adapterName: AdapterName): vo
     case "tsyringe":
     case "inversify":
       bench.add(label, async () => {
-        const { getAdapter } = await import("../adapters/index.ts");
         const ctx = await getAdapter(adapterName).create();
         await ctx.dispose();
       });
@@ -181,7 +181,6 @@ export function addColdStartResolutionTasks(bench: BenchAdd, adapterName: Adapte
     case "tsyringe":
     case "inversify":
       bench.add(label, async () => {
-        const { getAdapter } = await import("../adapters/index.ts");
         const ctx = await getAdapter(adapterName).create();
         try {
           const result = ctx.resolveRoot();

@@ -12,6 +12,7 @@ adheres to [Semantic Versioning](https://semver.org/) from **1.0.0**.
 ### Changed
 
 - **`@wyrly/core`**: faster cached singleton/scoped resolve (hot-path optimization; behavior unchanged).
+- **`@wyrly/core`**: Phase 2 resolve optimizations — ultra-fast cache path when no scope-local bindings exist, lazy scope allocations, and lazy `displayName` computation at registration (behavior unchanged).
 
 ## [2.2.1] - 2026-05-25
 
