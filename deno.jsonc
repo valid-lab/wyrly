@@ -1,7 +1,7 @@
 {
   // Wyrly DI — Deno workspace root (members under ./packages/*)
   "workspace": ["./packages/*", "./examples/*"],
-  "exclude": ["**/npm/**", "compat/**"],
+  "exclude": ["**/npm/**", "compat/**", "benchmarks/**"],
   "imports": {
     "@deno/dnt": "jsr:@deno/dnt@^0.42.3",
     "@std/path": "jsr:@std/path@^1",
@@ -57,6 +57,7 @@
     "test:compat:node": "cd compat/node && npm install && npm test",
     "test:compat:workers": "cd compat/workers && npm install && npm test",
     "test:compat": "deno task build:npm:compat && deno task test:compat:node && deno task test:compat:bun && deno task test:compat:workers",
+    "bench:di": "deno task build:npm:core && cd benchmarks/di && npm install && node --import tsx run.ts",
     "publish:npm:dry-run": "cd packages/core/npm && npm publish --dry-run && cd ../../express/npm && npm publish --dry-run && cd ../../hono/npm && npm publish --dry-run && cd ../../graphql/npm && npm publish --dry-run && cd ../../yoga/npm && npm publish --dry-run && cd ../../apollo/npm && npm publish --dry-run && cd ../../fastify/npm && npm publish --dry-run && cd ../../next/npm && npm publish --dry-run",
     "publish:npm": "cd packages/core/npm && npm publish --access public && cd ../../express/npm && npm publish --access public && cd ../../hono/npm && npm publish --access public && cd ../../graphql/npm && npm publish --access public && cd ../../yoga/npm && npm publish --access public && cd ../../apollo/npm && npm publish --access public && cd ../../fastify/npm && npm publish --access public && cd ../../next/npm && npm publish --access public",
     "publish:npm:ci": "cd packages/core/npm && npm publish --provenance --access public && cd ../../express/npm && npm publish --provenance --access public && cd ../../hono/npm && npm publish --provenance --access public && cd ../../graphql/npm && npm publish --provenance --access public && cd ../../yoga/npm && npm publish --provenance --access public && cd ../../apollo/npm && npm publish --provenance --access public && cd ../../fastify/npm && npm publish --provenance --access public && cd ../../next/npm && npm publish --provenance --access public"
@@ -69,6 +70,6 @@
   "fmt": {
     "lineWidth": 100,
     "semiColons": true,
-    "include": ["packages/", "examples/", "scripts/dnt/", "compat/", "deno.jsonc"]
+    "include": ["packages/", "examples/", "scripts/dnt/", "compat/", "benchmarks/", "deno.jsonc"]
   }
 }

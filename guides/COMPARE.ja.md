@@ -9,16 +9,31 @@ decorators、自動的な実行時型推測に依存せず、明示的で解析�
 
 ## 比較表
 
-| 観点                    | Wyrly DI                                 | metadata 系 DI                       | Typed Inject 系 DI               |
-| ----------------------- | ---------------------------------------- | ------------------------------------ | -------------------------------- |
-| 標準デコレーター        | `@Injectable({ deps })` で主役として扱う | legacy decorator 前提が多い          | decorator 中心ではないことが多い |
-| `reflect-metadata`      | 不要                                     | 必要なことが多い                     | 不要                             |
-| `emitDecoratorMetadata` | 不要                                     | 必要なことが多い                     | 不要                             |
-| parameter decorators    | 使わない                                 | よく使われる                         | 使わない                         |
-| interface 注入          | 型付き `token<T>()`                      | class / string / symbol token が中心 | string token が中心になりやすい  |
-| request scope           | core concept + 公式 adapter              | ライブラリ次第                       | 可能だが汎用寄り                 |
-| DDD / composition root  | 明示的配線を標準にする                   | auto scan / decorator と混ざりやすい | 明示的だが Web 導線は薄め        |
-| 依存グラフ解析          | `inspect()`、`validate()`、graph export  | ライブラリ次第                       | 弱いことが多い                   |
+| 観点                    | Wyrly DI                                          | metadata 系 DI                       | Typed Inject 系 DI               |
+| ----------------------- | ------------------------------------------------- | ------------------------------------ | -------------------------------- |
+| 標準デコレーター        | `@Injectable({ deps })` で主役として扱う          | legacy decorator 前提が多い          | decorator 中心ではないことが多い |
+| `reflect-metadata`      | 不要                                              | 必要なことが多い                     | 不要                             |
+| `emitDecoratorMetadata` | 不要                                              | 必要なことが多い                     | 不要                             |
+| parameter decorators    | 使わない                                          | よく使われる                         | 使わない                         |
+| interface 注入          | 型付き `token<T>()`                               | class / string / symbol token が中心 | string token が中心になりやすい  |
+| request scope           | core concept + 公式 adapter                       | ライブラリ次第                       | 可能だが汎用寄り                 |
+| DDD / composition root  | 明示的配線を標準にする                            | auto scan / decorator と混ざりやすい | 明示的だが Web 導線は薄め        |
+| 依存グラフ解析          | `inspect()`、`validate()`、graph export           | ライブラリ次第                       | 弱いことが多い                   |
+| 性能ベンチマーク        | [`benchmarks/di/`](../benchmarks/di/)（ローカル） | 第三者記事・個別ベンチあり           | 個別ベンチあり                   |
+
+## 性能
+
+Wyrly DI には公式 CI ベンチマークはありませんが、ローカルで他ライブラリと比較できるスイートを
+[`benchmarks/di/`](../benchmarks/di/)
+に同梱しています（vanilla、typed-inject、tsyringe、Inversify、**NestJS DI** 含む）。
+
+```sh
+deno task build:npm:core   # 初回のみ
+deno task bench:di
+```
+
+結果の読み方、グラフ定義、NestJS 測定時の注意点は [guides/BENCHMARK.ja.md](./BENCHMARK.ja.md)
+を参照してください。
 
 ## Wyrly DI が向いているケース
 
@@ -64,3 +79,4 @@ runtime metadata 魔法 <  明示的 deps + 解析可能な graph
 - [tsyringe からの移行](./MIGRATING_FROM_TSYRINGE.ja.md)
 - [InversifyJS からの移行](./MIGRATING_FROM_INVERSIFY.ja.md)
 - [Server Components ガイド](./SERVER_COMPONENTS.ja.md)
+- [DI 性能ベンチマーク](./BENCHMARK.ja.md)

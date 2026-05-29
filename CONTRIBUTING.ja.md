@@ -7,7 +7,8 @@ English: [CONTRIBUTING.md](./CONTRIBUTING.md)
 ## 前提環境
 
 - [Deno](https://deno.com/) **2.x**
-- ローカルでフル CI を回す場合: **Node.js 20+**、**npm**、[Bun](https://bun.sh/)（ランタイム互換スモークテスト用）
+- ローカルでフル CI を回す場合: **Node.js
+  20+**、**npm**、[Bun](https://bun.sh/)（ランタイム互換スモークテスト用）
 
 ## 初回セットアップ
 
@@ -27,7 +28,17 @@ deno task ci:deno    # 高速: Deno ワークスペースのみ
 deno task ci         # フルゲート（GitHub Actions と同等。Node + Bun が必要）
 ```
 
-3. 利用者に見える変更では、[CHANGELOG.md](./CHANGELOG.md) と [CHANGELOG.ja.md](./CHANGELOG.ja.md) の `[Unreleased]` を更新してください。
+DI 性能ベンチマーク（ローカル、CI 外）:
+
+```sh
+deno task build:npm:core   # 初回のみ
+deno task bench:di
+```
+
+詳細: [guides/BENCHMARK.ja.md](./guides/BENCHMARK.ja.md)
+
+3. 利用者に見える変更では、[CHANGELOG.md](./CHANGELOG.md) と [CHANGELOG.ja.md](./CHANGELOG.ja.md) の
+   `[Unreleased]` を更新してください。
 
 ## Pull request
 
@@ -38,13 +49,20 @@ deno task ci         # フルゲート（GitHub Actions と同等。Node + Bun �
 
 ## Dependabot
 
-[`.github/dependabot.yml`](./.github/dependabot.yml) は **GitHub Actions** のみ更新します。`compat/` の npm は gitignore された `packages/*/npm/` への `file:` 参照のため、Dependabot のスキャン対象外です。
+[`.github/dependabot.yml`](./.github/dependabot.yml) は **GitHub Actions** のみ更新します。`compat/`
+の npm は gitignore された `packages/*/npm/` への `file:` 参照のため、Dependabot
+のスキャン対象外です。
 
-**Dependabot** ワークフローが `path_dependencies_not_reachable` でまだ失敗する場合は、リポジトリ **Settings → Advanced Security** で **Dependabot security updates** を無効化してください（**Dependabot alerts** は有効のまま）。`express` / `hono` などはアラートに従い `compat/*/package.json` を手動更新します。
+**Dependabot** ワークフローが `path_dependencies_not_reachable` でまだ失敗する場合は、リポジトリ
+**Settings → Advanced Security** で **Dependabot security updates**
+を無効化してください（**Dependabot alerts** は有効のまま）。`express` / `hono` などはアラートに従い
+`compat/*/package.json` を手動更新します。
 
 ## リリース
 
-リリースはメンテナが git タグ `vX.Y.Z` と [PUBLISHING.md](./PUBLISHING.md)（日本語: [PUBLISHING.ja.md](./PUBLISHING.ja.md)）に従って行います。コントリビュータが JSR / npm に直接公開する必要はありません。
+リリースはメンテナが git タグ `vX.Y.Z` と [PUBLISHING.md](./PUBLISHING.md)（日本語:
+[PUBLISHING.ja.md](./PUBLISHING.ja.md)）に従って行います。コントリビュータが JSR / npm
+に直接公開する必要はありません。
 
 ## 質問・連絡
 

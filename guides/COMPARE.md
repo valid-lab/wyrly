@@ -9,16 +9,31 @@ integration lives in adapters for Next.js, Hono, Express, Fresh, and GraphQL.
 
 ## Quick comparison
 
-| Need                    | Wyrly DI                                        | Metadata-oriented DI                    | Typed Inject-style DI          |
-| ----------------------- | ----------------------------------------------- | --------------------------------------- | ------------------------------ |
-| Standard decorators     | First-class via `@Injectable({ deps })`         | Often legacy-decorator oriented         | Usually not decorator-centered |
-| `reflect-metadata`      | Not required                                    | Often required                          | Not required                   |
-| `emitDecoratorMetadata` | Not required                                    | Often required                          | Not required                   |
-| Parameter decorators    | Not used                                        | Common                                  | Not used                       |
-| Interface injection     | Typed `token<T>()`                              | Usually class/string/symbol tokens      | Usually string tokens          |
-| Request scope           | Core concept plus official adapters             | Varies by library                       | Possible, but mostly generic   |
-| DDD / composition root  | Explicit wiring is the default                  | Often mixed with auto scan / decorators | Explicit, but less web-focused |
-| Graph inspection        | `inspect()`, `validate()`, graph export helpers | Varies                                  | Usually limited                |
+| Need                    | Wyrly DI                                        | Metadata-oriented DI                      | Typed Inject-style DI          |
+| ----------------------- | ----------------------------------------------- | ----------------------------------------- | ------------------------------ |
+| Standard decorators     | First-class via `@Injectable({ deps })`         | Often legacy-decorator oriented           | Usually not decorator-centered |
+| `reflect-metadata`      | Not required                                    | Often required                            | Not required                   |
+| `emitDecoratorMetadata` | Not required                                    | Often required                            | Not required                   |
+| Parameter decorators    | Not used                                        | Common                                    | Not used                       |
+| Interface injection     | Typed `token<T>()`                              | Usually class/string/symbol tokens        | Usually string tokens          |
+| Request scope           | Core concept plus official adapters             | Varies by library                         | Possible, but mostly generic   |
+| DDD / composition root  | Explicit wiring is the default                  | Often mixed with auto scan / decorators   | Explicit, but less web-focused |
+| Graph inspection        | `inspect()`, `validate()`, graph export helpers | Varies                                    | Usually limited                |
+| Performance benchmarks  | [`benchmarks/di/`](../benchmarks/di/) (local)   | Third-party articles / individual benches | Individual benches             |
+
+## Performance
+
+Wyrly DI does not ship CI-gated benchmarks, but a local comparison suite lives in
+[`benchmarks/di/`](../benchmarks/di/) (vanilla, typed-inject, tsyringe, Inversify, and **NestJS
+DI**).
+
+```sh
+deno task build:npm:core   # first time only
+deno task bench:di
+```
+
+See [guides/BENCHMARK.md](./BENCHMARK.md) for graph definition, how to read results, and NestJS
+measurement caveats.
 
 ## When Wyrly DI is a good fit
 
@@ -64,3 +79,4 @@ Runtime metadata magic    <  Explicit deps + inspectable graph
 - [Migrate from tsyringe](./MIGRATING_FROM_TSYRINGE.md)
 - [Migrate from InversifyJS](./MIGRATING_FROM_INVERSIFY.md)
 - [Server Components guide](./SERVER_COMPONENTS.md)
+- [DI performance benchmarks](./BENCHMARK.md)

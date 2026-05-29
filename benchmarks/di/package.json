@@ -1,0 +1,24 @@
+{
+  "name": "@wyrly/benchmarks-di",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "bench": "node --import tsx run.ts",
+    "bench:json": "node --import tsx run.ts --json"
+  },
+  "dependencies": {
+    "@nestjs/common": "^11.0.0",
+    "@nestjs/core": "^11.0.0",
+    "@wyrly/core": "file:../../packages/core/npm",
+    "inversify": "^6.2.2",
+    "reflect-metadata": "^0.2.2",
+    "tsyringe": "^4.10.0",
+    "typed-inject": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.9.0",
+    "tinybench": "^3.1.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  }
+}
