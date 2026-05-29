@@ -1,12 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
-  <title id="title">Valid Lab icon</title>
-  <desc id="desc">A geometric node structure symbol for Valid Lab.</desc>
+  <title id="title">Wyrly DI icon</title>
+  <desc id="desc">JR Freight 12ft container — long side front, narrow end depth.</desc>
   <rect width="256" height="256" rx="56" fill="#1B1735"/>
-  <path d="M75 138 115 98 175 98" fill="none" stroke="#F59E4C" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M75 138 131 174" fill="none" stroke="#E85D75" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="75" cy="138" r="23" fill="#1B1735" stroke="#F59E4C" stroke-width="12"/>
-  <circle cx="115" cy="98" r="23" fill="#1B1735" stroke="#F59E4C" stroke-width="12"/>
-  <circle cx="131" cy="174" r="23" fill="#1B1735" stroke="#E85D75" stroke-width="12"/>
-  <circle cx="175" cy="98" r="30" fill="#1B1735" stroke="#F59E4C" stroke-width="12"/>
-  <path d="m161 98 10 10 21-24" fill="none" stroke="#FFF3E0" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M176 105 L206 75 L206 151 L176 181 Z" fill="#C94A64"/>
+  <path d="M50 105 L80 75 L206 75 L176 105 Z" fill="#FFF3E0"/>
+  <path d="M50 105 L176 105 L176 181 L50 181 Z" fill="#F59E4C"/>
+  <path d="M72 113 V175" fill="none" stroke="#1B1735" stroke-width="10" stroke-linecap="butt"/>
+  <path d="M93 113 V175" fill="none" stroke="#1B1735" stroke-width="10" stroke-linecap="butt"/>
+  <path d="M113 113 V175" fill="none" stroke="#1B1735" stroke-width="10" stroke-linecap="butt"/>
+  <path d="M133 113 V175" fill="none" stroke="#1B1735" stroke-width="10" stroke-linecap="butt"/>
+  <path d="M154 113 V175" fill="none" stroke="#1B1735" stroke-width="10" stroke-linecap="butt"/>
 </svg>
