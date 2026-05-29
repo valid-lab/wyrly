@@ -5,9 +5,9 @@
   <path d="M176 105 L206 75 L206 151 L176 181 Z" fill="#C94A64"/>
   <path d="M50 105 L80 75 L206 75 L176 105 Z" fill="#FFF3E0"/>
   <path d="M50 105 L176 105 L176 181 L50 181 Z" fill="#F59E4C"/>
-  <path d="M72 113 V175" fill="none" stroke="#1B1735" stroke-width="10" stroke-linecap="butt"/>
-  <path d="M93 113 V175" fill="none" stroke="#1B1735" stroke-width="10" stroke-linecap="butt"/>
-  <path d="M113 113 V175" fill="none" stroke="#1B1735" stroke-width="10" stroke-linecap="butt"/>
-  <path d="M133 113 V175" fill="none" stroke="#1B1735" stroke-width="10" stroke-linecap="butt"/>
-  <path d="M154 113 V175" fill="none" stroke="#1B1735" stroke-width="10" stroke-linecap="butt"/>
+  <path d="M72 118 V170" fill="none" stroke="#1B1735" stroke-width="10" stroke-linecap="butt"/>
+  <path d="M93 118 V170" fill="none" stroke="#1B1735" stroke-width="10" stroke-linecap="butt"/>
+  <path d="M113 118 V170" fill="none" stroke="#1B1735" stroke-width="10" stroke-linecap="butt"/>
+  <path d="M133 118 V170" fill="none" stroke="#1B1735" stroke-width="10" stroke-linecap="butt"/>
+  <path d="M154 118 V170" fill="none" stroke="#1B1735" stroke-width="10" stroke-linecap="butt"/>
 </svg>
