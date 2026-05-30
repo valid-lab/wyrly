@@ -20,6 +20,7 @@ adheres to [Semantic Versioning](https://semver.org/) from **1.0.0**.
 - **`@wyrly/core`**: Phase 5C — frozen singleton graph (topo one-shot root materialize), `compileAllDepKeys` on first resolve, `registerMany` batch normalization fast path, and singleton-only frozen-plan invalidation skip (behavior unchanged).
 - **`@wyrly/core`**: Phase 6 — Bootstrap Compiler: `depSlotIndices`, dense `singletonBySlot` cache, `registerMany` eager dep-index finalize, frozen plans on first resolve/scope, and dense `ResolvePlan` slot storage (behavior unchanged).
 - **`@wyrly/core`**: Phase 6.1 — hybrid bootstrap: singleton resolve uses direct `singletonCache` and lazy `depKeys` on frozen materialize (5C-style); scoped frozen materialize keeps `depSlotIndices`, with `compileScopedDepSlotIndices` only at `registerMany` finalize for scoped graphs (behavior unchanged).
+- **`@wyrly/core`**: internal refactor — split container into `scope_impl` / `container_impl`, shared `graph_topo`, `bootstrap_state`, and `instance_builder` (behavior and public API unchanged).
 
 ## [2.2.1] - 2026-05-25
 

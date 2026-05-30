@@ -82,6 +82,11 @@ Phase 6.1（ハイブリッド）: **singleton** は `singletonCache` 直参照�
 `depKeys`（5C 相当）。**scoped** frozen materialize は `depSlotIndices` のまま、`registerMany`
 finalize は scoped グラフのみ `compileScopedDepSlotIndices`（singleton の dep index は lazy）。
 
+**内部構成**（`@wyrly/core`、公開 API 外）: `container.ts` は `container_impl.ts`（scope +
+container）を再エクスポート。frozen plan は `graph_topo.ts` を共有。bootstrap は
+`bootstrap_state.ts`、動的 materialize は `instance_builder.ts`。ホットパスは
+`container_impl.ts` にインラインのまま。
+
 composition root は
 **`registerMany` で topo 順に一括登録**するのが本番・ベンチともに最適です（単発 `register` は
 従来どおり lazy 再構築）。symbol token + 明示 deps の Wyrly アダプタは、inversify の

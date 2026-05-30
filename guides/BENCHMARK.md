@@ -86,6 +86,11 @@ materialize (5C-style). **Scoped** frozen materialize keeps `depSlotIndices`; `r
 finalize runs `compileScopedDepSlotIndices` only for scoped graphs (singleton dep indices stay
 lazy).
 
+**Internal layout** (`@wyrly/core`, not public API): `container.ts` re-exports from
+`container_impl.ts` (scope + container); frozen plans share `graph_topo.ts`; bootstrap lifecycle
+lives in `bootstrap_state.ts`; dynamic materialization uses `instance_builder.ts`. Hot paths
+(`resolve`, ultra-fast cache, frozen materialize loops) stay inlined in `container_impl.ts`.
+
 Prefer
 **`registerMany` in topological order** for composition roots; incremental `register` / `override`
 still invalidates and rebuilds lazily. The Wyrly adapter (symbol tokens + explicit deps) can still
