@@ -31,10 +31,26 @@ const yoga = createYoga<YogaServerContext>({
 
 resolver では `ctx.wyrly.di.resolve(...)` を使います。
 
-## 関連
+## ドキュメント
 
+- [公式ドキュメント](https://docs.wyrly.dev/?utm_source=github&utm_medium=package_readme&utm_campaign=launch&utm_content=yoga_ja)
+- [@wyrly/core](../core/README.ja.md)
 - [guides/GRAPHQL_DISPOSE.ja.md](https://github.com/valid-lab/wyrly/blob/main/guides/GRAPHQL_DISPOSE.ja.md)
 - [examples/yoga-graphql](https://github.com/valid-lab/wyrly/tree/main/examples/yoga-graphql)
+
+## 関連パッケージ
+
+| パッケージ       | npm      | 説明                       |
+| ---------------- | -------- | -------------------------- |
+| `@wyrly/core`    | あり     | コア DI                    |
+| `@wyrly/next`    | あり     | Next.js App Router         |
+| `@wyrly/express` | あり     | Express 5 ミドルウェア     |
+| `@wyrly/hono`    | あり     | Hono ミドルウェア          |
+| `@wyrly/fastify` | あり     | Fastify 5 プラグイン       |
+| `@wyrly/fresh`   | JSR のみ | Fresh 2.x                  |
+| `@wyrly/graphql` | あり     | GraphQL リクエストスコープ |
+| `@wyrly/yoga`    | あり     | 本パッケージ               |
+| `@wyrly/apollo`  | あり     | Apollo Server プラグイン   |
 
 ## ライセンス
 

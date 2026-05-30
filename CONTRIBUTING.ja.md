@@ -34,7 +34,10 @@ DI ベンチマーク:
 deno task build:npm:core   # 初回のみ
 deno task bench:di         # 全アダプタ比較（ローカル、~70s）
 deno task bench:di:ci:full # CI 相当: Wyrly 4 スイート + baseline 比較
+deno task bench:di:lock    # benchmarks/di/package-lock.json を更新（core の version bump 後）
 ```
+
+`bench:di:ci` は **`npm ci`** のため lockfile は書き換わりません。`packages/core` の version を上げたあとは **`deno task bench:di:lock`** を 1 回実行し、`benchmarks/di/package-lock.json` をコミットしてください。
 
 `packages/core/**` や `benchmarks/di/**` の変更時、CI は `deno task ci` とは別に `bench-regression` を実行します。ベースラインは `benchmarks/di/baselines/ci-wyrly.json`（**GHA ubuntu-latest 向け**。ローカル絶対値とは別）。意図的な性能改善後は `bench:di:ci` のあと `deno run -A scripts/ci/check-di-bench.ts --update-baseline` で JSON を更新してコミット。再実行で通るフレークは `minHz` を 1 回下げて対応。
 

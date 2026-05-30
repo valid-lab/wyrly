@@ -37,14 +37,17 @@ const context = async ({ req, res }: { req: Request; res: Response }) =>
 
 ## 関連パッケージ
 
-| パッケージ       | npm      | 説明         |
-| ---------------- | -------- | ------------ |
-| `@wyrly/core`    | あり     | コア DI      |
-| `@wyrly/graphql` | あり     | 本パッケージ |
-| `@wyrly/express` | あり     | Express      |
-| `@wyrly/hono`    | あり     | Hono         |
-| `@wyrly/next`    | あり     | Next.js      |
-| `@wyrly/fresh`   | JSR のみ | Fresh 2.x    |
+| パッケージ       | npm      | 説明                      |
+| ---------------- | -------- | ------------------------- |
+| `@wyrly/core`    | あり     | コア DI                   |
+| `@wyrly/next`    | あり     | Next.js App Router        |
+| `@wyrly/express` | あり     | Express 5 ミドルウェア    |
+| `@wyrly/hono`    | あり     | Hono ミドルウェア         |
+| `@wyrly/fastify` | あり     | Fastify 5 プラグイン      |
+| `@wyrly/fresh`   | JSR のみ | Fresh 2.x                 |
+| `@wyrly/graphql` | あり     | 本パッケージ              |
+| `@wyrly/yoga`    | あり     | GraphQL Yoga 5 プラグイン |
+| `@wyrly/apollo`  | あり     | Apollo Server プラグイン  |
 
 ## ライセンス
 

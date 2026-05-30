@@ -25,16 +25,18 @@ deno task examples:core
 
 ## Adapters (multi-file DDD)
 
-| Folder                                | Package                                  | Run                                 |
-| ------------------------------------- | ---------------------------------------- | ----------------------------------- |
-| [hono-api](./hono-api/)               | `@wyrly/hono`                            | `deno task example:hono-api`        |
-| [express-api](./express-api/)         | `@wyrly/express`                         | `deno task example:express-api`     |
-| [graphql-request](./graphql-request/) | `@wyrly/graphql` + **scoped DataLoader** | `deno task example:graphql-request` |
-| [yoga-graphql](./yoga-graphql/)       | GraphQL Yoga + dispose plugin            | `deno task example:yoga-graphql`    |
-| [apollo-graphql](./apollo-graphql/)   | Apollo Server 4 + dispose plugin         | `deno task example:apollo-graphql`  |
-| [express-graphql](./express-graphql/) | express + graphql                        | `deno task example:express-graphql` |
-| [fresh-routes](./fresh-routes/)       | `@wyrly/fresh`                           | `deno task example:fresh-routes`    |
-| [next-ddd](./next-ddd/)               | `@wyrly/next`                            | `deno task example:next-ddd`        |
+| Folder                                              | Package                                  | Run                                        |
+| --------------------------------------------------- | ---------------------------------------- | ------------------------------------------ |
+| [hono-api](./hono-api/)                             | `@wyrly/hono`                            | `deno task example:hono-api`               |
+| [express-api](./express-api/)                       | `@wyrly/express`                         | `deno task example:express-api`            |
+| [fastify-api](./fastify-api/)                       | `@wyrly/fastify`                         | `deno task example:fastify-api`            |
+| [graphql-request](./graphql-request/)               | `@wyrly/graphql` + **scoped DataLoader** | `deno task example:graphql-request`        |
+| [yoga-graphql](./yoga-graphql/)                     | GraphQL Yoga + dispose plugin            | `deno task example:yoga-graphql`           |
+| [apollo-graphql](./apollo-graphql/)                 | Apollo Server 4 + dispose plugin         | `deno task example:apollo-graphql`         |
+| [express-graphql](./express-graphql/)               | express + graphql                        | `deno task example:express-graphql`        |
+| [apollo-express-graphql](./apollo-express-graphql/) | `@wyrly/express` + `@wyrly/apollo`       | `deno task example:apollo-express-graphql` |
+| [fresh-routes](./fresh-routes/)                     | `@wyrly/fresh`                           | `deno task example:fresh-routes`           |
+| [next-ddd](./next-ddd/)                             | `@wyrly/next`                            | `deno task example:next-ddd`               |
 
 ```sh
 deno task examples:adapters
@@ -56,4 +58,4 @@ Uses [`dependency-graph/main.ts`](./dependency-graph/main.ts) (`container.valida
 deno task examples
 ```
 
-(core 4 + adapters 8)
+(core 4 + adapters 10)

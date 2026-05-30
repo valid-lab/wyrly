@@ -1,12 +1,12 @@
 {
   "name": "@wyrly/apollo",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "exports": {
     ".": "./mod.ts"
   },
   "imports": {
-    "@wyrly/core": "jsr:@wyrly/core@^2.3.0",
-    "@wyrly/graphql": "jsr:@wyrly/graphql@^2.3.0",
+    "@wyrly/core": "jsr:@wyrly/core@^2.3.1",
+    "@wyrly/graphql": "jsr:@wyrly/graphql@^2.3.1",
     "@apollo/server": "npm:@apollo/server@4",
     "graphql": "npm:graphql@16"
   },

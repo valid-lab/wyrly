@@ -55,14 +55,17 @@ app.use(diMiddleware(container, {
 
 ## 関連パッケージ
 
-| パッケージ       | npm      | 説明         |
-| ---------------- | -------- | ------------ |
-| `@wyrly/core`    | あり     | コア DI      |
-| `@wyrly/express` | あり     | 本パッケージ |
-| `@wyrly/hono`    | あり     | Hono         |
-| `@wyrly/graphql` | あり     | GraphQL      |
-| `@wyrly/next`    | あり     | Next.js      |
-| `@wyrly/fresh`   | JSR のみ | Fresh 2.x    |
+| パッケージ       | npm      | 説明                       |
+| ---------------- | -------- | -------------------------- |
+| `@wyrly/core`    | あり     | コア DI                    |
+| `@wyrly/next`    | あり     | Next.js App Router         |
+| `@wyrly/express` | あり     | 本パッケージ               |
+| `@wyrly/hono`    | あり     | Hono ミドルウェア          |
+| `@wyrly/fastify` | あり     | Fastify 5 プラグイン       |
+| `@wyrly/fresh`   | JSR のみ | Fresh 2.x                  |
+| `@wyrly/graphql` | あり     | GraphQL リクエストスコープ |
+| `@wyrly/yoga`    | あり     | GraphQL Yoga 5 プラグイン  |
+| `@wyrly/apollo`  | あり     | Apollo Server プラグイン   |
 
 ## ライセンス
 

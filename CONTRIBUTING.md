@@ -34,7 +34,12 @@ DI benchmarks:
 deno task build:npm:core   # first time only
 deno task bench:di         # all adapters, local comparison (~70s)
 deno task bench:di:ci:full # Wyrly-only CI gate (4 suites + baseline check)
+deno task bench:di:lock    # refresh benchmarks/di/package-lock.json (after @wyrly/core version bump)
 ```
+
+`bench:di:ci` uses **`npm ci`** (reproducible; does not rewrite the lockfile). After bumping
+`packages/core` and running `build:npm:core`, run **`deno task bench:di:lock`** once and commit
+`benchmarks/di/package-lock.json`.
 
 CI runs `bench-regression` (not `deno task ci`) when `packages/core/**` or `benchmarks/di/**` change.
 Baselines in `benchmarks/di/baselines/ci-wyrly.json` target **GHA ubuntu-latest**, not local machines.

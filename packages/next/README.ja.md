@@ -44,14 +44,17 @@ Server Components は `createServerDI` —
 
 ## 関連パッケージ
 
-| パッケージ       | npm      | 説明         |
-| ---------------- | -------- | ------------ |
-| `@wyrly/core`    | あり     | コア DI      |
-| `@wyrly/next`    | あり     | 本パッケージ |
-| `@wyrly/express` | あり     | Express      |
-| `@wyrly/hono`    | あり     | Hono         |
-| `@wyrly/graphql` | あり     | GraphQL      |
-| `@wyrly/fresh`   | JSR のみ | Fresh 2.x    |
+| パッケージ       | npm      | 説明                       |
+| ---------------- | -------- | -------------------------- |
+| `@wyrly/core`    | あり     | コア DI                    |
+| `@wyrly/next`    | あり     | 本パッケージ               |
+| `@wyrly/express` | あり     | Express 5 ミドルウェア     |
+| `@wyrly/hono`    | あり     | Hono ミドルウェア          |
+| `@wyrly/fastify` | あり     | Fastify 5 プラグイン       |
+| `@wyrly/fresh`   | JSR のみ | Fresh 2.x                  |
+| `@wyrly/graphql` | あり     | GraphQL リクエストスコープ |
+| `@wyrly/yoga`    | あり     | GraphQL Yoga 5 プラグイン  |
+| `@wyrly/apollo`  | あり     | Apollo Server プラグイン   |
 
 ## ライセンス
 

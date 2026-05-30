@@ -55,12 +55,17 @@ domain code.
 
 ## Related packages
 
-| Package          | npm | Description          |
-| ---------------- | --- | -------------------- |
-| `@wyrly/core`    | yes | Core DI              |
-| `@wyrly/graphql` | yes | GraphQL context      |
-| `@wyrly/apollo`  | yes | This package         |
-| `@wyrly/yoga`    | yes | GraphQL Yoga adapter |
+| Package          | npm      | Description           |
+| ---------------- | -------- | --------------------- |
+| `@wyrly/core`    | yes      | Core DI               |
+| `@wyrly/next`    | yes      | Next.js App Router    |
+| `@wyrly/express` | yes      | Express 5 middleware  |
+| `@wyrly/hono`    | yes      | Hono middleware       |
+| `@wyrly/fastify` | yes      | Fastify 5 plugin      |
+| `@wyrly/fresh`   | JSR only | Fresh 2.x             |
+| `@wyrly/graphql` | yes      | GraphQL request scope |
+| `@wyrly/yoga`    | yes      | GraphQL Yoga 5 plugin |
+| `@wyrly/apollo`  | yes      | This package          |
 
 ## License
 

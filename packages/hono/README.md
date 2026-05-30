@@ -46,14 +46,17 @@ app.get("/users/:id", (c) => {
 
 ## Related packages
 
-| Package          | npm      | Description     |
-| ---------------- | -------- | --------------- |
-| `@wyrly/core`    | yes      | Core DI         |
-| `@wyrly/hono`    | yes      | This package    |
-| `@wyrly/express` | yes      | Express adapter |
-| `@wyrly/graphql` | yes      | GraphQL adapter |
-| `@wyrly/next`    | yes      | Next.js adapter |
-| `@wyrly/fresh`   | JSR only | Fresh 2.x       |
+| Package          | npm      | Description           |
+| ---------------- | -------- | --------------------- |
+| `@wyrly/core`    | yes      | Core DI               |
+| `@wyrly/next`    | yes      | Next.js App Router    |
+| `@wyrly/express` | yes      | Express 5 middleware  |
+| `@wyrly/hono`    | yes      | This package          |
+| `@wyrly/fastify` | yes      | Fastify 5 plugin      |
+| `@wyrly/fresh`   | JSR only | Fresh 2.x             |
+| `@wyrly/graphql` | yes      | GraphQL request scope |
+| `@wyrly/yoga`    | yes      | GraphQL Yoga 5 plugin |
+| `@wyrly/apollo`  | yes      | Apollo Server plugin  |
 
 ## License
 

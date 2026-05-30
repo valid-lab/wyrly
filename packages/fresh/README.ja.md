@@ -44,14 +44,17 @@ const container = createContainer();
 
 ## 関連パッケージ
 
-| パッケージ       | npm      | 説明         |
-| ---------------- | -------- | ------------ |
-| `@wyrly/core`    | あり     | コア DI      |
-| `@wyrly/fresh`   | JSR のみ | 本パッケージ |
-| `@wyrly/express` | あり     | Express      |
-| `@wyrly/hono`    | あり     | Hono         |
-| `@wyrly/graphql` | あり     | GraphQL      |
-| `@wyrly/next`    | あり     | Next.js      |
+| パッケージ       | npm      | 説明                       |
+| ---------------- | -------- | -------------------------- |
+| `@wyrly/core`    | あり     | コア DI                    |
+| `@wyrly/next`    | あり     | Next.js App Router         |
+| `@wyrly/express` | あり     | Express 5 ミドルウェア     |
+| `@wyrly/hono`    | あり     | Hono ミドルウェア          |
+| `@wyrly/fastify` | あり     | Fastify 5 プラグイン       |
+| `@wyrly/fresh`   | JSR のみ | 本パッケージ               |
+| `@wyrly/graphql` | あり     | GraphQL リクエストスコープ |
+| `@wyrly/yoga`    | あり     | GraphQL Yoga 5 プラグイン  |
+| `@wyrly/apollo`  | あり     | Apollo Server プラグイン   |
 
 ## ライセンス
 

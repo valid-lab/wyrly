@@ -58,6 +58,7 @@
     "test:compat:workers": "cd compat/workers && npm install && npm test",
     "test:compat": "deno task build:npm:compat && deno task test:compat:node && deno task test:compat:bun && deno task test:compat:workers",
     "bench:di": "deno task build:npm:core && cd benchmarks/di && npm install && node --import tsx run.ts",
+    "bench:di:lock": "deno task build:npm:core && cd benchmarks/di && npm install",
     "bench:di:ci": "deno task build:npm:core && cd benchmarks/di && npm ci && node --import tsx run.ts --json --adapter wyrly --suite resolution,cold_start,cold_start_resolution,request_scope",
     "bench:di:check": "deno run -A scripts/ci/check-di-bench.ts",
     "bench:di:report": "deno run -A scripts/ci/check-di-bench.ts --report",

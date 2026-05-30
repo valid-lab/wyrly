@@ -108,11 +108,14 @@ try {
 | パッケージ       | Deno（JSR） | npm  | 説明                                 |
 | ---------------- | ----------- | ---- | ------------------------------------ |
 | `@wyrly/core`    | あり        | あり | コアコンテナ・トークン・ライフタイム |
+| `@wyrly/next`    | あり        | あり | Next.js App Router                   |
 | `@wyrly/express` | あり        | あり | Express 5 ミドルウェア               |
 | `@wyrly/hono`    | あり        | あり | Hono ミドルウェア                    |
-| `@wyrly/graphql` | あり        | あり | GraphQL リクエストスコープ           |
-| `@wyrly/next`    | あり        | あり | Next.js App Router                   |
+| `@wyrly/fastify` | あり        | あり | Fastify 5 プラグイン                 |
 | `@wyrly/fresh`   | あり        | —    | Fresh 2.x（JSR のみ）                |
+| `@wyrly/graphql` | あり        | あり | GraphQL リクエストスコープ           |
+| `@wyrly/yoga`    | あり        | あり | GraphQL Yoga 5 プラグイン            |
+| `@wyrly/apollo`  | あり        | あり | Apollo Server プラグイン             |
 
 ## ライセンス
 

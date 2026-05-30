@@ -49,14 +49,17 @@ the monorepo.
 
 ## Related packages
 
-| Package          | npm      | Description     |
-| ---------------- | -------- | --------------- |
-| `@wyrly/core`    | yes      | Core DI         |
-| `@wyrly/fresh`   | JSR only | This package    |
-| `@wyrly/express` | yes      | Express adapter |
-| `@wyrly/hono`    | yes      | Hono adapter    |
-| `@wyrly/graphql` | yes      | GraphQL adapter |
-| `@wyrly/next`    | yes      | Next.js adapter |
+| Package          | npm      | Description           |
+| ---------------- | -------- | --------------------- |
+| `@wyrly/core`    | yes      | Core DI               |
+| `@wyrly/next`    | yes      | Next.js App Router    |
+| `@wyrly/express` | yes      | Express 5 middleware  |
+| `@wyrly/hono`    | yes      | Hono middleware       |
+| `@wyrly/fastify` | yes      | Fastify 5 plugin      |
+| `@wyrly/fresh`   | JSR only | This package          |
+| `@wyrly/graphql` | yes      | GraphQL request scope |
+| `@wyrly/yoga`    | yes      | GraphQL Yoga 5 plugin |
+| `@wyrly/apollo`  | yes      | Apollo Server plugin  |
 
 ## License
 

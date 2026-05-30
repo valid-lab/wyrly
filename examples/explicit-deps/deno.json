@@ -8,6 +8,6 @@
     "start": "deno run -A main.ts"
   },
   "imports": {
-    "@wyrly/core": "jsr:@wyrly/core@^2.3.0"
+    "@wyrly/core": "jsr:@wyrly/core@^2.3.1"
   }
 }

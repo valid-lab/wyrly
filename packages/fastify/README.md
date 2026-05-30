@@ -49,9 +49,23 @@ routes. See [yoga-graphql](https://github.com/valid-lab/wyrly/tree/main/examples
 ## Documentation
 
 - [Official docs](https://docs.wyrly.dev/?utm_source=github&utm_medium=package_readme&utm_campaign=launch&utm_content=fastify_en)
+- [@wyrly/core](../core/README.md)
 - [API reference](https://github.com/valid-lab/wyrly/blob/main/API.md)
-- [express-api example](https://github.com/valid-lab/wyrly/tree/main/examples/express-api) (same DDD
-  pattern)
+- [fastify-api example](https://github.com/valid-lab/wyrly/tree/main/examples/fastify-api)
+
+## Related packages
+
+| Package          | npm      | Description           |
+| ---------------- | -------- | --------------------- |
+| `@wyrly/core`    | yes      | Core DI               |
+| `@wyrly/next`    | yes      | Next.js App Router    |
+| `@wyrly/express` | yes      | Express 5 middleware  |
+| `@wyrly/hono`    | yes      | Hono middleware       |
+| `@wyrly/fastify` | yes      | This package          |
+| `@wyrly/fresh`   | JSR only | Fresh 2.x             |
+| `@wyrly/graphql` | yes      | GraphQL request scope |
+| `@wyrly/yoga`    | yes      | GraphQL Yoga 5 plugin |
+| `@wyrly/apollo`  | yes      | Apollo Server plugin  |
 
 ## License
 

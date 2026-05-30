@@ -9,6 +9,16 @@ adheres to [Semantic Versioning](https://semver.org/) from **1.0.0**.
 
 ## [Unreleased]
 
+## [2.3.1] - 2026-05-30
+
+### Changed
+
+- **Docs**: Related packages tables in all nine `@wyrly/*` READMEs list every adapter (including `@wyrly/fastify`, `@wyrly/yoga`, and `@wyrly/apollo`); `examples/README` adds `fastify-api` and `apollo-express-graphql`.
+
+### Fixed
+
+- **CI**: DI bench regression uses committed `benchmarks/di/package-lock.json`, GHA-calibrated `minHz` baselines, per-run `BENCH_GHA_METRICS` summaries, and optional manual [**DI bench (manual)**](.github/workflows/bench-di.yml) workflow.
+
 ## [2.3.0] - 2026-05-30
 
 ### Added

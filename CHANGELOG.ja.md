@@ -8,6 +8,16 @@ English: [CHANGELOG.md](./CHANGELOG.md)
 
 ## [Unreleased]
 
+## [2.3.1] - 2026-05-30
+
+### 変更
+
+- **ドキュメント**: 9 パッケージすべての README の関連パッケージ表に全アダプタ（`@wyrly/fastify` / `@wyrly/yoga` / `@wyrly/apollo` 含む）を記載。`examples/README` に `fastify-api` と `apollo-express-graphql` を追加。
+
+### 修正
+
+- **CI**: DI ベンチ回帰で `benchmarks/di/package-lock.json` を利用、GHA 向け `minHz` ベースライン、実行ごとの `BENCH_GHA_METRICS`、手動 [**DI bench (manual)**](.github/workflows/bench-di.yml) ワークフローを追加。
+
 ## [2.3.0] - 2026-05-30
 
 ### 追加

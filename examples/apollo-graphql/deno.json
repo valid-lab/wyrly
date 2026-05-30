@@ -6,8 +6,8 @@
   },
   "imports": {
     "@apollo/server": "npm:@apollo/server@4",
-    "@wyrly/apollo": "jsr:@wyrly/apollo@^2.3.0",
-    "@wyrly/core": "jsr:@wyrly/core@^2.3.0",
+    "@wyrly/apollo": "jsr:@wyrly/apollo@^2.3.1",
+    "@wyrly/core": "jsr:@wyrly/core@^2.3.1",
     "graphql": "npm:graphql@16"
   },
   "tasks": {

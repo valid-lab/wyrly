@@ -114,11 +114,14 @@ try {
 | Package          | Deno (JSR) | npm | Description                       |
 | ---------------- | ---------- | --- | --------------------------------- |
 | `@wyrly/core`    | yes        | yes | Core container, tokens, lifetimes |
+| `@wyrly/next`    | yes        | yes | Next.js App Router                |
 | `@wyrly/express` | yes        | yes | Express 5 middleware              |
 | `@wyrly/hono`    | yes        | yes | Hono middleware                   |
-| `@wyrly/graphql` | yes        | yes | GraphQL request scope             |
-| `@wyrly/next`    | yes        | yes | Next.js App Router                |
+| `@wyrly/fastify` | yes        | yes | Fastify 5 plugin                  |
 | `@wyrly/fresh`   | yes        | —   | Fresh 2.x (JSR only)              |
+| `@wyrly/graphql` | yes        | yes | GraphQL request scope             |
+| `@wyrly/yoga`    | yes        | yes | GraphQL Yoga 5 plugin             |
+| `@wyrly/apollo`  | yes        | yes | Apollo Server plugin              |
 
 ## License
 

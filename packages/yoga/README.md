@@ -51,12 +51,17 @@ Resolvers use `ctx.wyrly.di.resolve(...)`. The plugin disposes the scope on `onR
 
 ## Related packages
 
-| Package          | npm | Description           |
-| ---------------- | --- | --------------------- |
-| `@wyrly/core`    | yes | Core DI               |
-| `@wyrly/graphql` | yes | GraphQL context       |
-| `@wyrly/yoga`    | yes | This package          |
-| `@wyrly/apollo`  | yes | Apollo Server adapter |
+| Package          | npm      | Description           |
+| ---------------- | -------- | --------------------- |
+| `@wyrly/core`    | yes      | Core DI               |
+| `@wyrly/next`    | yes      | Next.js App Router    |
+| `@wyrly/express` | yes      | Express 5 middleware  |
+| `@wyrly/hono`    | yes      | Hono middleware       |
+| `@wyrly/fastify` | yes      | Fastify 5 plugin      |
+| `@wyrly/fresh`   | JSR only | Fresh 2.x             |
+| `@wyrly/graphql` | yes      | GraphQL request scope |
+| `@wyrly/yoga`    | yes      | This package          |
+| `@wyrly/apollo`  | yes      | Apollo Server plugin  |
 
 ## License
 
