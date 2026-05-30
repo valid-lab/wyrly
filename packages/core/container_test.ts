@@ -269,6 +269,17 @@ Deno.test("dispose onError is called when disposer fails", async () => {
   assertEquals(log, ["err"]);
 });
 
+Deno.test("registerMany finalizes bootstrap for singleton graph", () => {
+  const A = token<string>("A");
+  const B = token<string>("B");
+  const c = createContainer();
+  c.registerMany([
+    [A, { useValue: "a", lifetime: "singleton" }],
+    [B, { useFactory: (_s, a) => `b:${a as string}`, deps: [A], lifetime: "singleton" }],
+  ]);
+  assertEquals(c.resolve(B), "b:a");
+});
+
 Deno.test("frozen singleton graph resolves full tree on first root resolve", () => {
   const A = token<string>("A");
   const B = token<string>("B");

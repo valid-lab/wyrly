@@ -74,8 +74,12 @@ resolve 側に移ります。register のみの `cold_start` より tsyringe と
 Phase 5C 以降、全 provider が singleton の composition root では **frozen singleton graph**
 （topo 順の一括 materialize + 初回 resolve 前の dep key 一括 compile）が有効です。`request_scope`
 向けの frozen scoped graph と同型で、初回 `container.resolve()` の深さ優先再帰を避けます。
-symbol token + 明示 deps の Wyrly アダプタは、inversify の class-as-token 登録より `cold_start`
-では不利に出ることがあります（本番は module スコープで 1 回 register）。
+
+Phase 6（Bootstrap Compiler）では `registerMany` 終了時に **dep スロットインデックス + frozen plan**
+を eager 構築し、materialize は `singletonBySlot` 配列参照のみで行います。composition root は
+**`registerMany` で topo 順に一括登録**するのが本番・ベンチともに最適です（単発 `register` は
+従来どおり lazy 再構築）。symbol token + 明示 deps の Wyrly アダプタは、inversify の
+class-as-token 登録より `cold_start` では不利に出ることがあります（本番は module スコープで 1 回 register）。
 
 ### request_scope
 

@@ -18,6 +18,7 @@ adheres to [Semantic Versioning](https://semver.org/) from **1.0.0**.
 - **`@wyrly/core`**: Phase 4 — cold-start registration optimizations: lazy dep-key compilation on first resolve, single-map provider registry (replacing dual `#registry` + resolve plan maps), lazy inner-root scope creation, and `useClass` fast path when deps/lifetime are explicit (behavior unchanged).
 - **`@wyrly/core`**: Phase 5 — `registerMany()`, scope pooling, dense scoped cache, frozen scoped graph fast path, zero-dependency dep-key sharing at register; DI bench Group B fairness fixes for tsyringe/inversify `request_scope` (behavior unchanged).
 - **`@wyrly/core`**: Phase 5C — frozen singleton graph (topo one-shot root materialize), `compileAllDepKeys` on first resolve, `registerMany` batch normalization fast path, and singleton-only frozen-plan invalidation skip (behavior unchanged).
+- **`@wyrly/core`**: Phase 6 — Bootstrap Compiler: `depSlotIndices`, dense `singletonBySlot` cache, `registerMany` eager dep-index finalize, frozen plans on first resolve/scope, and dense `ResolvePlan` slot storage (behavior unchanged).
 
 ## [2.2.1] - 2026-05-25
 

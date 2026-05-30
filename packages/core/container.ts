@@ -32,7 +32,13 @@ import {
   buildFrozenSingletonPlan,
   type FrozenSingletonPlan,
 } from "./frozen_singleton.ts";
-import { compileAllDepKeys, compileProvider, ensureDepKeys, ResolvePlan } from "./resolve_plan.ts";
+import {
+  compileAllDepSlotIndices,
+  type CompiledProvider,
+  compileProvider,
+  ensureDepSlotIndices,
+  ResolvePlan,
+} from "./resolve_plan.ts";
 
 const SCOPE_POOL_MAX = 32;
 const FROZEN_MISS = Symbol("FROZEN_MISS");
@@ -411,10 +417,12 @@ export class ScopeImpl implements Scope {
 class ContainerImpl implements Container {
   readonly #resolvePlan = new ResolvePlan();
   readonly #singletonCache = new Map<RegistryKey, unknown>();
+  #singletonBySlot: unknown[] = [];
   readonly #scopePool: ScopeImpl[] = [];
   #innerRootScope: ScopeImpl | undefined;
   #frozenScopedPlan: FrozenScopedPlan | undefined;
   #frozenSingletonPlan: FrozenSingletonPlan | undefined;
+  #bootstrapFinalized = false;
 
   #getInnerRoot(): ScopeImpl {
     if (!this.#innerRootScope) {
@@ -446,17 +454,18 @@ class ContainerImpl implements Container {
   ): void {
     let anyScoped = false;
     const seen = new Set<RegistryKey>();
+    this.#resolvePlan.reserve(entries.length);
     for (let i = 0; i < entries.length; i++) {
       const [token, provider] = entries[i]!;
       const np = this.#normalizeProviderForBatch(token, provider);
-      if (seen.has(np.key) || this.#resolvePlan.has(np.key)) {
+      if (seen.has(np.key)) {
         throw new DuplicateProviderError(token);
       }
       seen.add(np.key);
       if (np.lifetime === "scoped") anyScoped = true;
       this.#resolvePlan.register(np);
     }
-    this.#invalidateFrozenPlans(!anyScoped);
+    this.#finalizeBootstrap(!anyScoped);
   }
 
   /** Fast path for composition-root batch registration (benchmark + Workers bootstrap). */
@@ -490,32 +499,96 @@ class ContainerImpl implements Container {
       throw new DuplicateProviderError(tokenForError);
     }
     this.#resolvePlan.register(np);
-    this.#invalidateFrozenPlans(np.lifetime !== "scoped");
+    this.#invalidateBootstrap(np.lifetime !== "scoped");
   }
 
   override<T>(token: InjectionToken<T>, provider: Provider<T>): void {
     const np = normalizeProvider(token, provider) as NormalizedProvider<unknown>;
     this.#resolvePlan.register(np);
-    this.#singletonCache.delete(np.key);
-    this.#invalidateFrozenPlans();
+    this.#clearSingletonAtKey(np.key);
+    this.#invalidateBootstrap();
   }
 
-  #invalidateFrozenPlans(skipScopedInvalidate = false): void {
+  #ensureSingletonBySlotCapacity(minLength: number): void {
+    if (this.#singletonBySlot.length < minLength) {
+      this.#singletonBySlot.length = minLength;
+    }
+  }
+
+  #clearSingletonAtKey(key: RegistryKey): void {
+    this.#singletonCache.delete(key);
+    const idx = this.#resolvePlan.getSlotIndex(key);
+    if (idx !== undefined && idx >= 0) {
+      this.#singletonBySlot[idx] = undefined;
+    }
+  }
+
+  #getSingletonByKey(key: RegistryKey): unknown | undefined {
+    const mapHit = this.#singletonCache.get(key);
+    if (mapHit !== undefined) return mapHit;
+    const idx = this.#resolvePlan.getSlotIndex(key);
+    if (idx !== undefined && idx >= 0) {
+      return this.#singletonBySlot[idx];
+    }
+    return undefined;
+  }
+
+  #setSingletonAtKey(key: RegistryKey, value: unknown): void {
+    this.#singletonCache.set(key, value);
+    const idx = this.#resolvePlan.getSlotIndex(key);
+    if (idx !== undefined && idx >= 0) {
+      this.#ensureSingletonBySlotCapacity(idx + 1);
+      this.#singletonBySlot[idx] = value;
+    }
+  }
+
+  #hasAnySingletonMaterialized(): boolean {
+    return this.#singletonCache.size > 0;
+  }
+
+  #invalidateBootstrap(skipScopedInvalidate = false): void {
     if (!skipScopedInvalidate) {
       this.#frozenScopedPlan = undefined;
     }
     this.#frozenSingletonPlan = undefined;
+    this.#bootstrapFinalized = false;
+    this.#resolvePlan.invalidateCompiledSlots();
+  }
+
+  #finalizeBootstrap(skipScopedPlanBuild = false): void {
+    compileAllDepSlotIndices(this.#resolvePlan);
+    this.#ensureSingletonBySlotCapacity(this.#resolvePlan.slotCount);
+    this.#frozenSingletonPlan = undefined;
+    if (!skipScopedPlanBuild) {
+      this.#frozenScopedPlan = undefined;
+    }
+    this.#bootstrapFinalized = true;
+  }
+
+  #finalizeFrozenPlans(skipScopedPlanBuild = false): void {
+    if (allProvidersSingleton(this.#resolvePlan.iterateSlots())) {
+      this.#frozenSingletonPlan = buildFrozenSingletonPlan(this.#resolvePlan.iterateSlots());
+    } else {
+      this.#frozenSingletonPlan = undefined;
+    }
+    if (!skipScopedPlanBuild && allProvidersScoped(this.#resolvePlan.iterateSlots())) {
+      this.#frozenScopedPlan = buildFrozenScopedPlan(this.#resolvePlan.iterateSlots());
+    } else if (!skipScopedPlanBuild) {
+      this.#frozenScopedPlan = undefined;
+    }
   }
 
   #ensureFrozenScopedPlan(): void {
     if (this.#frozenScopedPlan !== undefined) return;
     if (!allProvidersScoped(this.#resolvePlan.iterateSlots())) return;
+    compileAllDepSlotIndices(this.#resolvePlan);
     this.#frozenScopedPlan = buildFrozenScopedPlan(this.#resolvePlan.iterateSlots());
   }
 
   #ensureFrozenSingletonPlan(): void {
     if (this.#frozenSingletonPlan !== undefined) return;
     if (!allProvidersSingleton(this.#resolvePlan.iterateSlots())) return;
+    compileAllDepSlotIndices(this.#resolvePlan);
     this.#frozenSingletonPlan = buildFrozenSingletonPlan(this.#resolvePlan.iterateSlots());
   }
 
@@ -538,7 +611,7 @@ class ContainerImpl implements Container {
     const key = registryKey(token);
     const innerRoot = this.#innerRootScope;
     if (!innerRoot || innerRoot.canUltraFastCache()) {
-      const hit = this.#singletonCache.get(key);
+      const hit = this.#getSingletonByKey(key);
       if (hit !== undefined) return hit as T;
       const frozen = this.#tryFrozenSingletonResolve<T>(key);
       if (frozen !== FROZEN_MISS) return frozen as T;
@@ -547,7 +620,11 @@ class ContainerImpl implements Container {
   }
 
   createScope(): Scope {
-    this.#ensureFrozenScopedPlan();
+    if (this.#bootstrapFinalized && this.#frozenScopedPlan === undefined) {
+      this.#finalizeFrozenPlans();
+    } else if (!this.#bootstrapFinalized) {
+      this.#ensureFrozenScopedPlan();
+    }
     const pooled = this.#scopePool.pop();
     if (pooled) {
       pooled.resetForReuse();
@@ -579,13 +656,13 @@ class ContainerImpl implements Container {
   }
 
   setSingleton(key: RegistryKey, value: unknown): void {
-    this.#singletonCache.set(key, value);
+    this.#setSingletonAtKey(key, value);
   }
 
   #tryUltraFastCache<T>(scope: ScopeImpl, key: RegistryKey): T | undefined {
     if (!scope.getAllowsScoped()) {
       if (!scope.canUltraFastCache()) return undefined;
-      const singletonHit = this.#singletonCache.get(key);
+      const singletonHit = this.#getSingletonByKey(key);
       if (singletonHit !== undefined) return singletonHit as T;
       return undefined;
     }
@@ -596,7 +673,7 @@ class ContainerImpl implements Container {
       if (scopedHit !== undefined) return scopedHit as T;
       const slot = this.#resolvePlan.peek(key);
       if (slot?.np.lifetime === "singleton") {
-        const hit = this.#singletonCache.get(key);
+        const hit = this.#getSingletonByKey(key);
         if (hit !== undefined) return hit as T;
       }
       return undefined;
@@ -673,7 +750,7 @@ class ContainerImpl implements Container {
     }
 
     if (np.lifetime === "singleton") {
-      const hit = this.#singletonCache.get(np.key);
+      const hit = this.#getSingletonByKey(np.key);
       if (hit !== undefined) return hit as T;
     } else if (np.lifetime === "scoped") {
       const idx = compiled?.slotIndex;
@@ -708,7 +785,7 @@ class ContainerImpl implements Container {
 
     if (np.lifetime === "singleton") {
       const created = this.#createInstance(scope, np, resolvingPath, compiled);
-      this.#singletonCache.set(key, created);
+      this.#setSingletonAtKey(key, created);
       return created;
     }
 
@@ -780,56 +857,65 @@ class ContainerImpl implements Container {
   }
 
   #tryFrozenSingletonResolve<T>(key: RegistryKey): T | typeof FROZEN_MISS {
-    this.#ensureFrozenSingletonPlan();
+    if (this.#frozenSingletonPlan === undefined) {
+      if (this.#bootstrapFinalized) {
+        this.#finalizeFrozenPlans(true);
+      } else {
+        this.#ensureFrozenSingletonPlan();
+      }
+    }
     const plan = this.#frozenSingletonPlan;
     if (!plan) return FROZEN_MISS;
-    if (this.#singletonCache.size === 0) {
+    if (!this.#hasAnySingletonMaterialized()) {
       this.#materializeFrozenSingletonGraph(plan);
-    } else if (!this.#singletonCache.has(key)) {
+    } else if (this.#getSingletonByKey(key) === undefined) {
       return FROZEN_MISS;
     }
-    const hit = this.#singletonCache.get(key);
+    const hit = this.#getSingletonByKey(key);
     if (hit === undefined) return FROZEN_MISS;
     return hit as T;
   }
 
   #materializeFrozenSingletonGraph(plan: FrozenSingletonPlan): void {
-    if (plan.ordered.some((slot) => slot.depKeys === undefined && slot.np.deps.length > 0)) {
-      compileAllDepKeys(plan.ordered);
+    if (!this.#bootstrapFinalized) {
+      compileAllDepSlotIndices(this.#resolvePlan);
     }
     const scope = this.#getInnerRoot();
+    const bySlot = this.#singletonBySlot;
     for (let i = 0; i < plan.ordered.length; i++) {
       const slot = plan.ordered[i]!;
-      const key = slot.np.key;
-      if (this.#singletonCache.has(key)) continue;
-      const created = this.#createInstanceFromFrozenSingleton(scope, slot);
-      this.#singletonCache.set(key, created);
+      const idx = slot.slotIndex;
+      if (bySlot[idx] !== undefined) continue;
+      const created = this.#createInstanceFromFrozenSingleton(scope, slot, bySlot);
+      this.#setSingletonAtKey(slot.np.key, created);
     }
   }
 
   #createInstanceFromFrozenSingleton(
     scope: ScopeImpl,
-    slot: NonNullable<ReturnType<ResolvePlan["get"]>>,
+    slot: CompiledProvider,
+    singletonBySlot: unknown[],
   ): unknown {
     const np = slot.np;
-    const depKeys = slot.depKeys ?? ensureDepKeys(slot);
+    const depIndices = slot.depSlotIndices ??
+      ensureDepSlotIndices(slot, this.#resolvePlan);
 
     switch (np.providerType) {
       case "value":
         return np.useValue;
 
       case "existing": {
-        const exKey = depKeys[0]!;
-        return this.#singletonCache.get(exKey);
+        const exIdx = depIndices[0]!;
+        return exIdx >= 0 ? singletonBySlot[exIdx] : undefined;
       }
 
       case "factory": {
-        const args = depKeys.map((depKey) => this.#singletonCache.get(depKey));
+        const args = this.#readDepsFromSlotArray(depIndices, singletonBySlot);
         return np.useFactory!(scope, ...args);
       }
 
       case "class": {
-        const args = depKeys.map((depKey) => this.#singletonCache.get(depKey)) as never[];
+        const args = this.#readDepsFromSlotArray(depIndices, singletonBySlot) as never[];
         const Ctor = np.useClass!;
         return new (Ctor as new (...args: never[]) => unknown)(...args);
       }
@@ -839,6 +925,18 @@ class ContainerImpl implements Container {
           providerType: String(np.providerType),
         });
     }
+  }
+
+  #readDepsFromSlotArray(
+    depIndices: readonly number[],
+    values: unknown[],
+  ): unknown[] {
+    const args = new Array<unknown>(depIndices.length);
+    for (let i = 0; i < depIndices.length; i++) {
+      const idx = depIndices[i]!;
+      args[i] = idx >= 0 ? values[idx] : undefined;
+    }
+    return args;
   }
 
   #tryFrozenScopedResolve<T>(scope: ScopeImpl, key: RegistryKey): T | typeof FROZEN_MISS {
@@ -855,7 +953,9 @@ class ContainerImpl implements Container {
   #materializeFrozenScopedGraph(scope: ScopeImpl, plan: FrozenScopedPlan): void {
     const slotCount = this.#resolvePlan.slotCount;
     const values = scope.initScopedValueArray(slotCount);
-    compileAllDepKeys(plan.ordered);
+    if (!this.#bootstrapFinalized) {
+      compileAllDepSlotIndices(this.#resolvePlan);
+    }
     for (let i = 0; i < plan.ordered.length; i++) {
       const slot = plan.ordered[i]!;
       if (values[slot.slotIndex] !== undefined) continue;
@@ -870,34 +970,29 @@ class ContainerImpl implements Container {
 
   #createInstanceFromFrozen(
     scope: ScopeImpl,
-    slot: NonNullable<ReturnType<ResolvePlan["get"]>>,
+    slot: CompiledProvider,
     values: unknown[],
   ): unknown {
     const np = slot.np;
-    const depKeys = ensureDepKeys(slot);
+    const depIndices = slot.depSlotIndices ??
+      ensureDepSlotIndices(slot, this.#resolvePlan);
 
     switch (np.providerType) {
       case "value":
         return np.useValue;
 
       case "existing": {
-        const exIdx = this.#resolvePlan.getSlotIndex(depKeys[0]!);
-        return exIdx !== undefined ? values[exIdx] : undefined;
+        const exIdx = depIndices[0]!;
+        return exIdx >= 0 ? values[exIdx] : undefined;
       }
 
       case "factory": {
-        const args = depKeys.map((depKey) => {
-          const depIdx = this.#resolvePlan.getSlotIndex(depKey)!;
-          return values[depIdx];
-        });
+        const args = this.#readDepsFromSlotArray(depIndices, values);
         return np.useFactory!(scope, ...args);
       }
 
       case "class": {
-        const args = depKeys.map((depKey) => {
-          const depIdx = this.#resolvePlan.getSlotIndex(depKey)!;
-          return values[depIdx];
-        }) as never[];
+        const args = this.#readDepsFromSlotArray(depIndices, values) as never[];
         const Ctor = np.useClass!;
         return new (Ctor as new (...args: never[]) => unknown)(...args);
       }

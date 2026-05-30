@@ -4,16 +4,24 @@ import { ensureDepKeys } from "./resolve_plan.ts";
 import { type RegistryKey } from "./internal_keys.ts";
 
 function isSlotIndexOrderTopo(ordered: readonly CompiledProvider[]): boolean {
-  const index = new Map<RegistryKey, number>();
+  const keyToIndex = new Map<RegistryKey, number>();
   for (let i = 0; i < ordered.length; i++) {
-    index.set(ordered[i]!.np.key, ordered[i]!.slotIndex);
+    keyToIndex.set(ordered[i]!.np.key, ordered[i]!.slotIndex);
   }
   for (let i = 0; i < ordered.length; i++) {
     const slot = ordered[i]!;
-    const depKeys = ensureDepKeys(slot);
-    for (let d = 0; d < depKeys.length; d++) {
-      const depIdx = index.get(depKeys[d]!);
-      if (depIdx !== undefined && depIdx >= slot.slotIndex) return false;
+    const depIndices = slot.depSlotIndices;
+    if (depIndices !== undefined) {
+      for (let d = 0; d < depIndices.length; d++) {
+        const depIdx = depIndices[d]!;
+        if (depIdx >= 0 && depIdx >= slot.slotIndex) return false;
+      }
+    } else {
+      const depKeys = ensureDepKeys(slot);
+      for (let d = 0; d < depKeys.length; d++) {
+        const depIdx = keyToIndex.get(depKeys[d]!);
+        if (depIdx !== undefined && depIdx >= slot.slotIndex) return false;
+      }
     }
   }
   return true;
