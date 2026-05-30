@@ -1,11 +1,11 @@
 {
   "name": "@wyrly/hono",
-  "version": "2.2.1",
+  "version": "2.3.0",
   "exports": {
     ".": "./mod.ts"
   },
   "imports": {
-    "@wyrly/core": "jsr:@wyrly/core@^2.2.1",
+    "@wyrly/core": "jsr:@wyrly/core@^2.3.0",
     "hono": "npm:hono@4"
   },
   "publish": {

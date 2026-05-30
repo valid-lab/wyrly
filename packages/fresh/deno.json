@@ -1,11 +1,11 @@
 {
   "name": "@wyrly/fresh",
-  "version": "2.2.1",
+  "version": "2.3.0",
   "exports": {
     ".": "./mod.ts"
   },
   "imports": {
-    "@wyrly/core": "jsr:@wyrly/core@^2.2.1",
+    "@wyrly/core": "jsr:@wyrly/core@^2.3.0",
     "fresh": "jsr:@fresh/core@^2"
   },
   "publish": {

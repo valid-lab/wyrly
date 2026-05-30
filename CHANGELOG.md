@@ -9,6 +9,8 @@ adheres to [Semantic Versioning](https://semver.org/) from **1.0.0**.
 
 ## [Unreleased]
 
+## [2.3.0] - 2026-05-30
+
 ### Changed
 
 - **`@wyrly/core`**: faster cached singleton/scoped resolve (hot-path optimization; behavior unchanged).

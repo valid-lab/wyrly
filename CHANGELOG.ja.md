@@ -8,6 +8,8 @@ English: [CHANGELOG.md](./CHANGELOG.md)
 
 ## [Unreleased]
 
+## [2.3.0] - 2026-05-30
+
 ### 変更
 
 - **`@wyrly/core`**: キャッシュ済み singleton/scoped の resolve を高速化（ホットパス最適化。挙動は不変）。
