@@ -22,6 +22,11 @@ export interface Scope {
   createChildScope(): Scope;
   /** Disposes scoped instances and runs registered disposers. */
   dispose(options?: ScopeDisposeOptions): Promise<void>;
+  /**
+   * Synchronous dispose when no async disposers are registered.
+   * Prefer this on hot paths (e.g. per-request teardown without I/O disposers).
+   */
+  disposeSync(options?: ScopeDisposeOptions): void;
   /** Whether {@link dispose} has already been called. */
   isDisposed(): boolean;
 }

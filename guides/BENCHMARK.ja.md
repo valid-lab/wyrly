@@ -65,9 +65,19 @@ scan、フレームワーク初期化**を含みます。bare コンテナより
 ### request_scope
 
 Wyrly は composition root を `beforeAll` で 1 回登録し、計測ループでは `container.createScope()` →
-`resolve` → `scope.dispose()` のみ実行します（本番 Web アプリの 1 リクエストに近い）。typed-inject は
+`resolve` → `scope.disposeSync()` のみ実行します（本番 Web アプリの 1 リクエストに近い）。typed-inject は
 scoped lifetime API が無いため、`beforeAll` で injector を構築し、ループ内で `createChildInjector()` を
-1 リクエスト境界として近似します。NestJS は
+1 リクエスト境界として近似します。tsyringe は factory 登録のため `ContainerScoped`
+を使えず、**子 container = 1 リクエスト**（子内 singleton キャッシュを毎回破棄）で近似します。
+
+#### 比較グループ（解釈用）
+
+| グループ | スイート / adapter | 測定の意味 |
+| -------- | ------------------ | ---------- |
+| **A: cached hot path** | `resolution` 全般、`typed-inject` / `nestjs` の `request_scope` | 起動済みコンテナ上のキャッシュ済み resolve |
+| **B: scoped cold build** | **wyrly** / **inversify** / **tsyringe** の `request_scope` | 1 リクエストあたり scoped グラフを新規構築 |
+
+Group A と Group B の ops/s を直接比較しないでください。NestJS は
 `Scope.REQUEST` + `ContextIdFactory.create()` で 1 リクエストを模倣しますが、ApplicationContext
 の再作成も含むため数値は参考程度にしてください。実 HTTP 1 件あたりの絶対コストは通常 **μs 級**で、I/O
 に比べると無視できます。

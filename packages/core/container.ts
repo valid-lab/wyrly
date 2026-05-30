@@ -23,6 +23,7 @@ import {
   dedupeEdges,
   type DependencyGraph,
 } from "./graph.ts";
+import { ResolvePlan } from "./resolve_plan.ts";
 import {
   validateNormalizedProviders,
   type ValidateOptions,
@@ -157,10 +158,24 @@ export class ScopeImpl implements Scope {
     return new ScopeImpl(this.#container, { allowsScoped: true, parent: this });
   }
 
+  disposeSync(options?: ScopeDisposeOptions): void {
+    if (this.#disposed) return;
+    if (this.disposers.length > 0) {
+      throw new InvalidProviderError(
+        "disposeSync() cannot be used when disposers are registered.",
+      );
+    }
+    this.#finishDispose(options);
+  }
+
   async dispose(options?: ScopeDisposeOptions): Promise<void> {
     if (this.#disposed) return;
     if ((this.#children?.size ?? 0) > 0) {
       throw new ScopeHasActiveChildrenError();
+    }
+    if (this.disposers.length === 0) {
+      this.#finishDispose(options);
+      return;
     }
     this.#disposed = true;
     if (this.#parent) {
@@ -175,6 +190,22 @@ export class ScopeImpl implements Scope {
       }
     }
     this.disposers.length = 0;
+    this.#clearScopeMaps();
+  }
+
+  #finishDispose(_options?: ScopeDisposeOptions): void {
+    if (this.#disposed) return;
+    if ((this.#children?.size ?? 0) > 0) {
+      throw new ScopeHasActiveChildrenError();
+    }
+    this.#disposed = true;
+    if (this.#parent) {
+      this.#parent.#children?.delete(this);
+    }
+    this.#clearScopeMaps();
+  }
+
+  #clearScopeMaps(): void {
     this.#scopedCache?.clear();
     this.#localProviders?.clear();
     this.#localValues?.clear();
@@ -298,6 +329,7 @@ export class ScopeImpl implements Scope {
 
 class ContainerImpl implements Container {
   readonly #registry = new Map<RegistryKey, NormalizedProvider<unknown>>();
+  readonly #resolvePlan = new ResolvePlan();
   readonly #singletonCache = new Map<RegistryKey, unknown>();
   readonly #innerRootScope: ScopeImpl;
 
@@ -324,16 +356,23 @@ class ContainerImpl implements Container {
       throw new DuplicateProviderError(token);
     }
     this.#registry.set(np.key, np);
+    this.#resolvePlan.register(np);
   }
 
   override<T>(token: InjectionToken<T>, provider: Provider<T>): void {
     const np = normalizeProvider(token, provider) as NormalizedProvider<unknown>;
     this.#registry.set(np.key, np);
+    this.#resolvePlan.register(np);
     this.#singletonCache.delete(np.key);
   }
 
   resolve<T>(token: InjectionToken<T>): T {
-    return this.#innerRootScope.resolve(token);
+    const key = registryKey(token);
+    if (this.#innerRootScope.canUltraFastCache()) {
+      const hit = this.#singletonCache.get(key);
+      if (hit !== undefined) return hit as T;
+    }
+    return this.resolveFromScope(this.#innerRootScope, token, null, []);
   }
 
   createScope(): Scope {
@@ -377,8 +416,8 @@ class ContainerImpl implements Container {
     if (scope.hasScopedCacheInChain()) {
       const scopedHit = scope.getScopedInChain(key);
       if (scopedHit !== undefined) return scopedHit as T;
-      const regProv = this.#registry.get(key);
-      if (regProv?.lifetime === "singleton") {
+      const compiled = this.#resolvePlan.get(key);
+      if (compiled?.np.lifetime === "singleton") {
         const hit = this.#singletonCache.get(key);
         if (hit !== undefined) return hit as T;
       }
@@ -393,9 +432,23 @@ class ContainerImpl implements Container {
     consumerLifetime: Lifetime | null,
     resolvingPath: RegistryKey[],
   ): T {
-    if (scope.isDisposed()) throw new ScopeDisposedError();
+    return this.#resolveFromScopeByKey(
+      scope,
+      registryKey(token),
+      token,
+      consumerLifetime,
+      resolvingPath,
+    );
+  }
 
-    const key = registryKey(token);
+  #resolveFromScopeByKey<T>(
+    scope: ScopeImpl,
+    key: RegistryKey,
+    tokenForErrors: InjectionToken<T>,
+    consumerLifetime: Lifetime | null,
+    resolvingPath: RegistryKey[],
+  ): T {
+    if (scope.isDisposed()) throw new ScopeDisposedError();
 
     const ultraFast = this.#tryUltraFastCache<T>(scope, key);
     if (ultraFast !== undefined) return ultraFast;
@@ -406,15 +459,17 @@ class ContainerImpl implements Container {
     }
 
     const localProv = scope.findLocalProvider(key);
-    const regProv = this.#registry.get(key);
+    const compiled = this.#resolvePlan.get(key);
+    const regProv = compiled?.np;
     const np = localProv ??
       regProv ??
-      (typeof token === "function" && getInjectableMetadata(token as ClassToken<unknown>)
-        ? syntheticClassProvider(token as ClassToken<T>) as NormalizedProvider<unknown>
+      (typeof tokenForErrors === "function" &&
+          getInjectableMetadata(tokenForErrors as ClassToken<unknown>)
+        ? syntheticClassProvider(tokenForErrors as ClassToken<T>) as NormalizedProvider<unknown>
         : undefined);
 
     if (!np) {
-      throw new ProviderNotFoundError(token, pathIdsFromKeys([...resolvingPath, key]));
+      throw new ProviderNotFoundError(tokenForErrors, pathIdsFromKeys([...resolvingPath, key]));
     }
 
     if (consumerLifetime === "singleton" && np.lifetime === "scoped") {
@@ -445,7 +500,8 @@ class ContainerImpl implements Container {
     const pathWithSelf = [...resolvingPath, key];
     scope.pushResolving(key);
     try {
-      return this.#materialize(scope, np as NormalizedProvider<T>, pathWithSelf);
+      const plan = localProv ? compileProviderForResolve(localProv) : compiled;
+      return this.#materialize(scope, np as NormalizedProvider<T>, pathWithSelf, plan);
     } finally {
       scope.popResolving();
     }
@@ -455,17 +511,18 @@ class ContainerImpl implements Container {
     scope: ScopeImpl,
     np: NormalizedProvider<T>,
     resolvingPath: RegistryKey[],
+    compiled: ReturnType<ResolvePlan["get"]>,
   ): T {
     const key = np.key;
 
     if (np.lifetime === "singleton") {
-      const created = this.#createInstance(scope, np, resolvingPath);
+      const created = this.#createInstance(scope, np, resolvingPath, compiled);
       this.#singletonCache.set(key, created);
       return created;
     }
 
     if (np.lifetime === "scoped") {
-      const created = this.#createInstance(scope, np, resolvingPath);
+      const created = this.#createInstance(scope, np, resolvingPath, compiled);
       scope.setScoped(key, created);
       if (scope.getAllowsScoped()) {
         maybeTrackDisposable(scope, created);
@@ -473,7 +530,7 @@ class ContainerImpl implements Container {
       return created;
     }
 
-    const created = this.#createInstance(scope, np, resolvingPath);
+    const created = this.#createInstance(scope, np, resolvingPath, compiled);
     if (scope.getAllowsScoped()) {
       maybeTrackDisposable(scope, created);
     }
@@ -484,27 +541,42 @@ class ContainerImpl implements Container {
     scope: ScopeImpl,
     np: NormalizedProvider<T>,
     resolvingPath: RegistryKey[],
+    compiled: ReturnType<ResolvePlan["get"]>,
   ): T {
-    const resolveDep = (dep: InjectionToken<unknown>) =>
-      this.resolveFromScope(scope, dep, np.lifetime, resolvingPath);
+    const depKeys = compiled?.depKeys ??
+      np.deps.map((dep) => registryKey(dep));
+    const resolveDepByKey = (depKey: RegistryKey) =>
+      this.#resolveFromScopeByKey(
+        scope,
+        depKey,
+        depKey as InjectionToken<unknown>,
+        np.lifetime,
+        resolvingPath,
+      );
 
     switch (np.providerType) {
       case "value":
         return np.useValue as T;
 
       case "existing": {
-        const ex = np.useExisting!;
-        return this.resolveFromScope(scope, ex, np.lifetime, resolvingPath) as T;
+        const exKey = depKeys[0]!;
+        return this.#resolveFromScopeByKey(
+          scope,
+          exKey,
+          np.useExisting!,
+          np.lifetime,
+          resolvingPath,
+        ) as T;
       }
 
       case "factory": {
-        const args = np.deps.map((d) => resolveDep(d));
+        const args = depKeys.map((depKey) => resolveDepByKey(depKey));
         return np.useFactory!(scope, ...args) as T;
       }
 
       case "class": {
         const Ctor = np.useClass!;
-        const args = np.deps.map((d) => resolveDep(d)) as never[];
+        const args = depKeys.map((depKey) => resolveDepByKey(depKey)) as never[];
         const instance = new (Ctor as new (...args: never[]) => T)(...args);
         return instance;
       }
@@ -515,4 +587,14 @@ class ContainerImpl implements Container {
         });
     }
   }
+}
+
+function compileProviderForResolve(
+  np: NormalizedProvider,
+): NonNullable<ReturnType<ResolvePlan["get"]>> {
+  const depKeys = new Array<RegistryKey>(np.deps.length);
+  for (let i = 0; i < np.deps.length; i++) {
+    depKeys[i] = registryKey(np.deps[i]!);
+  }
+  return { np, depKeys };
 }

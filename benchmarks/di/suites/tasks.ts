@@ -8,7 +8,10 @@ import {
   NestRootService,
   RequestRootService,
 } from "../adapters/nestjs.ts";
-import { createTsyringeScopedContainer, createTsyringeSingletonContainer } from "../adapters/tsyringe.ts";
+import {
+  createTsyringeRequestScopeParent,
+  createTsyringeSingletonContainer,
+} from "../adapters/tsyringe.ts";
 import { RootService as TsyringeRootService } from "../adapters/tsyringe.ts";
 import { getAdapter } from "../adapters/index.ts";
 import type { AdapterName } from "../adapters/types.ts";
@@ -221,12 +224,12 @@ export function addRequestScopeTasks(bench: BenchAdd, adapterName: AdapterName):
       let container: Container;
       bench.add(
         label,
-        async () => {
+        () => {
           const scope = container.createScope();
           try {
             scope.resolve(RootServiceToken).run();
           } finally {
-            await scope.dispose();
+            scope.disposeSync();
           }
         },
         {
@@ -253,16 +256,26 @@ export function addRequestScopeTasks(bench: BenchAdd, adapterName: AdapterName):
       );
       break;
     }
-    case "tsyringe":
-      bench.add(label, async () => {
-        const container = createTsyringeScopedContainer();
-        try {
-          container.resolve(TsyringeRootService).run();
-        } finally {
-          container.clearInstances();
-        }
-      });
+    case "tsyringe": {
+      let parent: DependencyContainer;
+      bench.add(
+        label,
+        () => {
+          const request = parent.createChildContainer();
+          try {
+            request.resolve(TsyringeRootService).run();
+          } finally {
+            request.clearInstances();
+          }
+        },
+        {
+          beforeAll: () => {
+            parent = createTsyringeRequestScopeParent();
+          },
+        },
+      );
       break;
+    }
     case "inversify":
       bench.add(label, async () => {
         const container = createInversifyRequestScopeContainer();

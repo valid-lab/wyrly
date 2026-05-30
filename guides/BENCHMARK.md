@@ -67,11 +67,22 @@ what is included in the measurement.
 ### Request scope
 
 Wyrly registers the composition root once in `beforeAll`; the timed loop only runs
-`container.createScope()` → `resolve` → `scope.dispose()` (closer to one production HTTP request).
+`container.createScope()` → `resolve` → `scope.disposeSync()` (closer to one production HTTP request).
 typed-inject has no scoped lifetime API, so it builds the injector in `beforeAll` and uses
-`createChildInjector()` per iteration as a one-request boundary approximation. NestJS simulates `Scope.REQUEST` with `ContextIdFactory.create()` but may recreate the application
-context, so treat its numbers as indicative only. Absolute overhead per real HTTP request is usually
-**microseconds**, dwarfed by I/O.
+`createChildInjector()` per iteration as a one-request boundary approximation. tsyringe cannot
+combine factory providers with `ContainerScoped`, so it uses **one child container per request**
+(fresh singleton cache cleared via `clearInstances()`). NestJS simulates `Scope.REQUEST` with
+`ContextIdFactory.create()` but may recreate the application context, so treat its numbers as
+indicative only. Absolute overhead per real HTTP request is usually **microseconds**, dwarfed by I/O.
+
+#### Comparison groups (interpretation)
+
+| Group | Suite / adapters | What is measured |
+| ----- | ---------------- | ---------------- |
+| **A: cached hot path** | `resolution` (all), `typed-inject` / `nestjs` `request_scope` | Cached resolve on a warm container |
+| **B: scoped cold build** | **wyrly** / **inversify** / **tsyringe** `request_scope` | New graph built per simulated request |
+
+Do not compare Group A and Group B ops/s directly.
 
 ### Do not over-interpret
 
