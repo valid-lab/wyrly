@@ -6,8 +6,8 @@
   },
   "imports": {
     "@types/express": "npm:@types/express@5",
-    "@wyrly/core": "jsr:@wyrly/core@^2.2.1",
-    "@wyrly/express": "jsr:@wyrly/express@^2.2.1",
+    "@wyrly/core": "jsr:@wyrly/core@^2.3.0",
+    "@wyrly/express": "jsr:@wyrly/express@^2.3.0",
     "express": "npm:express@5"
   },
   "tasks": {

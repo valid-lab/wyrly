@@ -5,8 +5,8 @@
     ".": "./main.ts"
   },
   "imports": {
-    "@wyrly/core": "jsr:@wyrly/core@^2.2.1",
-    "@wyrly/fastify": "jsr:@wyrly/fastify@^2.2.1",
+    "@wyrly/core": "jsr:@wyrly/core@^2.3.0",
+    "@wyrly/fastify": "jsr:@wyrly/fastify@^2.3.0",
     "fastify": "npm:fastify@5"
   },
   "tasks": {

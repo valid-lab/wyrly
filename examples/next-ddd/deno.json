@@ -5,8 +5,8 @@
     ".": "./main.ts"
   },
   "imports": {
-    "@wyrly/core": "jsr:@wyrly/core@^2.2.1",
-    "@wyrly/next": "jsr:@wyrly/next@^2.2.1",
+    "@wyrly/core": "jsr:@wyrly/core@^2.3.0",
+    "@wyrly/next": "jsr:@wyrly/next@^2.3.0",
     "next": "npm:next@15"
   },
   "tasks": {

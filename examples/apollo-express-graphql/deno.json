@@ -7,9 +7,9 @@
   "imports": {
     "@apollo/server": "npm:@apollo/server@4",
     "@types/express": "npm:@types/express@5",
-    "@wyrly/apollo": "jsr:@wyrly/apollo@^2.2.1",
-    "@wyrly/core": "jsr:@wyrly/core@^2.2.1",
-    "@wyrly/express": "jsr:@wyrly/express@^2.2.1",
+    "@wyrly/apollo": "jsr:@wyrly/apollo@^2.3.0",
+    "@wyrly/core": "jsr:@wyrly/core@^2.3.0",
+    "@wyrly/express": "jsr:@wyrly/express@^2.3.0",
     "cors": "npm:cors@2",
     "express": "npm:express@5",
     "graphql": "npm:graphql@16"

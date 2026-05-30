@@ -647,7 +647,10 @@ class ContainerImpl implements Container {
       if (frozenSingleton !== FROZEN_MISS) return frozenSingleton as T;
     }
 
-    if (scope.getAllowsScoped() && !scope.hasScopedCacheInChain()) {
+    // Frozen scoped graph assumes registry-only deps; skip when scope has local bindings (e.g. scope.set).
+    if (
+      scope.getAllowsScoped() && scope.canUltraFastCache() && !scope.hasScopedCacheInChain()
+    ) {
       const frozen = this.#tryFrozenScopedResolve<T>(scope, key);
       if (frozen !== FROZEN_MISS) return frozen as T;
     }

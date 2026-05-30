@@ -127,6 +127,22 @@ Deno.test("scope.set wins over provider", () => {
   assertEquals(scope.resolve(T), 99);
 });
 
+Deno.test("scope.set satisfies class dep not in registry (frozen scoped skipped)", () => {
+  const Config = token<{ id: string }>("Config");
+  class Service {
+    constructor(readonly cfg: { id: string }) {}
+  }
+  const c = createContainer();
+  c.register(Service, {
+    useClass: Service,
+    deps: [Config],
+    lifetime: "scoped",
+  });
+  const scope = c.createScope();
+  scope.set(Config, { id: "from-scope" });
+  assertEquals(scope.resolve(Service).cfg.id, "from-scope");
+});
+
 Deno.test("inspect returns nodes and edges", () => {
   const c = createContainer();
   const A = token<number>("A");

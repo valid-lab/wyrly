@@ -2051,9 +2051,9 @@
     "members": {
       "examples/apollo-express-graphql": {
         "dependencies": [
-          "jsr:@wyrly/apollo@^2.2.1",
-          "jsr:@wyrly/core@^2.2.1",
-          "jsr:@wyrly/express@^2.2.1",
+          "jsr:@wyrly/apollo@^2.3.0",
+          "jsr:@wyrly/core@^2.3.0",
+          "jsr:@wyrly/express@^2.3.0",
           "npm:@apollo/server@4",
           "npm:@types/express@5",
           "npm:cors@2",
@@ -2063,86 +2063,86 @@
       },
       "examples/apollo-graphql": {
         "dependencies": [
-          "jsr:@wyrly/apollo@^2.2.1",
-          "jsr:@wyrly/core@^2.2.1",
+          "jsr:@wyrly/apollo@^2.3.0",
+          "jsr:@wyrly/core@^2.3.0",
           "npm:@apollo/server@4",
           "npm:graphql@16"
         ]
       },
       "examples/basic-ddd": {
         "dependencies": [
-          "jsr:@wyrly/core@^2.2.1"
+          "jsr:@wyrly/core@^2.3.0"
         ]
       },
       "examples/dependency-graph": {
         "dependencies": [
-          "jsr:@wyrly/core@^2.2.1"
+          "jsr:@wyrly/core@^2.3.0"
         ]
       },
       "examples/explicit-deps": {
         "dependencies": [
-          "jsr:@wyrly/core@^2.2.1"
+          "jsr:@wyrly/core@^2.3.0"
         ]
       },
       "examples/express-api": {
         "dependencies": [
-          "jsr:@wyrly/core@^2.2.1",
-          "jsr:@wyrly/express@^2.2.1",
+          "jsr:@wyrly/core@^2.3.0",
+          "jsr:@wyrly/express@^2.3.0",
           "npm:@types/express@5",
           "npm:express@5"
         ]
       },
       "examples/express-graphql": {
         "dependencies": [
-          "jsr:@wyrly/core@^2.2.1",
-          "jsr:@wyrly/graphql@^2.2.1",
+          "jsr:@wyrly/core@^2.3.0",
+          "jsr:@wyrly/graphql@^2.3.0",
           "npm:@types/express@5",
           "npm:express@5"
         ]
       },
       "examples/fastify-api": {
         "dependencies": [
-          "jsr:@wyrly/core@^2.2.1",
-          "jsr:@wyrly/fastify@^2.2.1",
+          "jsr:@wyrly/core@^2.3.0",
+          "jsr:@wyrly/fastify@^2.3.0",
           "npm:fastify@5"
         ]
       },
       "examples/fresh-routes": {
         "dependencies": [
           "jsr:@fresh/core@2",
-          "jsr:@wyrly/core@^2.2.1",
-          "jsr:@wyrly/fresh@^2.2.1"
+          "jsr:@wyrly/core@^2.3.0",
+          "jsr:@wyrly/fresh@^2.3.0"
         ]
       },
       "examples/graphql-request": {
         "dependencies": [
-          "jsr:@wyrly/core@^2.2.1",
-          "jsr:@wyrly/graphql@^2.2.1"
+          "jsr:@wyrly/core@^2.3.0",
+          "jsr:@wyrly/graphql@^2.3.0"
         ]
       },
       "examples/hono-api": {
         "dependencies": [
-          "jsr:@wyrly/core@^2.2.1",
-          "jsr:@wyrly/hono@^2.2.1",
+          "jsr:@wyrly/core@^2.3.0",
+          "jsr:@wyrly/hono@^2.3.0",
           "npm:hono@4"
         ]
       },
       "examples/next-ddd": {
         "dependencies": [
-          "jsr:@wyrly/core@^2.2.1",
-          "jsr:@wyrly/next@^2.2.1",
+          "jsr:@wyrly/core@^2.3.0",
+          "jsr:@wyrly/next@^2.3.0",
           "npm:next@15"
         ]
       },
       "examples/provider-patterns": {
         "dependencies": [
-          "jsr:@wyrly/core@^2.2.1"
+          "jsr:@wyrly/core@^2.3.0"
         ]
       },
       "examples/yoga-graphql": {
         "dependencies": [
-          "jsr:@wyrly/core@^2.2.1",
-          "jsr:@wyrly/yoga@^2.2.1",
+          "jsr:@wyrly/core@^2.3.0",
+          "jsr:@wyrly/yoga@^2.3.0",
           "npm:graphql-yoga@5"
         ]
       },

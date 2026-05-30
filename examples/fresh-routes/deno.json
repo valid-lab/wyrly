@@ -5,8 +5,8 @@
     ".": "./main.ts"
   },
   "imports": {
-    "@wyrly/core": "jsr:@wyrly/core@^2.2.1",
-    "@wyrly/fresh": "jsr:@wyrly/fresh@^2.2.1",
+    "@wyrly/core": "jsr:@wyrly/core@^2.3.0",
+    "@wyrly/fresh": "jsr:@wyrly/fresh@^2.3.0",
     "fresh": "jsr:@fresh/core@^2"
   },
   "tasks": {
