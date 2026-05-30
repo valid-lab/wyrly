@@ -9,11 +9,11 @@ adheres to [Semantic Versioning](https://semver.org/) from **1.0.0**.
 
 ## [Unreleased]
 
+## [2.3.0] - 2026-05-30
+
 ### Added
 
 - **CI**: DI bench regression gate for `@wyrly/core` (separate `bench-regression` job; Wyrly-only four suites vs committed `minHz` baselines).
-
-## [2.3.0] - 2026-05-30
 
 ### Fixed
 

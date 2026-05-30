@@ -8,11 +8,11 @@ English: [CHANGELOG.md](./CHANGELOG.md)
 
 ## [Unreleased]
 
+## [2.3.0] - 2026-05-30
+
 ### 追加
 
 - **CI**: `@wyrly/core` 向け DI ベンチ回帰ゲート（`bench-regression` 別ジョブ。Wyrly 4 スイートをコミット済み `minHz` と比較）。
-
-## [2.3.0] - 2026-05-30
 
 ### 修正
 
