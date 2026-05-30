@@ -4,7 +4,24 @@ Wyrly DI には [`benchmarks/di/`](../benchmarks/di/) に
 **ローカル専用**のベンチマークスイートがあり、vanilla
 配線、typed-inject、tsyringe、InversifyJS、NestJS DI と resolve 性能を比較できます。
 
-CI には含まれません。数値はマシンと Node.js バージョンで変わります。
+全アダプタ実行（`deno task bench:di`）はローカル専用です。数値はマシンと Node.js バージョンで変わります。
+
+**CI 回帰ゲート（別ジョブ）:** `packages/core/**` などの変更時、GitHub Actions の `bench-regression` が
+Wyrly のみ 4 スイート（`resolution`, `cold_start`, `cold_start_resolution`, `request_scope`）を計測し、
+[`benchmarks/di/baselines/ci-wyrly.json`](../benchmarks/di/baselines/ci-wyrly.json) の `minHz` 未満なら失敗します（約 5% マージン込み）。`deno task ci` には含まれません。
+
+```sh
+deno task bench:di:ci:full   # CI と同じ: build → wyrly ベンチ → baseline 比較
+```
+
+意図的な性能改善後は ubuntu-latest（または CI ログ）で再計測し、ベースラインを更新:
+
+```sh
+deno task bench:di:ci
+deno run -A scripts/ci/check-di-bench.ts --update-baseline
+```
+
+CI がフレークする場合はジョブを無効化せず、再実行で通るなら `minHz` を 1 回だけ下げます。詳細は [CONTRIBUTING.ja.md](../CONTRIBUTING.ja.md)。
 
 ## クイックスタート
 

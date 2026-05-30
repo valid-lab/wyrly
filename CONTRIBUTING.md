@@ -28,12 +28,18 @@ deno task ci:deno    # fast: Deno workspace only
 deno task ci         # full gate (same as GitHub Actions; needs Node + Bun)
 ```
 
-DI performance benchmarks (local, not CI):
+DI benchmarks:
 
 ```sh
 deno task build:npm:core   # first time only
-deno task bench:di
+deno task bench:di         # all adapters, local comparison (~70s)
+deno task bench:di:ci:full # Wyrly-only CI gate (4 suites + baseline check)
 ```
+
+CI runs `bench-regression` (not `deno task ci`) when `packages/core/**` or `benchmarks/di/**` change.
+Baselines live in `benchmarks/di/baselines/ci-wyrly.json`. After a deliberate perf win, run
+`bench:di:ci` then `deno run -A scripts/ci/check-di-bench.ts --update-baseline` and commit the JSON.
+If the job flakes on re-run, lower `minHz` once instead of skipping the check.
 
 See [guides/BENCHMARK.md](./guides/BENCHMARK.md).
 

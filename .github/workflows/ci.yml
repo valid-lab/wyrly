@@ -7,6 +7,7 @@ on:
       - "packages/**"
       - "examples/**"
       - "scripts/**"
+      - "benchmarks/di/**"
       - "compat/**"
       - "deno.jsonc"
       - "deno.lock"
@@ -29,6 +30,7 @@ on:
       - "packages/**"
       - "examples/**"
       - "scripts/**"
+      - "benchmarks/di/**"
       - "compat/**"
       - "deno.jsonc"
       - "deno.lock"
@@ -72,3 +74,24 @@ jobs:
 
       - name: Full CI
         run: deno task ci
+
+  bench-regression:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: "20.x"
+
+      - name: DI bench regression (wyrly)
+        run: deno task bench:di:ci:full

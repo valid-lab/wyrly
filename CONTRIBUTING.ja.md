@@ -28,12 +28,15 @@ deno task ci:deno    # 高速: Deno ワークスペースのみ
 deno task ci         # フルゲート（GitHub Actions と同等。Node + Bun が必要）
 ```
 
-DI 性能ベンチマーク（ローカル、CI 外）:
+DI ベンチマーク:
 
 ```sh
 deno task build:npm:core   # 初回のみ
-deno task bench:di
+deno task bench:di         # 全アダプタ比較（ローカル、~70s）
+deno task bench:di:ci:full # CI 相当: Wyrly 4 スイート + baseline 比較
 ```
+
+`packages/core/**` や `benchmarks/di/**` の変更時、CI は `deno task ci` とは別に `bench-regression` を実行します。ベースラインは `benchmarks/di/baselines/ci-wyrly.json`。意図的な性能改善後は `bench:di:ci` のあと `deno run -A scripts/ci/check-di-bench.ts --update-baseline` で JSON を更新してコミット。再実行で通るフレークは `minHz` を 1 回下げて対応。
 
 詳細: [guides/BENCHMARK.ja.md](./guides/BENCHMARK.ja.md)
 

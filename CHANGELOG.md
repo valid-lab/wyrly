@@ -9,7 +9,15 @@ adheres to [Semantic Versioning](https://semver.org/) from **1.0.0**.
 
 ## [Unreleased]
 
+### Added
+
+- **CI**: DI bench regression gate for `@wyrly/core` (separate `bench-regression` job; Wyrly-only four suites vs committed `minHz` baselines).
+
 ## [2.3.0] - 2026-05-30
+
+### Fixed
+
+- **`@wyrly/core`**: skip frozen scoped materialization when the scope has local bindings (`scope.set`), so request middleware can inject port tokens not in the registry (e.g. Hono `CurrentUser`).
 
 ### Changed
 

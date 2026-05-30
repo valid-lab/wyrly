@@ -4,7 +4,28 @@ Wyrly DI ships a **local-only** benchmark suite under [`benchmarks/di/`](../benc
 compares resolve performance against vanilla wiring, typed-inject, tsyringe, InversifyJS, and NestJS
 DI.
 
-These benchmarks are **not** part of CI. Numbers vary by machine and Node.js version.
+Full multi-adapter runs (`deno task bench:di`) are **local only**. Numbers vary by machine and
+Node.js version.
+
+**CI regression gate (separate job):** on changes under `packages/core/**` (and bench tooling),
+GitHub Actions runs `bench-regression` — Wyrly adapter only, four suites (`resolution`,
+`cold_start`, `cold_start_resolution`, `request_scope`). Measured ops/s must stay at or above
+committed floors in [`benchmarks/di/baselines/ci-wyrly.json`](../benchmarks/di/baselines/ci-wyrly.json)
+(`minHz` per suite; ~5% margin baked in). This is **not** part of `deno task ci`.
+
+```sh
+deno task bench:di:ci:full   # same as CI: build, bench wyrly, check baseline
+```
+
+After intentional perf improvements, re-run on ubuntu-latest (or CI logs), then update baselines:
+
+```sh
+deno task bench:di:ci
+deno run -A scripts/ci/check-di-bench.ts --update-baseline
+```
+
+If CI flakes (passes on re-run), lower `minHz` once in the baseline file rather than disabling the
+job. See [CONTRIBUTING.md](../CONTRIBUTING.md).
 
 ## Quick start
 

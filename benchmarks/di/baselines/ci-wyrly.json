@@ -1,0 +1,10 @@
+{
+  "threshold": 0.05,
+  "note": "minHz = floor ops/s on ubuntu-latest CI; fail when measured hz < minHz. Raise minHz after intentional perf improvements.",
+  "suites": {
+    "resolution": { "minHz": 190000 },
+    "cold_start": { "minHz": 155000 },
+    "cold_start_resolution": { "minHz": 60000 },
+    "request_scope": { "minHz": 570000 }
+  }
+}

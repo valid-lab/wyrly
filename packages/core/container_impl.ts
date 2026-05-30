@@ -43,6 +43,7 @@ import {
 } from "./resolve_plan.ts";
 import { createInstanceFromSlot, dynamicDepResolver } from "./instance_builder.ts";
 import { pathIdsFromKeys } from "./path_utils.ts";
+import type { Container } from "./container.ts";
 import {
   validateNormalizedProviders,
   type ValidateOptions,
@@ -376,24 +377,7 @@ class ScopeImpl implements Scope {
   }
 }
 
-/** Root DI container: registrations, root resolve, scopes, inspect, and validate. */
-export interface Container {
-  register<T>(token: InjectionToken<T>, provider?: Provider<T>): void;
-  override<T>(token: InjectionToken<T>, provider: Provider<T>): void;
-  resolve<T>(token: InjectionToken<T>): T;
-  createScope(): Scope;
-  inspect(): DependencyGraph;
-  validate(options?: ValidateOptions): ValidationResult;
-  registerMany(
-    entries: readonly (readonly [InjectionToken<unknown>, Provider<unknown>])[],
-  ): void;
-}
-
-export function createContainer(): Container {
-  return new ContainerImpl();
-}
-
-class ContainerImpl implements Container {
+export class ContainerImpl implements Container {
   readonly #resolvePlan = new ResolvePlan();
   readonly #singletonCache = new Map<RegistryKey, unknown>();
   readonly #scopePool: ScopeImpl[] = [];
