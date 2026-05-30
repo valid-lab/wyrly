@@ -97,9 +97,9 @@ export class ScopeImpl implements Scope {
   readonly #parent: ScopeImpl | undefined;
   readonly #isInnerRoot: boolean;
   #children: Set<ScopeImpl> | undefined;
-  readonly #localValues = new Map<RegistryKey, unknown>();
-  readonly #localProviders = new Map<RegistryKey, NormalizedProvider<unknown>>();
-  readonly #scopedCache = new Map<RegistryKey, unknown>();
+  #localValues: Map<RegistryKey, unknown> | undefined;
+  #localProviders: Map<RegistryKey, NormalizedProvider<unknown>> | undefined;
+  #scopedCache: Map<RegistryKey, unknown> | undefined;
   #resolvingStack: RegistryKey[] | undefined;
   #resolvingKeys: Set<RegistryKey> | undefined;
   #bindingsEmpty = true;
@@ -135,16 +135,17 @@ export class ScopeImpl implements Scope {
   register<T>(token: InjectionToken<T>, provider: Provider<T>): void {
     if (this.#disposed) throw new ScopeDisposedError();
     const np = normalizeProvider(token, provider) as NormalizedProvider<unknown>;
-    if (this.#localProviders.has(np.key)) {
+    const localProviders = this.#ensureLocalProviders();
+    if (localProviders.has(np.key)) {
       throw new DuplicateProviderError(token);
     }
-    this.#localProviders.set(np.key, np);
+    localProviders.set(np.key, np);
     this.#bindingsEmpty = false;
   }
 
   set<T>(token: InjectionToken<T>, value: T): void {
     if (this.#disposed) throw new ScopeDisposedError();
-    this.#localValues.set(registryKey(token), value);
+    this.#ensureLocalValues().set(registryKey(token), value);
     this.#bindingsEmpty = false;
   }
 
@@ -174,15 +175,18 @@ export class ScopeImpl implements Scope {
       }
     }
     this.disposers.length = 0;
-    this.#scopedCache.clear();
-    this.#localProviders.clear();
-    this.#localValues.clear();
+    this.#scopedCache?.clear();
+    this.#localProviders?.clear();
+    this.#localValues?.clear();
+    this.#scopedCache = undefined;
+    this.#localProviders = undefined;
+    this.#localValues = undefined;
     this.#bindingsEmpty = true;
     this.#scopedCacheEmpty = true;
   }
 
   findLocalValue(key: RegistryKey): unknown | undefined {
-    if (this.#localValues.has(key)) {
+    if (this.#localValues?.has(key)) {
       return this.#localValues.get(key);
     }
     return this.#parent?.findLocalValue(key);
@@ -193,31 +197,31 @@ export class ScopeImpl implements Scope {
   }
 
   getLocalValue(key: RegistryKey): unknown {
-    return this.#localValues.get(key);
+    return this.#localValues?.get(key);
   }
 
   findLocalProvider(key: RegistryKey): NormalizedProvider<unknown> | undefined {
-    const local = this.#localProviders.get(key);
+    const local = this.#localProviders?.get(key);
     if (local !== undefined) return local;
     return this.#parent?.findLocalProvider(key);
   }
 
   getLocalProvider(key: RegistryKey): NormalizedProvider<unknown> | undefined {
-    return this.#localProviders.get(key);
+    return this.#localProviders?.get(key);
   }
 
   getScopedInChain(key: RegistryKey): unknown | undefined {
-    const hit = this.#scopedCache.get(key);
+    const hit = this.#scopedCache?.get(key);
     if (hit !== undefined) return hit;
     return this.#parent?.getScopedInChain(key);
   }
 
   getScoped(key: RegistryKey): unknown {
-    return this.#scopedCache.get(key);
+    return this.#scopedCache?.get(key);
   }
 
   setScoped(key: RegistryKey, value: unknown): void {
-    this.#scopedCache.set(key, value);
+    this.#ensureScopedCache().set(key, value);
     this.#scopedCacheEmpty = false;
   }
 
@@ -260,6 +264,27 @@ export class ScopeImpl implements Scope {
       this.#children = new Set();
     }
     return this.#children;
+  }
+
+  #ensureLocalValues(): Map<RegistryKey, unknown> {
+    if (!this.#localValues) {
+      this.#localValues = new Map();
+    }
+    return this.#localValues;
+  }
+
+  #ensureLocalProviders(): Map<RegistryKey, NormalizedProvider<unknown>> {
+    if (!this.#localProviders) {
+      this.#localProviders = new Map();
+    }
+    return this.#localProviders;
+  }
+
+  #ensureScopedCache(): Map<RegistryKey, unknown> {
+    if (!this.#scopedCache) {
+      this.#scopedCache = new Map();
+    }
+    return this.#scopedCache;
   }
 
   #ensureResolving(): { stack: RegistryKey[]; keys: Set<RegistryKey> } {
@@ -341,12 +366,23 @@ class ContainerImpl implements Container {
   }
 
   #tryUltraFastCache<T>(scope: ScopeImpl, key: RegistryKey): T | undefined {
+    if (!scope.getAllowsScoped()) {
+      if (!scope.canUltraFastCache()) return undefined;
+      const singletonHit = this.#singletonCache.get(key);
+      if (singletonHit !== undefined) return singletonHit as T;
+      return undefined;
+    }
+
     if (!scope.canUltraFastCache()) return undefined;
-    const singletonHit = this.#singletonCache.get(key);
-    if (singletonHit !== undefined) return singletonHit as T;
-    if (scope.getAllowsScoped() && scope.hasScopedCacheInChain()) {
+    if (scope.hasScopedCacheInChain()) {
       const scopedHit = scope.getScopedInChain(key);
       if (scopedHit !== undefined) return scopedHit as T;
+      const regProv = this.#registry.get(key);
+      if (regProv?.lifetime === "singleton") {
+        const hit = this.#singletonCache.get(key);
+        if (hit !== undefined) return hit as T;
+      }
+      return undefined;
     }
     return undefined;
   }
@@ -423,16 +459,12 @@ class ContainerImpl implements Container {
     const key = np.key;
 
     if (np.lifetime === "singleton") {
-      const hit = this.#singletonCache.get(key);
-      if (hit !== undefined) return hit as T;
       const created = this.#createInstance(scope, np, resolvingPath);
       this.#singletonCache.set(key, created);
       return created;
     }
 
     if (np.lifetime === "scoped") {
-      const hit = scope.getScopedInChain(key);
-      if (hit !== undefined) return hit as T;
       const created = this.#createInstance(scope, np, resolvingPath);
       scope.setScoped(key, created);
       if (scope.getAllowsScoped()) {

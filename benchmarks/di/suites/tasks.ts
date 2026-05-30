@@ -237,11 +237,22 @@ export function addRequestScopeTasks(bench: BenchAdd, adapterName: AdapterName):
       );
       break;
     }
-    case "typed-inject":
-      bench.add(label, () => {
-        createTypedInjectInjector().resolve(TOKENS.RootService).run();
-      });
+    case "typed-inject": {
+      let injector: ReturnType<typeof createTypedInjectInjector>;
+      bench.add(
+        label,
+        () => {
+          const child = injector.createChildInjector();
+          child.resolve(TOKENS.RootService).run();
+        },
+        {
+          beforeAll: () => {
+            injector = createTypedInjectInjector();
+          },
+        },
+      );
       break;
+    }
     case "tsyringe":
       bench.add(label, async () => {
         const container = createTsyringeScopedContainer();

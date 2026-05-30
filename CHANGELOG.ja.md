@@ -12,6 +12,7 @@ English: [CHANGELOG.md](./CHANGELOG.md)
 
 - **`@wyrly/core`**: キャッシュ済み singleton/scoped の resolve を高速化（ホットパス最適化。挙動は不変）。
 - **`@wyrly/core`**: Phase 2 resolve 最適化 — scope-local binding が無い場合の ultra-fast cache path、scope 生成時の遅延確保、`displayName` の遅延計算（挙動は不変）。
+- **`@wyrly/core`**: request scope resolve 最適化 — scoped 向け ultra-fast path、scope Map の lazy 確保、materialize の重複 cache lookup 削除（挙動は不変）。
 
 ## [2.2.1] - 2026-05-25
 
