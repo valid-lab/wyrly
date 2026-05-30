@@ -28,6 +28,13 @@ export function ensureDepKeys(slot: CompiledProvider): readonly RegistryKey[] {
   return depKeys;
 }
 
+/** Compiles dep keys for all slots in one pass (first resolve only; not at register). */
+export function compileAllDepKeys(slots: Iterable<CompiledProvider>): void {
+  for (const slot of slots) {
+    ensureDepKeys(slot);
+  }
+}
+
 export function compileProvider(np: NormalizedProvider, slotIndex: number): CompiledProvider {
   return {
     np,
@@ -36,7 +43,7 @@ export function compileProvider(np: NormalizedProvider, slotIndex: number): Comp
   };
 }
 
-/** Single-map provider registry with hybrid dep-key compilation. */
+/** Single-map provider registry; zero-deps slots get shared dep keys at register. */
 export class ResolvePlan {
   readonly #slots = new Map<RegistryKey, CompiledProvider>();
   readonly #keyToIndex = new Map<RegistryKey, number>();

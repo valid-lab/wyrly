@@ -15,7 +15,8 @@ English: [CHANGELOG.md](./CHANGELOG.md)
 - **`@wyrly/core`**: request scope resolve 最適化 — scoped 向け ultra-fast path、scope Map の lazy 確保、materialize の重複 cache lookup 削除（挙動は不変）。
 - **`@wyrly/core`**: Phase 3 — register 時 resolve plan（dep key 事前コンパイル）、register 時 `displayName` 省略、inner root resolve fast path、`Scope.disposeSync()`（挙動は不変）。
 - **`@wyrly/core`**: Phase 4 — cold start 向け register 最適化: dep key の初回 resolve 時コンパイル、単一 Map レジストリ（`#registry` + resolve plan の二重 Map 統合）、inner root scope の lazy 生成、明示 deps/lifetime 時の `useClass` fast path（挙動は不変）。
-- **`@wyrly/core`**: Phase 5 — hybrid dep-key compile、`registerMany()`、scope プール、dense scoped cache、frozen scoped graph fast path。tsyringe/inversify の `request_scope` ベンチ公平性修正（挙動は不変）。
+- **`@wyrly/core`**: Phase 5 — `registerMany()`、scope プール、dense scoped cache、frozen scoped graph fast path、register 時の zero-deps dep-key 共有。tsyringe/inversify の `request_scope` ベンチ公平性修正（挙動は不変）。
+- **`@wyrly/core`**: Phase 5C — frozen singleton graph（root 一括 materialize）、初回 resolve 時の `compileAllDepKeys`、`registerMany` バッチ正規化 fast path、singleton-only 時の frozen scoped invalidate スキップ（挙動は不変）。
 
 ## [2.2.1] - 2026-05-25
 

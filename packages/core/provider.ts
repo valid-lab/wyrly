@@ -161,6 +161,18 @@ export function normalizeProvider<T>(
         useClass: provider.useClass,
       } as NormalizedProvider<T>;
     }
+    if (explicitLifetime !== undefined) {
+      const meta = getInjectableMetadata(provider.useClass);
+      const deps = meta?.deps?.length ? meta.deps : EMPTY_DEPS;
+      return {
+        token,
+        key,
+        providerType: "class",
+        deps,
+        lifetime: explicitLifetime,
+        useClass: provider.useClass,
+      } as NormalizedProvider<T>;
+    }
     const meta = getInjectableMetadata(provider.useClass);
     const deps = meta?.deps ?? [];
     const lifetime = explicitLifetime ?? meta?.lifetime ?? "singleton";

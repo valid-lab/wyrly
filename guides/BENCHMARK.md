@@ -74,6 +74,12 @@ handling; for the latter, prefer `request_scope` (Group B).
 shifts work from register to the first resolve. Expect a smaller gap vs tsyringe than in
 register-only `cold_start`.
 
+Since Phase 5C, an all-singleton composition root uses a **frozen singleton graph** (topological
+one-shot materialize plus batched dep-key compile before the first resolve), similar to the frozen
+scoped path for `request_scope`. The Wyrly adapter (symbol tokens + explicit deps) can still rank
+below inversify class-as-token registration on `cold_start`; production apps register once at module
+scope.
+
 ### Request scope
 
 **Group B** (wyrly / tsyringe / inversify) each build the composition root once in `beforeAll`; the

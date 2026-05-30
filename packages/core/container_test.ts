@@ -268,3 +268,48 @@ Deno.test("dispose onError is called when disposer fails", async () => {
   });
   assertEquals(log, ["err"]);
 });
+
+Deno.test("frozen singleton graph resolves full tree on first root resolve", () => {
+  const A = token<string>("A");
+  const B = token<string>("B");
+  const Root = token<string>("Root");
+  const c = createContainer();
+  c.registerMany([
+    [A, { useValue: "a", lifetime: "singleton" }],
+    [B, {
+      useFactory: (_s, a) => `b:${a as string}`,
+      deps: [A],
+      lifetime: "singleton",
+    }],
+    [Root, {
+      useFactory: (_s, a, b) => `${a as string}|${b as string}`,
+      deps: [A, B],
+      lifetime: "singleton",
+    }],
+  ]);
+  assertEquals(c.resolve(Root), "a|b:a");
+  assertEquals(c.resolve(A), "a");
+});
+
+Deno.test("override invalidates frozen singleton plan", () => {
+  const T = token<number>("T");
+  const c = createContainer();
+  c.register(T, { useValue: 1, lifetime: "singleton" });
+  assertEquals(c.resolve(T), 1);
+  c.override(T, { useValue: 2 });
+  assertEquals(c.resolve(T), 2);
+});
+
+Deno.test("mixed lifetime skips frozen singleton", () => {
+  const S = token<string>("S");
+  const c = createContainer();
+  c.register(S, { useValue: "x", lifetime: "singleton" });
+  @Injectable({ lifetime: "scoped", deps: [S] })
+  class A {
+    constructor(public s: string) {}
+  }
+  c.register(A, { useClass: A, lifetime: "scoped" });
+  const scope = c.createScope();
+  const a = scope.resolve(A);
+  assertEquals(a.s, "x");
+});

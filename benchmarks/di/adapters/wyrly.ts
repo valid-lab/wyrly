@@ -29,9 +29,9 @@ function graphEntries(
   lifetime: "singleton" | "scoped",
 ): readonly (readonly [unknown, Provider<unknown>])[] {
   return [
-    [ClientAToken, { useClass: ClientA, lifetime }],
-    [ClientBToken, { useClass: ClientB, lifetime }],
-    [ClientCToken, { useClass: ClientC, lifetime }],
+    [ClientAToken, { useClass: ClientA, deps: [], lifetime }],
+    [ClientBToken, { useClass: ClientB, deps: [], lifetime }],
+    [ClientCToken, { useClass: ClientC, deps: [], lifetime }],
     [StoreAToken, { useClass: StoreA, deps: [ClientAToken], lifetime }],
     [StoreBToken, { useClass: StoreB, deps: [ClientBToken], lifetime }],
     [StoreCToken, { useClass: StoreC, deps: [ClientCToken], lifetime }],
