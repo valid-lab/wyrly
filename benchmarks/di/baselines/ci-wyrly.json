@@ -1,10 +1,10 @@
 {
   "threshold": 0.05,
-  "note": "Calibrated for GitHub Actions ubuntu-latest (not local dev). minHz = floor(measured_hz × 0.95) from first green bench-regression run 2026-05-30. Local/WSL is often 1.5–2.5× faster; use deno task bench:di locally. Raise minHz after intentional perf wins on CI.",
+  "note": "GHA ubuntu-latest: minHz = floor(min of 3 samples × 0.95), see docs/testing/gha-bench-runs.md (2026-05-30). Not comparable to local bench:di.",
   "suites": {
-    "resolution": { "minHz": 123338 },
-    "cold_start": { "minHz": 106495 },
-    "cold_start_resolution": { "minHz": 40660 },
-    "request_scope": { "minHz": 237614 }
+    "resolution": { "minHz": 113251 },
+    "cold_start": { "minHz": 97539 },
+    "cold_start_resolution": { "minHz": 44265 },
+    "request_scope": { "minHz": 301256 }
   }
 }
