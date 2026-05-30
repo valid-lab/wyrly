@@ -31,11 +31,9 @@ function compileDepSlotIndices(
 ): readonly number[] {
   const np = slot.np;
   if (np.deps.length === 0) return EMPTY_DEP_SLOT_INDICES;
-  const depKeys = slot.depKeys ?? compileDepKeys(np);
-  const indices = new Array<number>(depKeys.length);
-  for (let i = 0; i < depKeys.length; i++) {
-    const idx = plan.getSlotIndex(depKeys[i]!);
-    indices[i] = idx ?? -1;
+  const indices = new Array<number>(np.deps.length);
+  for (let i = 0; i < np.deps.length; i++) {
+    indices[i] = plan.getSlotIndex(registryKey(np.deps[i]!)) ?? -1;
   }
   return indices;
 }
@@ -64,10 +62,15 @@ export function compileAllDepKeys(slots: Iterable<CompiledProvider>): void {
   }
 }
 
-/** Compiles dep slot indices for all slots in one pass (registerMany finalize). */
-export function compileAllDepSlotIndices(plan: ResolvePlan): void {
+/** Compiles dep slot indices for scoped slots only (registerMany finalize). */
+export function compileScopedDepSlotIndices(plan: ResolvePlan): void {
   for (const slot of plan.iterateSlots()) {
-    ensureDepSlotIndices(slot, plan);
+    if (slot.np.lifetime !== "scoped") continue;
+    if (slot.np.deps.length === 0) {
+      slot.depSlotIndices = EMPTY_DEP_SLOT_INDICES;
+      continue;
+    }
+    slot.depSlotIndices = compileDepSlotIndices(slot, plan);
   }
 }
 
@@ -97,7 +100,7 @@ export class ResolvePlan {
     }
   }
 
-  register(np: NormalizedProvider): void {
+  register(np: NormalizedProvider): CompiledProvider {
     const existing = this.#keyToIndex.get(np.key);
     const slotIndex = existing ?? this.#nextSlotIndex++;
     const compiled: CompiledProvider = { np, slotIndex };
@@ -113,6 +116,7 @@ export class ResolvePlan {
     if (existing === undefined) {
       this.#keyToIndex.set(np.key, slotIndex);
     }
+    return compiled;
   }
 
   /** Clears lazily compiled dep metadata after registry changes. */

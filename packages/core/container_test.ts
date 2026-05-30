@@ -269,6 +269,26 @@ Deno.test("dispose onError is called when disposer fails", async () => {
   assertEquals(log, ["err"]);
 });
 
+Deno.test("registerMany finalizes bootstrap for scoped graph", () => {
+  const A = token<string>("A");
+  const B = token<string>("B");
+  const c = createContainer();
+  c.registerMany([
+    [A, { useFactory: () => "a", deps: [], lifetime: "scoped" }],
+    [B, {
+      useFactory: (_s: unknown, a: unknown) => `b:${a as string}`,
+      deps: [A],
+      lifetime: "scoped",
+    }],
+  ]);
+  const scope = c.createScope();
+  try {
+    assertEquals(scope.resolve(B), "b:a");
+  } finally {
+    scope.disposeSync();
+  }
+});
+
 Deno.test("registerMany finalizes bootstrap for singleton graph", () => {
   const A = token<string>("A");
   const B = token<string>("B");

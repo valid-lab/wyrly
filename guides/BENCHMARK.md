@@ -78,9 +78,15 @@ Since Phase 5C, an all-singleton composition root uses a **frozen singleton grap
 one-shot materialize plus batched dep-key compile before the first resolve), similar to the frozen
 scoped path for `request_scope`.
 
-Phase 6 (Bootstrap Compiler) **eager-finalizes dep slot indices** at the end of `registerMany`;
-**frozen singleton/scoped plans are built lazily** on the first `resolve` or `createScope`.
-Materialize uses `depSlotIndices` and dense `singletonBySlot` array lookups. Prefer
+Phase 6 (Bootstrap Compiler) introduced `depSlotIndices` and dense `ResolvePlan` slot storage;
+**frozen plans are built lazily** on the first `resolve` or `createScope`.
+
+Phase 6.1 (hybrid): **singleton** resolve uses direct `singletonCache` and lazy `depKeys` on frozen
+materialize (5C-style). **Scoped** frozen materialize keeps `depSlotIndices`; `registerMany`
+finalize runs `compileScopedDepSlotIndices` only for scoped graphs (singleton dep indices stay
+lazy).
+
+Prefer
 **`registerMany` in topological order** for composition roots; incremental `register` / `override`
 still invalidates and rebuilds lazily. The Wyrly adapter (symbol tokens + explicit deps) can still
 rank below inversify class-as-token registration on `cold_start`; production apps register once at

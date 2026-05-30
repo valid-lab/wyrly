@@ -18,6 +18,7 @@ English: [CHANGELOG.md](./CHANGELOG.md)
 - **`@wyrly/core`**: Phase 5 — `registerMany()`、scope プール、dense scoped cache、frozen scoped graph fast path、register 時の zero-deps dep-key 共有。tsyringe/inversify の `request_scope` ベンチ公平性修正（挙動は不変）。
 - **`@wyrly/core`**: Phase 5C — frozen singleton graph（root 一括 materialize）、初回 resolve 時の `compileAllDepKeys`、`registerMany` バッチ正規化 fast path、singleton-only 時の frozen scoped invalidate スキップ（挙動は不変）。
 - **`@wyrly/core`**: Phase 6 — Bootstrap Compiler: `depSlotIndices`、dense `singletonBySlot` キャッシュ、`registerMany` で dep インデックス eager finalize、初回 resolve/scope で frozen plan 構築、dense `ResolvePlan`（挙動は不変）。
+- **`@wyrly/core`**: Phase 6.1 — ハイブリッド bootstrap: singleton は `singletonCache` 直参照と frozen materialize 時の lazy `depKeys`（5C 相当）、scoped frozen materialize は `depSlotIndices` のまま、`registerMany` finalize では scoped グラフのみ `compileScopedDepSlotIndices`（挙動は不変）。
 
 ## [2.2.1] - 2026-05-25
 
