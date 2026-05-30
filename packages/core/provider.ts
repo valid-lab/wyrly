@@ -139,9 +139,31 @@ export function normalizeProvider<T>(
   }
 
   if ("useClass" in provider) {
+    const explicitDeps = provider.deps;
+    const explicitLifetime = provider.lifetime;
+    if (explicitDeps !== undefined && explicitLifetime !== undefined) {
+      return {
+        token,
+        key,
+        providerType: "class",
+        deps: explicitDeps,
+        lifetime: explicitLifetime,
+        useClass: provider.useClass,
+      } as NormalizedProvider<T>;
+    }
+    if (explicitDeps !== undefined) {
+      return {
+        token,
+        key,
+        providerType: "class",
+        deps: explicitDeps,
+        lifetime: explicitLifetime ?? "singleton",
+        useClass: provider.useClass,
+      } as NormalizedProvider<T>;
+    }
     const meta = getInjectableMetadata(provider.useClass);
-    const deps = provider.deps ?? meta?.deps ?? [];
-    const lifetime = provider.lifetime ?? meta?.lifetime ?? "singleton";
+    const deps = meta?.deps ?? [];
+    const lifetime = explicitLifetime ?? meta?.lifetime ?? "singleton";
     return {
       token,
       key,

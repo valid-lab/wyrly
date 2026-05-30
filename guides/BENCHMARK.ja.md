@@ -62,6 +62,15 @@ NestJS は `NestFactory.createApplicationContext` を測定しており、**モ�
 scan、フレームワーク初期化**を含みます。bare コンテナより桁違いに遅く出るのが正常です。Nest
 アプリ全体の起動時間とイコールではありません。
 
+Wyrly DI の **本番 Web / Workers パターン**は module スコープで composition root を **1 回だけ**
+登録します（[`compat/workers/src/index.ts`](../compat/workers/src/index.ts) 参照）。`cold_start`
+ベンチはイテレーションごとに `createContainer()` + 全 `register()` を繰り返す **synthetic worst-case**
+です。isolate 初回起動（module eval + register）の改善には効きますが、定常リクエスト処理の参考は
+`request_scope`（Group B）の方が近いです。
+
+`cold_start_resolution` は register に加え 1 回 resolve するため、dep key の lazy compile コストが
+resolve 側に移ります。register のみの `cold_start` より tsyringe との差は小さく出やすいです。
+
 ### request_scope
 
 Wyrly は composition root を `beforeAll` で 1 回登録し、計測ループでは `container.createScope()` →

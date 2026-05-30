@@ -19,11 +19,10 @@ import {
 import {
   augmentGraphWithInjectableClasses,
   buildGraph,
-  collectRegisteredProviders,
   dedupeEdges,
   type DependencyGraph,
 } from "./graph.ts";
-import { ResolvePlan } from "./resolve_plan.ts";
+import { compileProvider, ResolvePlan } from "./resolve_plan.ts";
 import {
   validateNormalizedProviders,
   type ValidateOptions,
@@ -328,13 +327,15 @@ export class ScopeImpl implements Scope {
 }
 
 class ContainerImpl implements Container {
-  readonly #registry = new Map<RegistryKey, NormalizedProvider<unknown>>();
   readonly #resolvePlan = new ResolvePlan();
   readonly #singletonCache = new Map<RegistryKey, unknown>();
-  readonly #innerRootScope: ScopeImpl;
+  #innerRootScope: ScopeImpl | undefined;
 
-  constructor() {
-    this.#innerRootScope = new ScopeImpl(this, { allowsScoped: false, isInnerRoot: true });
+  #getInnerRoot(): ScopeImpl {
+    if (!this.#innerRootScope) {
+      this.#innerRootScope = new ScopeImpl(this, { allowsScoped: false, isInnerRoot: true });
+    }
+    return this.#innerRootScope;
   }
 
   register<T>(token: InjectionToken<T>, provider?: Provider<T>): void {
@@ -352,27 +353,26 @@ class ContainerImpl implements Container {
       return;
     }
     const np = normalizeProvider(token, provider) as NormalizedProvider<unknown>;
-    if (this.#registry.has(np.key)) {
+    if (this.#resolvePlan.has(np.key)) {
       throw new DuplicateProviderError(token);
     }
-    this.#registry.set(np.key, np);
     this.#resolvePlan.register(np);
   }
 
   override<T>(token: InjectionToken<T>, provider: Provider<T>): void {
     const np = normalizeProvider(token, provider) as NormalizedProvider<unknown>;
-    this.#registry.set(np.key, np);
     this.#resolvePlan.register(np);
     this.#singletonCache.delete(np.key);
   }
 
   resolve<T>(token: InjectionToken<T>): T {
     const key = registryKey(token);
-    if (this.#innerRootScope.canUltraFastCache()) {
+    const innerRoot = this.#innerRootScope;
+    if (!innerRoot || innerRoot.canUltraFastCache()) {
       const hit = this.#singletonCache.get(key);
       if (hit !== undefined) return hit as T;
     }
-    return this.resolveFromScope(this.#innerRootScope, token, null, []);
+    return this.resolveFromScope(this.#getInnerRoot(), token, null, []);
   }
 
   createScope(): Scope {
@@ -380,9 +380,10 @@ class ContainerImpl implements Container {
   }
 
   inspect(): DependencyGraph {
-    const base = buildGraph(collectRegisteredProviders(this.#registry));
+    const providers = this.#resolvePlan.registeredProviders();
+    const base = buildGraph(providers);
     const extra: InjectionToken<unknown>[] = [];
-    for (const p of this.#registry.values()) {
+    for (const p of providers) {
       for (const d of p.deps) extra.push(d);
     }
     const graph = augmentGraphWithInjectableClasses(base, extra);
@@ -391,7 +392,7 @@ class ContainerImpl implements Container {
 
   validate(options?: ValidateOptions): ValidationResult {
     return validateNormalizedProviders(
-      collectRegisteredProviders(this.#registry),
+      this.#resolvePlan.registeredProviders(),
       options,
     );
   }
@@ -416,8 +417,8 @@ class ContainerImpl implements Container {
     if (scope.hasScopedCacheInChain()) {
       const scopedHit = scope.getScopedInChain(key);
       if (scopedHit !== undefined) return scopedHit as T;
-      const compiled = this.#resolvePlan.get(key);
-      if (compiled?.np.lifetime === "singleton") {
+      const slot = this.#resolvePlan.peek(key);
+      if (slot?.np.lifetime === "singleton") {
         const hit = this.#singletonCache.get(key);
         if (hit !== undefined) return hit as T;
       }
@@ -592,9 +593,5 @@ class ContainerImpl implements Container {
 function compileProviderForResolve(
   np: NormalizedProvider,
 ): NonNullable<ReturnType<ResolvePlan["get"]>> {
-  const depKeys = new Array<RegistryKey>(np.deps.length);
-  for (let i = 0; i < np.deps.length; i++) {
-    depKeys[i] = registryKey(np.deps[i]!);
-  }
-  return { np, depKeys };
+  return compileProvider(np);
 }

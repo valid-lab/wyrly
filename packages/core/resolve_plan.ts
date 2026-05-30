@@ -1,39 +1,61 @@
 import type { NormalizedProvider } from "./provider.ts";
 import { type RegistryKey, registryKey } from "./internal_keys.ts";
 
-/** Register-time compiled provider used on the resolve hot path. */
+/** Provider slot; depKeys are compiled on first resolve (lazy). */
 export interface CompiledProvider {
   readonly np: NormalizedProvider;
-  readonly depKeys: readonly RegistryKey[];
+  depKeys?: readonly RegistryKey[];
 }
 
-export function compileProvider(np: NormalizedProvider): CompiledProvider {
+function compileDepKeys(np: NormalizedProvider): readonly RegistryKey[] {
   const depKeys = new Array<RegistryKey>(np.deps.length);
   for (let i = 0; i < np.deps.length; i++) {
     depKeys[i] = registryKey(np.deps[i]!);
   }
-  return { np, depKeys };
+  return depKeys;
 }
 
-/** Dense slot table keyed by registry key (register-time compile). */
+export function ensureDepKeys(slot: CompiledProvider): readonly RegistryKey[] {
+  if (slot.depKeys !== undefined) return slot.depKeys;
+  const depKeys = compileDepKeys(slot.np);
+  slot.depKeys = depKeys;
+  return depKeys;
+}
+
+export function compileProvider(np: NormalizedProvider): CompiledProvider {
+  return { np, depKeys: compileDepKeys(np) };
+}
+
+/** Single-map provider registry with lazy dep-key compilation. */
 export class ResolvePlan {
-  readonly #slots: CompiledProvider[] = [];
-  readonly #slotIndexByKey = new Map<RegistryKey, number>();
+  readonly #slots = new Map<RegistryKey, CompiledProvider>();
 
   register(np: NormalizedProvider): void {
-    const compiled = compileProvider(np);
-    const existing = this.#slotIndexByKey.get(np.key);
-    if (existing !== undefined) {
-      this.#slots[existing] = compiled;
-      return;
-    }
-    this.#slotIndexByKey.set(np.key, this.#slots.length);
-    this.#slots.push(compiled);
+    this.#slots.set(np.key, { np });
+  }
+
+  has(key: RegistryKey): boolean {
+    return this.#slots.has(key);
+  }
+
+  /** Returns a slot without compiling depKeys (register / ultra-fast paths). */
+  peek(key: RegistryKey): CompiledProvider | undefined {
+    return this.#slots.get(key);
   }
 
   get(key: RegistryKey): CompiledProvider | undefined {
-    const index = this.#slotIndexByKey.get(key);
-    if (index === undefined) return undefined;
-    return this.#slots[index];
+    const slot = this.#slots.get(key);
+    if (slot === undefined) return undefined;
+    ensureDepKeys(slot);
+    return slot;
+  }
+
+  registeredProviders(): NormalizedProvider<unknown>[] {
+    const out = new Array<NormalizedProvider<unknown>>(this.#slots.size);
+    let i = 0;
+    for (const slot of this.#slots.values()) {
+      out[i++] = slot.np;
+    }
+    return out;
   }
 }

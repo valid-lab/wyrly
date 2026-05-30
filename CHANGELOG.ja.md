@@ -14,6 +14,7 @@ English: [CHANGELOG.md](./CHANGELOG.md)
 - **`@wyrly/core`**: Phase 2 resolve 最適化 — scope-local binding が無い場合の ultra-fast cache path、scope 生成時の遅延確保、`displayName` の遅延計算（挙動は不変）。
 - **`@wyrly/core`**: request scope resolve 最適化 — scoped 向け ultra-fast path、scope Map の lazy 確保、materialize の重複 cache lookup 削除（挙動は不変）。
 - **`@wyrly/core`**: Phase 3 — register 時 resolve plan（dep key 事前コンパイル）、register 時 `displayName` 省略、inner root resolve fast path、`Scope.disposeSync()`（挙動は不変）。
+- **`@wyrly/core`**: Phase 4 — cold start 向け register 最適化: dep key の初回 resolve 時コンパイル、単一 Map レジストリ（`#registry` + resolve plan の二重 Map 統合）、inner root scope の lazy 生成、明示 deps/lifetime 時の `useClass` fast path（挙動は不変）。
 
 ## [2.2.1] - 2026-05-25
 

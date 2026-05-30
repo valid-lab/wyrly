@@ -64,6 +64,16 @@ provider scanning, and framework initialization** — not just DI lookup. Expect
 slower** than bare containers here. That does not mean NestJS apps are unusably slow; it reflects
 what is included in the measurement.
 
+The **production Web / Workers pattern** for Wyrly DI is a **single** composition root registered at
+module scope (see [`compat/workers/src/index.ts`](../compat/workers/src/index.ts)). The `cold_start`
+bench repeats `createContainer()` plus all `register()` calls every iteration — a **synthetic
+worst-case**. It reflects isolate cold boot (module eval + register) more than steady-state request
+handling; for the latter, prefer `request_scope` (Group B).
+
+`cold_start_resolution` also resolves the full graph once per iteration, so lazy dep-key compilation
+shifts work from register to the first resolve. Expect a smaller gap vs tsyringe than in
+register-only `cold_start`.
+
 ### Request scope
 
 Wyrly registers the composition root once in `beforeAll`; the timed loop only runs

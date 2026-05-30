@@ -15,6 +15,7 @@ adheres to [Semantic Versioning](https://semver.org/) from **1.0.0**.
 - **`@wyrly/core`**: Phase 2 resolve optimizations — ultra-fast cache path when no scope-local bindings exist, lazy scope allocations, and lazy `displayName` computation at registration (behavior unchanged).
 - **`@wyrly/core`**: request-scope resolve optimizations — scoped-aware ultra-fast path, lazy scope Maps, and removed duplicate cache lookups in materialize (behavior unchanged).
 - **`@wyrly/core`**: Phase 3 — register-time resolve plan (precompiled dep keys), lighter registration without eager `displayName`, inner-root resolve fast path, and `Scope.disposeSync()` for hot teardown (behavior unchanged).
+- **`@wyrly/core`**: Phase 4 — cold-start registration optimizations: lazy dep-key compilation on first resolve, single-map provider registry (replacing dual `#registry` + resolve plan maps), lazy inner-root scope creation, and `useClass` fast path when deps/lifetime are explicit (behavior unchanged).
 
 ## [2.2.1] - 2026-05-25
 
