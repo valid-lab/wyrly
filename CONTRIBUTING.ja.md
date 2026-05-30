@@ -36,7 +36,9 @@ deno task bench:di         # 全アダプタ比較（ローカル、~70s）
 deno task bench:di:ci:full # CI 相当: Wyrly 4 スイート + baseline 比較
 ```
 
-`packages/core/**` や `benchmarks/di/**` の変更時、CI は `deno task ci` とは別に `bench-regression` を実行します。ベースラインは `benchmarks/di/baselines/ci-wyrly.json`。意図的な性能改善後は `bench:di:ci` のあと `deno run -A scripts/ci/check-di-bench.ts --update-baseline` で JSON を更新してコミット。再実行で通るフレークは `minHz` を 1 回下げて対応。
+`packages/core/**` や `benchmarks/di/**` の変更時、CI は `deno task ci` とは別に `bench-regression` を実行します。ベースラインは `benchmarks/di/baselines/ci-wyrly.json`（**GHA ubuntu-latest 向け**。ローカル絶対値とは別）。意図的な性能改善後は `bench:di:ci` のあと `deno run -A scripts/ci/check-di-bench.ts --update-baseline` で JSON を更新してコミット。再実行で通るフレークは `minHz` を 1 回下げて対応。
+
+**GHA のばらつき:** `bench-regression` は毎回 `BENCH_GHA_METRICS` の JSON 行と Step Summary 表を出力します（`deno task bench:di:report`）。PR なしで計測だけ溜める場合は [**DI bench (manual)**](.github/workflows/bench-di.yml) を `workflow_dispatch` 実行（`check_baseline` はオフのまま）。
 
 詳細: [guides/BENCHMARK.ja.md](./guides/BENCHMARK.ja.md)
 

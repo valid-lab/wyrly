@@ -37,9 +37,15 @@ deno task bench:di:ci:full # Wyrly-only CI gate (4 suites + baseline check)
 ```
 
 CI runs `bench-regression` (not `deno task ci`) when `packages/core/**` or `benchmarks/di/**` change.
-Baselines live in `benchmarks/di/baselines/ci-wyrly.json`. After a deliberate perf win, run
+Baselines in `benchmarks/di/baselines/ci-wyrly.json` target **GHA ubuntu-latest**, not local machines.
+After a deliberate perf win, run
 `bench:di:ci` then `deno run -A scripts/ci/check-di-bench.ts --update-baseline` and commit the JSON.
 If the job flakes on re-run, lower `minHz` once instead of skipping the check.
+
+**GHA variance:** every `bench-regression` run logs a `BENCH_GHA_METRICS` JSON line and a Step Summary
+table (`deno task bench:di:report`). To sample the runner without opening a PR, run the
+[**DI bench (manual)**](.github/workflows/bench-di.yml) workflow (`workflow_dispatch`; leave
+`check_baseline` off to only record metrics).
 
 See [guides/BENCHMARK.md](./guides/BENCHMARK.md).
 

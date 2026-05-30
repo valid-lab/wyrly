@@ -1,0 +1,38 @@
+# Manual Wyrly DI bench on GitHub Actions (collect runner variance without a PR).
+name: DI bench (manual)
+
+on:
+  workflow_dispatch:
+    inputs:
+      check_baseline:
+        description: Fail when measured hz is below ci-wyrly.json minHz
+        type: boolean
+        default: false
+
+jobs:
+  bench:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: "20.x"
+
+      - name: Run Wyrly DI bench
+        run: deno task bench:di:ci
+
+      - name: Report bench metrics (GHA)
+        run: deno run -A scripts/ci/check-di-bench.ts --report
+
+      - name: Check regression vs baseline
+        if: inputs.check_baseline
+        run: deno task bench:di:check

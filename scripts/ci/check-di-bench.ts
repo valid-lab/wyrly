@@ -4,6 +4,7 @@
  * Usage:
  *   deno run -A scripts/ci/check-di-bench.ts
  *   deno run -A scripts/ci/check-di-bench.ts --update-baseline
+ *   deno run -A scripts/ci/check-di-bench.ts --report
  */
 
 const DEFAULT_RESULTS = "benchmarks/di/results/benchmark-results.json";
@@ -91,6 +92,81 @@ async function updateBaseline(
   }
 }
 
+interface SuiteMetric {
+  suite: string;
+  hz: number;
+  minHz: number;
+  marginPct: number;
+}
+
+function buildSuiteMetrics(
+  measured: Map<string, number>,
+  baseline: BaselineFile,
+): SuiteMetric[] {
+  const rows: SuiteMetric[] = [];
+  for (const [suite, entry] of Object.entries(baseline.suites)) {
+    const hz = measured.get(suite);
+    if (hz === undefined) continue;
+    const marginPct = ((hz - entry.minHz) / entry.minHz) * 100;
+    rows.push({ suite, hz, minHz: entry.minHz, marginPct });
+  }
+  return rows;
+}
+
+async function reportMetrics(
+  resultsPath: string,
+  baselinePath: string,
+): Promise<void> {
+  const results = await readJson<BenchResultsFile>(resultsPath);
+  const baseline = await readJson<BaselineFile>(baselinePath);
+  const measured = wyrlyHzBySuite(results);
+  const rows = buildSuiteMetrics(measured, baseline);
+
+  if (rows.length === 0) {
+    console.error("No wyrly suite metrics to report");
+    Deno.exit(1);
+  }
+
+  const lines = [
+    "## DI bench (wyrly) — measured hz",
+    "",
+    "| Suite | hz | minHz | margin vs min |",
+    "|-------|-----|-------|---------------|",
+    ...rows.map((r) =>
+      `| ${r.suite} | ${formatHz(r.hz)} (${Math.round(r.hz)}) | ${
+        formatHz(r.minHz)
+      } (${r.minHz}) | ${r.marginPct >= 0 ? "+" : ""}${r.marginPct.toFixed(1)}% |`
+    ),
+    "",
+    "_Copy `BENCH_GHA_METRICS` lines from job logs to track runner variance over time._",
+  ];
+  const markdown = lines.join("\n");
+  console.log(markdown);
+
+  const payload = {
+    recordedAt: new Date().toISOString(),
+    resultsPath,
+    baselinePath,
+    runner: Deno.env.get("RUNNER_OS") ?? undefined,
+    suites: Object.fromEntries(
+      rows.map((r) => [
+        r.suite,
+        {
+          hz: Math.round(r.hz),
+          minHz: r.minHz,
+          marginPct: Number(r.marginPct.toFixed(2)),
+        },
+      ]),
+    ),
+  };
+  console.log(`BENCH_GHA_METRICS ${JSON.stringify(payload)}`);
+
+  const summaryPath = Deno.env.get("GITHUB_STEP_SUMMARY");
+  if (summaryPath) {
+    await Deno.writeTextFile(summaryPath, markdown + "\n", { append: true });
+  }
+}
+
 async function checkRegression(
   resultsPath: string,
   baselinePath: string,
@@ -150,11 +226,13 @@ async function checkRegression(
 function parseCli(argv: string[]): {
   help: boolean;
   updateBaseline: boolean;
+  reportOnly: boolean;
   results: string;
   baseline: string;
 } {
   let help = false;
   let updateBaseline = false;
+  let reportOnly = false;
   let results = DEFAULT_RESULTS;
   let baseline = DEFAULT_BASELINE;
 
@@ -162,6 +240,10 @@ function parseCli(argv: string[]): {
     const arg = argv[i]!;
     if (arg === "-h" || arg === "--help") {
       help = true;
+      continue;
+    }
+    if (arg === "--report") {
+      reportOnly = true;
       continue;
     }
     if (arg === "--update-baseline") {
@@ -178,7 +260,7 @@ function parseCli(argv: string[]): {
     }
   }
 
-  return { help, updateBaseline, results, baseline };
+  return { help, updateBaseline, reportOnly, results, baseline };
 }
 
 const cli = parseCli(Deno.args);
@@ -190,6 +272,7 @@ Options:
   --results <path>     Benchmark JSON (default: ${DEFAULT_RESULTS})
   --baseline <path>    Baseline JSON (default: ${DEFAULT_BASELINE})
   --update-baseline    Write minHz = measured × (1 - threshold) into baseline file
+  --report             Print hz table + BENCH_GHA_METRICS JSON (no pass/fail)
   -h, --help           Show this help
 `);
   Deno.exit(0);
@@ -197,6 +280,8 @@ Options:
 
 if (cli.updateBaseline) {
   await updateBaseline(cli.results, cli.baseline);
+} else if (cli.reportOnly) {
+  await reportMetrics(cli.results, cli.baseline);
 } else {
   await checkRegression(cli.results, cli.baseline);
 }

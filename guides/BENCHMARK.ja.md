@@ -8,7 +8,7 @@ Wyrly DI には [`benchmarks/di/`](../benchmarks/di/) に
 
 **CI 回帰ゲート（別ジョブ）:** `packages/core/**` などの変更時、GitHub Actions の `bench-regression` が
 Wyrly のみ 4 スイート（`resolution`, `cold_start`, `cold_start_resolution`, `request_scope`）を計測し、
-[`benchmarks/di/baselines/ci-wyrly.json`](../benchmarks/di/baselines/ci-wyrly.json) の `minHz` 未満なら失敗します（約 5% マージン込み）。`deno task ci` には含まれません。
+[`benchmarks/di/baselines/ci-wyrly.json`](../benchmarks/di/baselines/ci-wyrly.json) の `minHz` 未満なら失敗します（約 5% マージン込み）。`minHz` は **GitHub Actions `ubuntu-latest`（共有ランナー）** 向けに調整しており、ローカル PC や WSL の絶対値とは一致しません。ローカルで `bench:di:check` が落ちても CI が通ることはあります。`deno task ci` には含まれません。
 
 ```sh
 deno task bench:di:ci:full   # CI と同じ: build → wyrly ベンチ → baseline 比較
@@ -22,6 +22,8 @@ deno run -A scripts/ci/check-di-bench.ts --update-baseline
 ```
 
 CI がフレークする場合はジョブを無効化せず、再実行で通るなら `minHz` を 1 回だけ下げます。詳細は [CONTRIBUTING.ja.md](../CONTRIBUTING.ja.md)。
+
+**GHA の分散を溜める:** `bench-regression` はログに `BENCH_GHA_METRICS {...}`（検索用）と Step Summary の表を出します。[`.github/workflows/bench-di.yml`](../.github/workflows/bench-di.yml) を手動実行（`workflow_dispatch`）すると PR なしで追加サンプルを取れます。
 
 ## クイックスタート
 

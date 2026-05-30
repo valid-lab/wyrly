@@ -60,6 +60,7 @@
     "bench:di": "deno task build:npm:core && cd benchmarks/di && npm install && node --import tsx run.ts",
     "bench:di:ci": "deno task build:npm:core && cd benchmarks/di && npm ci && node --import tsx run.ts --json --adapter wyrly --suite resolution,cold_start,cold_start_resolution,request_scope",
     "bench:di:check": "deno run -A scripts/ci/check-di-bench.ts",
+    "bench:di:report": "deno run -A scripts/ci/check-di-bench.ts --report",
     "bench:di:ci:full": "deno task bench:di:ci && deno task bench:di:check",
     "publish:npm:dry-run": "cd packages/core/npm && npm publish --dry-run && cd ../../express/npm && npm publish --dry-run && cd ../../hono/npm && npm publish --dry-run && cd ../../graphql/npm && npm publish --dry-run && cd ../../yoga/npm && npm publish --dry-run && cd ../../apollo/npm && npm publish --dry-run && cd ../../fastify/npm && npm publish --dry-run && cd ../../next/npm && npm publish --dry-run",
     "publish:npm": "cd packages/core/npm && npm publish --access public && cd ../../express/npm && npm publish --access public && cd ../../hono/npm && npm publish --access public && cd ../../graphql/npm && npm publish --access public && cd ../../yoga/npm && npm publish --access public && cd ../../apollo/npm && npm publish --access public && cd ../../fastify/npm && npm publish --access public && cd ../../next/npm && npm publish --access public",

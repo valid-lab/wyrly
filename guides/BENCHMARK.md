@@ -11,7 +11,9 @@ Node.js version.
 GitHub Actions runs `bench-regression` — Wyrly adapter only, four suites (`resolution`,
 `cold_start`, `cold_start_resolution`, `request_scope`). Measured ops/s must stay at or above
 committed floors in [`benchmarks/di/baselines/ci-wyrly.json`](../benchmarks/di/baselines/ci-wyrly.json)
-(`minHz` per suite; ~5% margin baked in). This is **not** part of `deno task ci`.
+(`minHz` per suite; ~5% margin baked in). Floors are tuned for **GitHub Actions `ubuntu-latest`**
+(shared runners), not your laptop — local `bench:di:ci:full` may fail `bench:di:check` even when CI
+would pass. This is **not** part of `deno task ci`.
 
 ```sh
 deno task bench:di:ci:full   # same as CI: build, bench wyrly, check baseline
@@ -26,6 +28,11 @@ deno run -A scripts/ci/check-di-bench.ts --update-baseline
 
 If CI flakes (passes on re-run), lower `minHz` once in the baseline file rather than disabling the
 job. See [CONTRIBUTING.md](../CONTRIBUTING.md).
+
+**Tracking GHA variance:** each `bench-regression` job prints `BENCH_GHA_METRICS {...}` in the log
+(searchable) and adds a markdown table to the job Step Summary. Run
+[`.github/workflows/bench-di.yml`](../.github/workflows/bench-di.yml) manually (`workflow_dispatch`)
+to collect more samples without merging a PR.
 
 ## Quick start
 
