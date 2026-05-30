@@ -48,6 +48,18 @@ Deno.test("scoped resolve + dispose", async () => {
   assertThrows(() => scope.resolve(A), ScopeDisposedError);
 });
 
+Deno.test("registerMany registers all providers", () => {
+  const T = token<number>("T");
+  const U = token<string>("U");
+  const c = createContainer();
+  c.registerMany([
+    [T, { useValue: 1, lifetime: "singleton" }],
+    [U, { useValue: "x", lifetime: "singleton" }],
+  ]);
+  assertEquals(c.resolve(T), 1);
+  assertEquals(c.resolve(U), "x");
+});
+
 Deno.test("duplicate register throws", () => {
   const T = token<number>("T");
   const c = createContainer();

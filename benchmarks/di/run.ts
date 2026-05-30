@@ -15,6 +15,13 @@ import { registerSuiteTasks } from "./suites/tasks.ts";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
+const GROUP_B_ADAPTERS = new Set<AdapterName>(["wyrly", "tsyringe", "inversify"]);
+const GROUP_B_SUITES = new Set<SuiteName>([
+  "cold_start",
+  "cold_start_resolution",
+  "request_scope",
+]);
+
 interface CliOptions {
   suites: SuiteName[];
   adapters: AdapterName[];
@@ -123,6 +130,30 @@ async function main(): Promise<void> {
       p99Ms: p99 !== undefined ? p99 * 1000 : undefined,
       samples,
     });
+  }
+
+  const groupBRows = rows.filter((row) => {
+    const task = row.task as string;
+    const slash = task.indexOf("/");
+    if (slash === -1) return false;
+    const adapter = task.slice(0, slash);
+    const suite = task.slice(slash + 1);
+    return GROUP_B_ADAPTERS.has(adapter as AdapterName) &&
+      GROUP_B_SUITES.has(suite as SuiteName);
+  });
+
+  if (groupBRows.length > 0) {
+    console.log("\nGroup B summary (wyrly / tsyringe / inversify — comparable request boundaries):\n");
+    console.log("| Task | ops/s |");
+    console.log("|------|-------|");
+    const sorted = [...groupBRows].sort((a, b) => {
+      const hzA = a.hz as number | undefined;
+      const hzB = b.hz as number | undefined;
+      return (hzB ?? 0) - (hzA ?? 0);
+    });
+    for (const row of sorted) {
+      console.log(`| ${row.task} | ${formatOpsPerSec(row.hz as number | undefined)} |`);
+    }
   }
 
   if (options.json) {

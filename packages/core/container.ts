@@ -22,7 +22,15 @@ import {
   dedupeEdges,
   type DependencyGraph,
 } from "./graph.ts";
-import { compileProvider, ResolvePlan } from "./resolve_plan.ts";
+import {
+  allProvidersScoped,
+  buildFrozenScopedPlan,
+  type FrozenScopedPlan,
+} from "./frozen_scoped.ts";
+import { compileProvider, ensureDepKeys, ResolvePlan } from "./resolve_plan.ts";
+
+const SCOPE_POOL_MAX = 32;
+const FROZEN_MISS = Symbol("FROZEN_MISS");
 import {
   validateNormalizedProviders,
   type ValidateOptions,
@@ -43,6 +51,10 @@ export interface Container {
   inspect(): DependencyGraph;
   /** Runs design-time checks on the provider registry. */
   validate(options?: ValidateOptions): ValidationResult;
+  /** Registers multiple providers in one pass (composition roots). */
+  registerMany(
+    entries: readonly (readonly [InjectionToken<unknown>, Provider<unknown>])[],
+  ): void;
 }
 
 /** Creates a new root container with an empty provider registry. */
@@ -100,6 +112,7 @@ export class ScopeImpl implements Scope {
   #localValues: Map<RegistryKey, unknown> | undefined;
   #localProviders: Map<RegistryKey, NormalizedProvider<unknown>> | undefined;
   #scopedCache: Map<RegistryKey, unknown> | undefined;
+  #scopedValues: unknown[] | undefined;
   #resolvingStack: RegistryKey[] | undefined;
   #resolvingKeys: Set<RegistryKey> | undefined;
   #bindingsEmpty = true;
@@ -197,15 +210,25 @@ export class ScopeImpl implements Scope {
     if ((this.#children?.size ?? 0) > 0) {
       throw new ScopeHasActiveChildrenError();
     }
-    this.#disposed = true;
     if (this.#parent) {
       this.#parent.#children?.delete(this);
     }
+    if (
+      this.#allowsScoped && !this.#isInnerRoot && this.disposers.length === 0 &&
+      this.#container.releaseScopeToPool(this)
+    ) {
+      return;
+    }
+    this.#disposed = true;
     this.#clearScopeMaps();
   }
 
   #clearScopeMaps(): void {
     this.#scopedCache?.clear();
+    if (this.#scopedValues) {
+      this.#scopedValues.length = 0;
+    }
+    this.#scopedValues = undefined;
     this.#localProviders?.clear();
     this.#localValues?.clear();
     this.#scopedCache = undefined;
@@ -213,6 +236,52 @@ export class ScopeImpl implements Scope {
     this.#localValues = undefined;
     this.#bindingsEmpty = true;
     this.#scopedCacheEmpty = true;
+  }
+
+  /** Clears scope state when returning to the container pool (stays disposed until reused). */
+  prepareForPool(): void {
+    this.#children = undefined;
+    this.disposers.length = 0;
+    this.#clearScopeMaps();
+    this.#disposed = true;
+  }
+
+  resetForReuse(): void {
+    this.#disposed = false;
+    this.#children = undefined;
+    this.disposers.length = 0;
+    this.#clearScopeMaps();
+  }
+
+  #ensureScopedValues(size: number): unknown[] {
+    if (!this.#scopedValues || this.#scopedValues.length < size) {
+      this.#scopedValues = new Array(size);
+    }
+    return this.#scopedValues;
+  }
+
+  getScopedByIndex(index: number): unknown | undefined {
+    return this.#scopedValues?.[index];
+  }
+
+  /** Used by container frozen scoped materialization. */
+  initScopedValueArray(size: number): unknown[] {
+    return this.#ensureScopedValues(size);
+  }
+
+  markScopedCacheUsed(): void {
+    this.#scopedCacheEmpty = false;
+  }
+
+  setScopedByIndex(index: number, value: unknown, slotCount: number): void {
+    this.#ensureScopedValues(slotCount)[index] = value;
+    this.#scopedCacheEmpty = false;
+  }
+
+  getScopedInChainByIndex(index: number): unknown | undefined {
+    const hit = this.#scopedValues?.[index];
+    if (hit !== undefined) return hit;
+    return this.#parent?.getScopedInChainByIndex(index);
   }
 
   findLocalValue(key: RegistryKey): unknown | undefined {
@@ -241,6 +310,10 @@ export class ScopeImpl implements Scope {
   }
 
   getScopedInChain(key: RegistryKey): unknown | undefined {
+    const idx = this.#container.slotIndexForKey(key);
+    if (idx !== undefined) {
+      return this.getScopedInChainByIndex(idx);
+    }
     const hit = this.#scopedCache?.get(key);
     if (hit !== undefined) return hit;
     return this.#parent?.getScopedInChain(key);
@@ -250,7 +323,11 @@ export class ScopeImpl implements Scope {
     return this.#scopedCache?.get(key);
   }
 
-  setScoped(key: RegistryKey, value: unknown): void {
+  setScoped(key: RegistryKey, value: unknown, slotIndex?: number): void {
+    if (slotIndex !== undefined && slotIndex >= 0) {
+      this.setScopedByIndex(slotIndex, value, this.#container.scopedSlotCount());
+      return;
+    }
     this.#ensureScopedCache().set(key, value);
     this.#scopedCacheEmpty = false;
   }
@@ -329,7 +406,9 @@ export class ScopeImpl implements Scope {
 class ContainerImpl implements Container {
   readonly #resolvePlan = new ResolvePlan();
   readonly #singletonCache = new Map<RegistryKey, unknown>();
+  readonly #scopePool: ScopeImpl[] = [];
   #innerRootScope: ScopeImpl | undefined;
+  #frozenScopedPlan: FrozenScopedPlan | undefined;
 
   #getInnerRoot(): ScopeImpl {
     if (!this.#innerRootScope) {
@@ -353,16 +432,64 @@ class ContainerImpl implements Container {
       return;
     }
     const np = normalizeProvider(token, provider) as NormalizedProvider<unknown>;
+    this.#registerNormalized(np, token);
+  }
+
+  registerMany(
+    entries: readonly (readonly [InjectionToken<unknown>, Provider<unknown>])[],
+  ): void {
+    for (let i = 0; i < entries.length; i++) {
+      const [token, provider] = entries[i]!;
+      const np = normalizeProvider(token, provider) as NormalizedProvider<unknown>;
+      if (this.#resolvePlan.has(np.key)) {
+        throw new DuplicateProviderError(token);
+      }
+      this.#resolvePlan.register(np);
+    }
+    this.#invalidateFrozenScoped();
+  }
+
+  #registerNormalized(
+    np: NormalizedProvider<unknown>,
+    tokenForError: InjectionToken<unknown>,
+  ): void {
     if (this.#resolvePlan.has(np.key)) {
-      throw new DuplicateProviderError(token);
+      throw new DuplicateProviderError(tokenForError);
     }
     this.#resolvePlan.register(np);
+    this.#invalidateFrozenScoped();
   }
 
   override<T>(token: InjectionToken<T>, provider: Provider<T>): void {
     const np = normalizeProvider(token, provider) as NormalizedProvider<unknown>;
     this.#resolvePlan.register(np);
     this.#singletonCache.delete(np.key);
+    this.#invalidateFrozenScoped();
+  }
+
+  #invalidateFrozenScoped(): void {
+    this.#frozenScopedPlan = undefined;
+  }
+
+  #ensureFrozenScopedPlan(): void {
+    if (this.#frozenScopedPlan !== undefined) return;
+    if (!allProvidersScoped(this.#resolvePlan.iterateSlots())) return;
+    this.#frozenScopedPlan = buildFrozenScopedPlan(this.#resolvePlan.iterateSlots());
+  }
+
+  slotIndexForKey(key: RegistryKey): number | undefined {
+    return this.#resolvePlan.getSlotIndex(key);
+  }
+
+  scopedSlotCount(): number {
+    return this.#resolvePlan.slotCount;
+  }
+
+  releaseScopeToPool(scope: ScopeImpl): boolean {
+    if (this.#scopePool.length >= SCOPE_POOL_MAX) return false;
+    scope.prepareForPool();
+    this.#scopePool.push(scope);
+    return true;
   }
 
   resolve<T>(token: InjectionToken<T>): T {
@@ -376,6 +503,12 @@ class ContainerImpl implements Container {
   }
 
   createScope(): Scope {
+    this.#ensureFrozenScopedPlan();
+    const pooled = this.#scopePool.pop();
+    if (pooled) {
+      pooled.resetForReuse();
+      return pooled;
+    }
     return new ScopeImpl(this, { allowsScoped: true });
   }
 
@@ -454,6 +587,11 @@ class ContainerImpl implements Container {
     const ultraFast = this.#tryUltraFastCache<T>(scope, key);
     if (ultraFast !== undefined) return ultraFast;
 
+    if (scope.getAllowsScoped() && !scope.hasScopedCacheInChain()) {
+      const frozen = this.#tryFrozenScopedResolve<T>(scope, key);
+      if (frozen !== FROZEN_MISS) return frozen as T;
+    }
+
     const localValue = scope.findLocalValue(key);
     if (localValue !== undefined) {
       return localValue as T;
@@ -489,7 +627,10 @@ class ContainerImpl implements Container {
       const hit = this.#singletonCache.get(np.key);
       if (hit !== undefined) return hit as T;
     } else if (np.lifetime === "scoped") {
-      const hit = scope.getScopedInChain(np.key);
+      const idx = compiled?.slotIndex;
+      const hit = idx !== undefined && idx >= 0
+        ? scope.getScopedInChainByIndex(idx)
+        : scope.getScopedInChain(np.key);
       if (hit !== undefined) return hit as T;
     }
 
@@ -524,7 +665,7 @@ class ContainerImpl implements Container {
 
     if (np.lifetime === "scoped") {
       const created = this.#createInstance(scope, np, resolvingPath, compiled);
-      scope.setScoped(key, created);
+      scope.setScoped(key, created, compiled?.slotIndex);
       if (scope.getAllowsScoped()) {
         maybeTrackDisposable(scope, created);
       }
@@ -588,10 +729,78 @@ class ContainerImpl implements Container {
         });
     }
   }
+
+  #tryFrozenScopedResolve<T>(scope: ScopeImpl, key: RegistryKey): T | typeof FROZEN_MISS {
+    const plan = this.#frozenScopedPlan;
+    if (!plan) return FROZEN_MISS;
+    const idx = this.#resolvePlan.getSlotIndex(key);
+    if (idx === undefined) return FROZEN_MISS;
+    this.#materializeFrozenScopedGraph(scope, plan);
+    const hit = scope.getScopedByIndex(idx);
+    if (hit === undefined) return FROZEN_MISS;
+    return hit as T;
+  }
+
+  #materializeFrozenScopedGraph(scope: ScopeImpl, plan: FrozenScopedPlan): void {
+    const slotCount = this.#resolvePlan.slotCount;
+    const values = scope.initScopedValueArray(slotCount);
+    for (let i = 0; i < plan.ordered.length; i++) {
+      const slot = plan.ordered[i]!;
+      if (values[slot.slotIndex] !== undefined) continue;
+      ensureDepKeys(slot);
+      const created = this.#createInstanceFromFrozen(scope, slot, values);
+      values[slot.slotIndex] = created;
+      if (scope.getAllowsScoped()) {
+        maybeTrackDisposable(scope, created);
+      }
+    }
+    scope.markScopedCacheUsed();
+  }
+
+  #createInstanceFromFrozen(
+    scope: ScopeImpl,
+    slot: NonNullable<ReturnType<ResolvePlan["get"]>>,
+    values: unknown[],
+  ): unknown {
+    const np = slot.np;
+    const depKeys = ensureDepKeys(slot);
+
+    switch (np.providerType) {
+      case "value":
+        return np.useValue;
+
+      case "existing": {
+        const exIdx = this.#resolvePlan.getSlotIndex(depKeys[0]!);
+        return exIdx !== undefined ? values[exIdx] : undefined;
+      }
+
+      case "factory": {
+        const args = depKeys.map((depKey) => {
+          const depIdx = this.#resolvePlan.getSlotIndex(depKey)!;
+          return values[depIdx];
+        });
+        return np.useFactory!(scope, ...args);
+      }
+
+      case "class": {
+        const args = depKeys.map((depKey) => {
+          const depIdx = this.#resolvePlan.getSlotIndex(depKey)!;
+          return values[depIdx];
+        }) as never[];
+        const Ctor = np.useClass!;
+        return new (Ctor as new (...args: never[]) => unknown)(...args);
+      }
+
+      default:
+        throw new InvalidProviderError("InvalidProvider_unsupported_provider_type", {
+          providerType: String(np.providerType),
+        });
+    }
+  }
 }
 
 function compileProviderForResolve(
   np: NormalizedProvider,
 ): NonNullable<ReturnType<ResolvePlan["get"]>> {
-  return compileProvider(np);
+  return compileProvider(np, -1);
 }

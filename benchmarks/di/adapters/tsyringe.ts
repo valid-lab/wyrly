@@ -55,14 +55,16 @@ export function createTsyringeSingletonContainer(): DependencyContainer {
   return c;
 }
 
-/**
- * Parent for request_scope: factory-based graph cannot use ContainerScoped in tsyringe.
- * Each child container acts as one request boundary (fresh singleton cache per child).
- */
+/** Empty parent for request_scope (registrations live on per-request child only). */
 export function createTsyringeRequestScopeParent(): DependencyContainer {
-  const c = globalContainer.createChildContainer();
-  registerSingletonGraph(c);
-  return c;
+  return globalContainer.createChildContainer();
+}
+
+/** One request boundary: register graph on child, resolve, discard (no parent cache reuse). */
+export function resolveTsyringeRequestScope(parent: DependencyContainer): void {
+  const request = parent.createChildContainer();
+  registerSingletonGraph(request);
+  request.resolve(RootService).run();
 }
 
 export const tsyringeAdapter: BenchAdapter = {
@@ -79,14 +81,7 @@ export const tsyringeAdapter: BenchAdapter = {
   createRequestScope(): BenchContext {
     const parent = createTsyringeRequestScopeParent();
     return {
-      resolveRoot: () => {
-        const request = parent.createChildContainer();
-        try {
-          return request.resolve(RootService).run();
-        } finally {
-          request.clearInstances();
-        }
-      },
+      resolveRoot: () => resolveTsyringeRequestScope(parent),
       dispose: () => {},
     };
   },

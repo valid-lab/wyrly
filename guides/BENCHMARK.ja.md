@@ -73,18 +73,26 @@ resolve 側に移ります。register のみの `cold_start` より tsyringe と
 
 ### request_scope
 
-Wyrly は composition root を `beforeAll` で 1 回登録し、計測ループでは `container.createScope()` →
-`resolve` → `scope.disposeSync()` のみ実行します（本番 Web アプリの 1 リクエストに近い）。typed-inject は
-scoped lifetime API が無いため、`beforeAll` で injector を構築し、ループ内で `createChildInjector()` を
-1 リクエスト境界として近似します。tsyringe は factory 登録のため `ContainerScoped`
-を使えず、**子 container = 1 リクエスト**（子内 singleton キャッシュを毎回破棄）で近似します。
+**Group B**（wyrly / tsyringe / inversify）はいずれも **composition root を `beforeAll` で 1 回構築**し、
+ループ内は **1 リクエスト境界のみ**を計測します。
+
+| Adapter | 1 リクエスト境界 |
+| ------- | ---------------- |
+| **wyrly** | `createScope()` → resolve（全ノード `scoped`）→ `disposeSync()` |
+| **inversify** | 登録済み Request スコープ container で `get(RootService)` |
+| **tsyringe** | 空の親の子 container に **毎回グラフを register** → resolve（親キャッシュなし） |
+
+typed-inject は scoped lifetime が無いため **Group A**:
+`beforeAll` で injector 構築済み、ループは `createChildInjector()` + resolve のみ。
+
+`npm run bench` 実行後に **Group B summary** 表が出力されます（Group A と混在しないよう参照用）。
 
 #### 比較グループ（解釈用）
 
 | グループ | スイート / adapter | 測定の意味 |
 | -------- | ------------------ | ---------- |
 | **A: cached hot path** | `resolution` 全般、`typed-inject` / `nestjs` の `request_scope` | 起動済みコンテナ上のキャッシュ済み resolve |
-| **B: scoped cold build** | **wyrly** / **inversify** / **tsyringe** の `request_scope` | 1 リクエストあたり scoped グラフを新規構築 |
+| **B: request boundary** | **wyrly** / **inversify** / **tsyringe** の `request_scope` | 登録済み root + 1 リクエストあたりのインスタンス構築 |
 
 Group A と Group B の ops/s を直接比較しないでください。NestJS は
 `Scope.REQUEST` + `ContextIdFactory.create()` で 1 リクエストを模倣しますが、ApplicationContext

@@ -76,21 +76,26 @@ register-only `cold_start`.
 
 ### Request scope
 
-Wyrly registers the composition root once in `beforeAll`; the timed loop only runs
-`container.createScope()` → `resolve` → `scope.disposeSync()` (closer to one production HTTP request).
-typed-inject has no scoped lifetime API, so it builds the injector in `beforeAll` and uses
-`createChildInjector()` per iteration as a one-request boundary approximation. tsyringe cannot
-combine factory providers with `ContainerScoped`, so it uses **one child container per request**
-(fresh singleton cache cleared via `clearInstances()`). NestJS simulates `Scope.REQUEST` with
-`ContextIdFactory.create()` but may recreate the application context, so treat its numbers as
-indicative only. Absolute overhead per real HTTP request is usually **microseconds**, dwarfed by I/O.
+**Group B** (wyrly / tsyringe / inversify) each build the composition root once in `beforeAll`; the
+timed loop measures **one request boundary only**:
+
+| Adapter | One request boundary |
+| ------- | -------------------- |
+| **wyrly** | `createScope()` → resolve (all providers `scoped`) → `disposeSync()` |
+| **inversify** | `get(RootService)` on a pre-built Request-scoped container |
+| **tsyringe** | **Register the full graph on a child container each iteration**, then resolve (no parent cache reuse) |
+
+typed-inject has no scoped lifetime API (**Group A**): injector in `beforeAll`, loop uses
+`createChildInjector()` + resolve only.
+
+After `npm run bench`, a **Group B summary** table is printed for cross-adapter comparison.
 
 #### Comparison groups (interpretation)
 
 | Group | Suite / adapters | What is measured |
 | ----- | ---------------- | ---------------- |
 | **A: cached hot path** | `resolution` (all), `typed-inject` / `nestjs` `request_scope` | Cached resolve on a warm container |
-| **B: scoped cold build** | **wyrly** / **inversify** / **tsyringe** `request_scope` | New graph built per simulated request |
+| **B: request boundary** | **wyrly** / **inversify** / **tsyringe** `request_scope` | Pre-registered root + per-request instance construction |
 
 Do not compare Group A and Group B ops/s directly.
 

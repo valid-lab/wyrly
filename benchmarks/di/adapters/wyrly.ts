@@ -1,4 +1,5 @@
 import { createContainer, token } from "@wyrly/core";
+import type { Provider } from "@wyrly/core";
 import {
   ClientA,
   ClientB,
@@ -24,48 +25,32 @@ const ServiceBToken = token<ServiceB>("ServiceB");
 const ServiceCToken = token<ServiceC>("ServiceC");
 const RootServiceToken = token<RootService>("RootService");
 
+function graphEntries(
+  lifetime: "singleton" | "scoped",
+): readonly (readonly [unknown, Provider<unknown>])[] {
+  return [
+    [ClientAToken, { useClass: ClientA, lifetime }],
+    [ClientBToken, { useClass: ClientB, lifetime }],
+    [ClientCToken, { useClass: ClientC, lifetime }],
+    [StoreAToken, { useClass: StoreA, deps: [ClientAToken], lifetime }],
+    [StoreBToken, { useClass: StoreB, deps: [ClientBToken], lifetime }],
+    [StoreCToken, { useClass: StoreC, deps: [ClientCToken], lifetime }],
+    [ServiceAToken, { useClass: ServiceA, deps: [StoreAToken], lifetime }],
+    [ServiceBToken, { useClass: ServiceB, deps: [StoreBToken], lifetime }],
+    [ServiceCToken, { useClass: ServiceC, deps: [StoreCToken], lifetime }],
+    [RootServiceToken, {
+      useClass: RootService,
+      deps: [ServiceAToken, ServiceBToken, ServiceCToken],
+      lifetime,
+    }],
+  ];
+}
+
 function registerGraph(
   container: ReturnType<typeof createContainer>,
   lifetime: "singleton" | "scoped",
 ): void {
-  container.register(ClientAToken, { useClass: ClientA, lifetime });
-  container.register(ClientBToken, { useClass: ClientB, lifetime });
-  container.register(ClientCToken, { useClass: ClientC, lifetime });
-  container.register(StoreAToken, {
-    useClass: StoreA,
-    deps: [ClientAToken],
-    lifetime,
-  });
-  container.register(StoreBToken, {
-    useClass: StoreB,
-    deps: [ClientBToken],
-    lifetime,
-  });
-  container.register(StoreCToken, {
-    useClass: StoreC,
-    deps: [ClientCToken],
-    lifetime,
-  });
-  container.register(ServiceAToken, {
-    useClass: ServiceA,
-    deps: [StoreAToken],
-    lifetime,
-  });
-  container.register(ServiceBToken, {
-    useClass: ServiceB,
-    deps: [StoreBToken],
-    lifetime,
-  });
-  container.register(ServiceCToken, {
-    useClass: ServiceC,
-    deps: [StoreCToken],
-    lifetime,
-  });
-  container.register(RootServiceToken, {
-    useClass: RootService,
-    deps: [ServiceAToken, ServiceBToken, ServiceCToken],
-    lifetime,
-  });
+  container.registerMany(graphEntries(lifetime));
 }
 
 export const wyrlyAdapter: BenchAdapter = {

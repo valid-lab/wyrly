@@ -11,6 +11,7 @@ import {
 import {
   createTsyringeRequestScopeParent,
   createTsyringeSingletonContainer,
+  resolveTsyringeRequestScope,
 } from "../adapters/tsyringe.ts";
 import { RootService as TsyringeRootService } from "../adapters/tsyringe.ts";
 import { getAdapter } from "../adapters/index.ts";
@@ -261,12 +262,7 @@ export function addRequestScopeTasks(bench: BenchAdd, adapterName: AdapterName):
       bench.add(
         label,
         () => {
-          const request = parent.createChildContainer();
-          try {
-            request.resolve(TsyringeRootService).run();
-          } finally {
-            request.clearInstances();
-          }
+          resolveTsyringeRequestScope(parent);
         },
         {
           beforeAll: () => {
@@ -276,12 +272,21 @@ export function addRequestScopeTasks(bench: BenchAdd, adapterName: AdapterName):
       );
       break;
     }
-    case "inversify":
-      bench.add(label, async () => {
-        const container = createInversifyRequestScopeContainer();
-        container.get(InversifyRootService).run();
-      });
+    case "inversify": {
+      let container: InversifyContainer;
+      bench.add(
+        label,
+        () => {
+          container.get(InversifyRootService).run();
+        },
+        {
+          beforeAll: () => {
+            container = createInversifyRequestScopeContainer();
+          },
+        },
+      );
       break;
+    }
     case "nestjs":
       bench.add(label, async () => {
         const app = await createNestRequestScopeApp();

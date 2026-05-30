@@ -47,7 +47,7 @@ npm run bench -- --suite cold_start,request_scope --adapter wyrly,tsyringe,inver
 | `resolution` | ホットパスの resolve のみ（コンテナは `beforeAll` で起動済み） |
 | `cold_start` | イテレーションごとにコンテナ / Nest ApplicationContext を新規作成 |
 | `cold_start_resolution` | 作成 + グラフ全体を 1 回 resolve + 破棄 |
-| `request_scope` | 1 リクエスト相当: **登録済み container** から `createScope()` → resolve → dispose（Wyrly は `beforeAll` で scoped 登録） |
+| `request_scope` | **Group B**: 登録済み root + 1 リクエスト境界（Wyrly: `createScope`→resolve→`disposeSync`、Inversify: `get`、tsyringe: 子 container へ毎回 register→resolve） |
 
 ## 依存グラフ
 
